@@ -1,0 +1,1 @@
+"use strict";var timeline;videojs("video",{},function(){timeline=new Timeline({videojs:this,fps:24})});
