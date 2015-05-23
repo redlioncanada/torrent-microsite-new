@@ -37,13 +37,11 @@ $(document).ready(function(){
         //make sure blender is visible when a background is being displayed
         if (this.direction == 0) {
             console.log(this.curCover); 
-            if (this.curCover == 0 || this.curCover == 10 || this.curCover == 11) $('#timeline').css('zIndex','1001');
+            if (this.curCover == 0) $('#timeline').css('zIndex','1001');
             else $('#timeline').css('zIndex','999');
-        } else {
-            if (this.curCover == 11) $('#timeline').css('zIndex','1001');
         }
 
-        if (this.curCover == 0 || this.curCover == 11) {
+        if (this.curCover == 0) {
             timeline.hideBorder();
         }
 
@@ -53,8 +51,7 @@ $(document).ready(function(){
         else if (this.curCover == 4) $('#timeline img').animate({'marginTop':'2%'});
         else if (this.curCover == 6) $('#timeline img').animate({'marginTop':'-3%'});
         else if (this.curCover == 7) $('#timeline img').animate({'marginTop':'-5%'});
-        else if (this.curCover == 11) $('#timeline img').animate({'marginTop':'4%'});
-        else if (this.curCover == 12) $('#timeline img').animate({'marginTop':'-5%'});
+        else if (this.curCover == 11) $('#timeline img').animate({'marginTop':'-5%'});
         else $('#timeline img').animate({'marginTop':'0'});
 
         //play the video
@@ -62,23 +59,16 @@ $(document).ready(function(){
     });
 
     scroller.on('scrollEnd', function() {
-        //make sure we're on the right slick slide when navigating past the gallery
-        if (this.curCover > 11) {
-            slick.slickGoTo(slick.slideCount - 1, true);
-        } else if (this.curCover < 11) {
-            slick.slickGoTo(0, true);
-        }
-
         //make sure blender is visible when a background is being displayed
         if (this.direction == 1) {
-            if (this.curCover == 0 || this.curCover == 11) $('#timeline').css('zIndex','1001');
+            if (this.curCover == 0) $('#timeline').css('zIndex','1001');
             else $('#timeline').css('zIndex','999');
         } else {
-            if (this.curCover == 11) $('#timeline').css('zIndex','1001');
-            else if (this.curCover != 0) $('#timeline').css('zIndex','999');
+            if (this.curCover == 0) $('#timeline').css('zIndex','1001');
+            else $('#timeline').css('zIndex','999');
         }
 
-        if (this.curCover != 0 && this.curCover != 11) {
+        if (this.curCover != 0) {
             timeline.showBorder();
         }
     });
@@ -92,30 +82,6 @@ $(document).ready(function(){
             timeline.playTo(timeline.currentKeyframe-1);
         } else {
             scroller.scroll(0);
-        }
-    });
-
-    //init slick gallery
-    $('.cover-item-12 .slick').on('init', function(e, _slick) {
-        _slick.edged = true;
-        slick = _slick;
-    }).slick({
-        prevArrow: "<img class='slick-prev' src='../assets/images/arrow.png'></img>",
-        nextArrow: "<img class='slick-next' src='../assets/images/arrow.png'></img>",
-        infinite: false
-    }).on('setPosition', function(e, slick) {
-        if (scroller.curCover !== 11) return;
-        if (slick.edged && slick.currentSlide == slick.slideCount-1) {  //reached end of slideshow
-            scroller.scroll(1); //scroll down
-        }
-        if (slick.edged && slick.currentSlide == 0) {  //reached start of slideshow
-            scroller.scroll(0); //scroll up
-        }
-
-        if (slick.currentSlide == slick.slideCount-1 || slick.currentSlide == 0) {
-            slick.edged = true;
-        } else {
-            slick.edged = false;
         }
     });
 
