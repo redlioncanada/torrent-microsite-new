@@ -34,7 +34,7 @@ class Timeline extends Messenger {
     } else {
       self.src = $('#timeline img').attr('src');
       self._setURL();
-      $('#timeline img').attr('src', self._constructURL());
+      $('#timeline img').attr('src', self._constructURL()).addClass('timeline-frame timeline-frame-0');
       self._cache();
     }
 
@@ -48,7 +48,6 @@ class Timeline extends Messenger {
     var initInterval = setInterval(function() {
         if (self.redraw()) clearInterval(initInterval);
     },200);
-    $(window).resize(self.redraw);
   }
 
   redraw() {
@@ -137,11 +136,12 @@ class Timeline extends Messenger {
 
   playTo(id) {
     let self = this;
-    if (id < 0 || id >= self.keyframes.length || id == self.currentKeyframe || self.playing || self.playInterval) return;
+    if (id < 0 || id >= self.keyframes.length || id == self.currentKeyframe || self.playing || self.playInterval) return false;
     let speed = Math.abs(self.keyframes[self.currentKeyframe] - self.keyframes[id]) / self.fps;
     id < self.currentKeyframe ? self.playBackwards(self.keyframes[id],speed) : self.play(self.keyframes[id],speed);
     self.log('playing to keyframe #'+id+', frame #'+self.keyframes[id]);
     self.currentKeyframe = id;
+    return true;
   }
 
   play(val,speed=1) {
@@ -169,7 +169,7 @@ class Timeline extends Messenger {
       function resetInterval(speed,allowReset=true) {
         clearInterval(self.playInterval);
         self.playInterval = setInterval(function() {
-          $('#timeline img').attr('src', self._constructURL());
+          let lastFrame = self.currentFrame;
           self.currentFrame += Math.round(speed) > 3 ? 3 : Math.round(speed); //skip some frames if playing super fast
 
           if (self.currentFrame >= self.keyframes[self.currentKeyframe-1] && allowReset) resetInterval(1,false);
@@ -180,7 +180,11 @@ class Timeline extends Messenger {
             self.playInterval = false;
             self.playing = false;
             self.emit('pause');
+            return;
           }
+
+          $('#timeline .timeline-frame-'+self.currentFrame).css('display','block');
+          setTimeout(function(){$('#timeline .timeline-frame').not('.timeline-frame-'+self.currentFrame).css('display','none')},2);
         }, self.deltaTime*1000/speed);
       }
     }
@@ -210,7 +214,7 @@ class Timeline extends Messenger {
       function resetInterval(speed,allowReset=true) {
         clearInterval(self.playInterval);
         self.playInterval = setInterval(function() {
-          $('#timeline img').attr('src', self._constructURL());
+         let lastFrame = self.currentFrame;
           self.currentFrame -= Math.round(speed) > 3 ? 3 : Math.round(speed); //skip some frames if playing super fast
 
           if (self.currentFrame <= self.keyframes[self.currentKeyframe+1] && allowReset) resetInterval(1,false);
@@ -221,7 +225,11 @@ class Timeline extends Messenger {
             self.playInterval = false;
             self.playing = false;
             self.emit('pause');
+            return;
           }
+
+          $('#timeline .timeline-frame-'+self.currentFrame).css('display','block');
+          setTimeout(function(){$('#timeline .timeline-frame').not('.timeline-frame-'+self.currentFrame).css('display','none')},2);
         }, self.deltaTime*1000/speed);
       }
     }
@@ -300,23 +308,25 @@ class Timeline extends Messenger {
     function cacheFrameSet(id, fn) {
       if (!frameIsValid(id)) return;
       
-      let start = self.keyframes[id], end = self.keyframes[id+1];
+      let start = parseInt(self.keyframes[id]), end = parseInt(self.keyframes[id+1]);
       let total = end-start;
       let loaded = 0;
       let error = 0;
 
-      for (let i = start; i <= end; i++) {
+      for (let i = start; i < end; i++) {
+        if (i == 0) {total -= 1; continue;}
         let suffix = self._constructURL(i);
 
         $.loadImage(suffix)
           .done(function(image) {
-            //console.log('cached '+suffix);
+            $(image).addClass('timeline-frame timeline-frame-'+i).css('display','none');
+            $('#timeline').append(image);
             if (++loaded + error >= total) {
               if (typeof fn === 'function') fn(id,loaded,error);
             }
           })
           .fail(function(image) {
-            //console.log('failed to cache '+suffix);
+            self.log('failed to cache '+suffix,1);
             if (++error + loaded >= total) {
               if (typeof fn === 'function') fn(id,loaded,error);
             }

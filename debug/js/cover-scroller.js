@@ -19,7 +19,6 @@ var CoverScroller = (function (_Messenger) {
         }
         this.target = $('.coverscroller');
         this.numElements = $(this.target).find('.cover').length;
-        this.elHeight = $(this.target).find('.cover').height();
         this.curCover = 0;
         this.animating = false;
         this.coverState = {};
@@ -55,17 +54,33 @@ var CoverScroller = (function (_Messenger) {
             }
         });
 
-        verticalCenter($('.color-picker'), this.elHeight, this.elHeight);
-        verticalCenter($('.cover-picker'), this.elHeight, this.elHeight);
-        function verticalCenter(el, parentHeight, offset) {
-            var height = $(el).height();
-            $(el).css('top', parentHeight / 2 + parseInt(height) / 2 + offset);
-        }
+        this.redraw();
     }
 
     _inherits(CoverScroller, _Messenger);
 
     _createClass(CoverScroller, [{
+        key: 'redraw',
+        value: function redraw() {
+            var height = $(window).height();
+            var nheight = height - $('.navbar').height();
+            var width = $(window).width();
+            $('.cover-wrapper,.cover').css({
+                width: width,
+                height: nheight
+            });
+            this.elHeight = nheight;
+            this.emit('redraw');
+            $(this.target).css('top', -this.elHeight * this.curCover);
+
+            var multiplier = this.curCover === 0 ? 1 : this.curCover;
+            var coverTop = this.elHeight * multiplier + this.elHeight / 2;
+            $('.cover-picker').css({ top: coverTop });
+
+            var colorTop = this.elHeight * multiplier + this.elHeight / 2 - parseInt($('.color-picker').height()) / 2;
+            $('.color-picker').css({ top: colorTop });
+        }
+    }, {
         key: 'showLoader',
         value: function showLoader() {
             $('#loader').fadeIn();
@@ -94,7 +109,9 @@ var CoverScroller = (function (_Messenger) {
     }, {
         key: 'scrollTo',
         value: function scrollTo(id) {
-            var _self = this;
+            if (this.timeline.playing) {
+                return;
+            }var _self = this;
             if (this.animating || this.curCover == id) {
                 return;
             }if (id > this.numElements - 1) {
@@ -135,7 +152,9 @@ var CoverScroller = (function (_Messenger) {
         value: function scroll() {
             var direction = arguments[0] === undefined ? 1 : arguments[0];
 
-            this.scrollTo(direction ? this.curCover + 1 : this.curCover - 1);
+            if (this.timeline.playing) {
+                return;
+            }this.scrollTo(direction ? this.curCover + 1 : this.curCover - 1);
         }
     }]);
 

@@ -62,7 +62,7 @@ var Timeline = (function (_Messenger) {
     } else {
       self.src = $("#timeline img").attr("src");
       self._setURL();
-      $("#timeline img").attr("src", self._constructURL());
+      $("#timeline img").attr("src", self._constructURL()).addClass("timeline-frame timeline-frame-0");
       self._cache();
     }
 
@@ -73,7 +73,6 @@ var Timeline = (function (_Messenger) {
     var initInterval = setInterval(function () {
       if (self.redraw()) clearInterval(initInterval);
     }, 200);
-    $(window).resize(self.redraw);
   }
 
   _inherits(Timeline, _Messenger);
@@ -178,11 +177,12 @@ var Timeline = (function (_Messenger) {
     value: function playTo(id) {
       var self = this;
       if (id < 0 || id >= self.keyframes.length || id == self.currentKeyframe || self.playing || self.playInterval) {
-        return;
+        return false;
       }var speed = Math.abs(self.keyframes[self.currentKeyframe] - self.keyframes[id]) / self.fps;
       id < self.currentKeyframe ? self.playBackwards(self.keyframes[id], speed) : self.play(self.keyframes[id], speed);
       self.log("playing to keyframe #" + id + ", frame #" + self.keyframes[id]);
       self.currentKeyframe = id;
+      return true;
     }
   }, {
     key: "play",
@@ -214,7 +214,7 @@ var Timeline = (function (_Messenger) {
 
             clearInterval(self.playInterval);
             self.playInterval = setInterval(function () {
-              $("#timeline img").attr("src", self._constructURL());
+              var lastFrame = self.currentFrame;
               self.currentFrame += Math.round(speed) > 3 ? 3 : Math.round(speed); //skip some frames if playing super fast
 
               if (self.currentFrame >= self.keyframes[self.currentKeyframe - 1] && allowReset) resetInterval(1, false);
@@ -225,7 +225,13 @@ var Timeline = (function (_Messenger) {
                 self.playInterval = false;
                 self.playing = false;
                 self.emit("pause");
+                return;
               }
+
+              $("#timeline .timeline-frame-" + self.currentFrame).css("display", "block");
+              setTimeout(function () {
+                $("#timeline .timeline-frame").not(".timeline-frame-" + self.currentFrame).css("display", "none");
+              }, 2);
             }, self.deltaTime * 1000 / speed);
           };
 
@@ -263,7 +269,7 @@ var Timeline = (function (_Messenger) {
 
             clearInterval(self.playInterval);
             self.playInterval = setInterval(function () {
-              $("#timeline img").attr("src", self._constructURL());
+              var lastFrame = self.currentFrame;
               self.currentFrame -= Math.round(speed) > 3 ? 3 : Math.round(speed); //skip some frames if playing super fast
 
               if (self.currentFrame <= self.keyframes[self.currentKeyframe + 1] && allowReset) resetInterval(1, false);
@@ -274,7 +280,13 @@ var Timeline = (function (_Messenger) {
                 self.playInterval = false;
                 self.playing = false;
                 self.emit("pause");
+                return;
               }
+
+              $("#timeline .timeline-frame-" + self.currentFrame).css("display", "block");
+              setTimeout(function () {
+                $("#timeline .timeline-frame").not(".timeline-frame-" + self.currentFrame).css("display", "none");
+              }, 2);
             }, self.deltaTime * 1000 / speed);
           };
 
@@ -373,26 +385,36 @@ var Timeline = (function (_Messenger) {
       function cacheFrameSet(id, fn) {
         if (!frameIsValid(id)) {
           return;
-        }var start = self.keyframes[id],
-            end = self.keyframes[id + 1];
+        }var start = parseInt(self.keyframes[id]),
+            end = parseInt(self.keyframes[id + 1]);
         var total = end - start;
         var loaded = 0;
         var error = 0;
 
-        for (var i = start; i <= end; i++) {
+        var _loop2 = function (i) {
+          if (i == 0) {
+            total -= 1;return "continue";
+          }
           var suffix = self._constructURL(i);
 
           $.loadImage(suffix).done(function (image) {
-            //console.log('cached '+suffix);
+            $(image).addClass("timeline-frame timeline-frame-" + i).css("display", "none");
+            $("#timeline").append(image);
             if (++loaded + error >= total) {
               if (typeof fn === "function") fn(id, loaded, error);
             }
           }).fail(function (image) {
-            //console.log('failed to cache '+suffix);
+            self.log("failed to cache " + suffix, 1);
             if (++error + loaded >= total) {
               if (typeof fn === "function") fn(id, loaded, error);
             }
           });
+        };
+
+        for (var i = start; i < end; i++) {
+          var _ret4 = _loop2(i);
+
+          if (_ret4 === "continue") continue;
         }
       }
 

@@ -7,7 +7,10 @@ var gulp = require("gulp"),
 	minifyCss = require('gulp-minify-css'),
     reload = require('gulp-livereload'),
     plugins = require('gulp-load-plugins')(),
-    sourcemaps = require('gulp-sourcemaps');;
+    sourcemaps = require('gulp-sourcemaps'),
+    babeloptions = {
+        compact: false
+    };
 
 gulp.task("default", function() {
     plugins.livereload.listen();
@@ -29,7 +32,7 @@ gulp.task("html", function() {
 });
 
 gulp.task("js", function () {
-    var b = babel();
+    var b = babel(babeloptions);
     b.on('error',function(){console.log('error parsing js');b.end()});
   return gulp.src("src/js/**/*.js")
     .pipe(b)
@@ -51,7 +54,7 @@ gulp.task("htmlmin", function() {
 });
 
 gulp.task("jsmin", function () {
-    var b = babel();
+    var b = babel(babeloptions);
     b.on('error',function(){console.log('error parsing js');b.end()});
   return gulp.src("src/js/**/*.js")
     .pipe(b)
