@@ -5,30 +5,33 @@ class CoverScroller extends Messenger {
         if (opts) {
             this.duration = opts.duration*1000 || 1000;
         }
-        this.target = $('.coverscroller');
+        this.target = $('.coverscroller > div');
         this.numElements = $(this.target).find('.cover').length;
         this.curCover = 0;
         this.animating = false;
         this.coverState = {};
-        this.timeline = timeline;
+        if (timeline) this.timeline = timeline;
 
         for (var i=0; i<=this.numElements-1; i++) {
             _self.coverState[i] = false;
             let index = i;
 
             //track when a frameset loads
-            _self.timeline.on('loaded'+index, function() {
-                if (index == 0) {
+            if (timeline) {
+                _self.timeline.on('loaded', function() {
                     _self.hideLoader();
-                }
-                _self.coverState[index] = true;
-            });
+                    _self.coverState[index] = true;
+                });
+            } else {
+                _self.hideLoader();
+            }
         }
 
         $('.cover-picker li').click(function() {
             let index = $(this).index();
-            if (_self.coverState[index]) _self.scrollTo(index);
-            else {
+            //if (_self.coverState[index]) _self.scrollTo(index);
+            _self.scrollTo(index);
+            /*else {
                 //if a frameset is still loading, activate the loading overlay and wait until it's done
                 _self.showLoader();
                 _self.timeline.on('loaded'+index, function() {
@@ -36,20 +39,25 @@ class CoverScroller extends Messenger {
                     _self.hideLoader();
                     _self.scrollTo(index);
                 });
-            }
+            }*/
         });
 
         this.redraw();
     }
 
     redraw() {
-        let height = $(window).height();
-        let nheight = height - $('.navbar').height()
-        let width = $(window).width()
+        let menuSize = isPhone ? 50 : 116;  //magical
+        let height = $(window).height() - menuSize;
+        let nheight = height - $('#navbar-wrapper').height();
+        menuSize += $('#navbar-wrapper').height();
+        console.log(nheight);
+        let width = $(window).width();
+
         $('.cover-wrapper,.cover').css({
             width: width,
             height: nheight
         });
+
         this.elHeight = nheight;
         this.emit('redraw');
         $(this.target).css('top',-this.elHeight*this.curCover);
@@ -83,7 +91,7 @@ class CoverScroller extends Messenger {
     }
 
     scrollTo(id) {
-        if (this.timeline.playing) return;
+        if (this.timeline && this.timeline.playing) return;
         let _self = this;
         if (this.animating || this.curCover == id) return;
         if (id > this.numElements-1) {
@@ -119,7 +127,7 @@ class CoverScroller extends Messenger {
     }
 
     scroll(direction=1) {
-        if (this.timeline.playing) return;
+        if (this.timeline && this.timeline.playing) return;
         this.scrollTo(direction ? this.curCover+1 : this.curCover-1);
     }
 }

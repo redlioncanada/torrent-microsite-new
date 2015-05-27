@@ -33,18 +33,20 @@ gulp.task("html", function() {
 
 gulp.task("js", function () {
     var b = babel(babeloptions);
-    b.on('error',function(){console.log('error parsing js');b.end()});
+    b.on('error',function(e){console.log('error parsing js: '+e);b.end()});
   return gulp.src("src/js/**/*.js")
     .pipe(b)
-    .pipe(gulp.dest("debug/js"))
-    .pipe(plugins.livereload());
+    .pipe(gulp.dest("debug/js/torrent"))
+    .pipe(plugins.livereload())
+    .pipe(gulp.dest("/Users/stepoole/Desktop/_upload/js/torrent"));
 });
 
 gulp.task("css", function() {
 	return gulp.src("src/less/**/*.less")
 		.pipe(less())
-		.pipe(gulp.dest("debug/css"))
-        .pipe(plugins.livereload());
+		.pipe(gulp.dest("debug/css/torrent"))
+        .pipe(plugins.livereload())
+        .pipe(gulp.dest("/Users/stepoole/Desktop/_upload/css/torrent"));
 });
 
 gulp.task("htmlmin", function() {

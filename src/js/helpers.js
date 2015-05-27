@@ -63,3 +63,4 @@ $.loadImage = function(url) {
   
   return $.Deferred(loadImage).promise();
 };
+
