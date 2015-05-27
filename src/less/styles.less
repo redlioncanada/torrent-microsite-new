@@ -32,7 +32,7 @@ body {overflow: hidden; background-color: black !important; font-size: 13pt; min
     background-color: white !important;
   }
   ul.nav {
-    padding: 14px 0 0 20px !important;
+    padding-left: 20px;
   }
   .nav li {
     padding-right: 18px !important;
@@ -325,6 +325,7 @@ a img {
   height: inherit;
   overflow: hidden;
   z-index: 1000;
+  min-height: 520px;
 }
 .cover > div {
   height: 100%;
@@ -764,6 +765,12 @@ p > span, h1 > span, h2 > span, h3 > span, h4 > span {
 .mobile .col-xs-10, .mobile .col-xs-8 {
   z-index: 3;
 }
+//iphone4
+@media (max-width:400px)  {
+    body {font-size: 12pt !important;}
+    #main-container h1 {font-size: 19pt !important;}
+    #main-container h3 {font-size: 18pt !important;}
+}
 //ipad
 @media(max-width:768px), only screen 
   and (max-device-width: 1536px) 
@@ -932,6 +939,7 @@ p > span, h1 > span, h2 > span, h3 > span, h4 > span {
     .mobile > img {
       top: 3%;
       margin-left: 7%;
+      width: 80%;
     }
     .col-xs-10 {
       top: 50%;
@@ -1016,6 +1024,7 @@ p > span, h1 > span, h2 > span, h3 > span, h4 > span {
     .mobile > img {
       top: 7%;
       margin-left: 14%;
+      width: 80%;
     }
     .col-xs-8 {
       top: 40%;
@@ -1085,13 +1094,6 @@ p > span, h1 > span, h2 > span, h3 > span, h4 > span {
     }
 
   }
-}
-
-//iphone4
-@media (min-width:400px)  {
-    body {font-size: 12pt !important;}
-    #main-container h1 {font-size: 19pt !important;}
-    #main-container h3 {font-size: 18pt !important;}
 }
 //iphone5
 @media(max-width:640px) {

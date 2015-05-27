@@ -37,16 +37,8 @@
 <div id="main-container">
 	<div id="timeline" data-src="./images/torrent/">
 		<video id="forward" class="video-js vjs-default-skin" muted preload="auto" width="100%" height="100%">
-			<source src="./images/torrent/test.mp4" type='video/mp4' />
-			<!--<source src="./assets/video/test.mp4" type='video/mp4' />
-			<source src="./assets/video/test.webm" type='video/webm' />
-			<source src="./assets/video/test.ogv" type='video/ogg' />-->
 		</video>
 		<video id="backward" class="video-js vjs-default-skin" muted preload="auto" width="100%" height="100%">
-			<source src="./images/torrent/test_reverse.mp4" type='video/mp4' />
-			<!--<source src="./assets/video/test.mp4" type='video/mp4' />
-			<source src="./assets/video/test.webm" type='video/webm' />
-			<source src="./assets/video/test.ogv" type='video/ogg' />-->
 		</video>
 	</div>
 	<div id="loader"><img src="./images/torrent/ajax-loader.gif"/></div>
@@ -469,7 +461,7 @@
 					<div>
 						<h3><span>ADD INGREDIENTS</span><br/> WHILE BLENDING</h3>
 						<p>Simply lift the dishwasher-safe ingredient cap on the top to add ice, fresh fruit, and more while you blend. You can even use the measurement marks on the cap to be precise.</p>
-						<img id="recipe" src="./images/torrent/view-photos.png"/>
+						<img id="recipe" src="./images/torrent/recipe.png"/>
 					</div>
 				</div>
 				<div class="col-xs-2">&nbsp;</div>
@@ -482,7 +474,7 @@
 					<div>
 						<h3><span>ADD INGREDIENTS</span><br/> WHILE BLENDING</h3>
 						<p>Simply lift the dishwasher-safe ingredient cap on the top to add ice, fresh fruit, and more while you blend. You can even use the measurement marks on the cap to be precise.</p>
-						<img id="recipe" src="./images/torrent/view-photos.png"/>
+						<img id="recipe" src="./images/torrent/recipe.png"/>
 					</div>
 				</div>
 				<div class="col-xs-2">&nbsp;</div>
@@ -591,7 +583,6 @@
 <script src="./js/torrent/lib/modernizr.js"></script>
 <script src="./js/torrent/lib/mobile-detect.js"></script>
 <script src="./js/torrent/lib/mobile-detect-modernizr.js"></script>
-<script src="./js/torrent/lib/video.js"></script>
 <script src="./js/torrent/helpers.js"></script>
 <script src="./js/torrent/timeline.js"></script>
 <script src="./js/torrent/cover-scroller.js"></script>
@@ -604,29 +595,39 @@
   var firstScriptTag = document.getElementsByTagName('script')[0];
   firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 </script>
-<!--<script>
+<script>
 	Modernizr.load({
-		test: isMobileOrTablet(),
+		test: Modernizr.mobile,
 		nope: {
 			'videojs': './js/torrent/lib/video.js'
 		},
 		callback: {
 			'videojs': function() {
-				var forward = '<video id="forward" class="video-js vjs-default-skin" muted preload="auto" width="100%" height="100%">' +
-					/*'<source src="./images/torrent/test.mp4" type="video/mp4" />' +
+				var forward = '<source src="./images/torrent/test.mp4" type="video/mp4" />' +
 					'<source src="./images/torrent/test.webm" type="video/webm" />' +
-					'<source src="./images/torrent/test.ogv" type="video/ogg" />' +*/
-					'</video>';
-				var backward = '<video id="backward" class="video-js vjs-default-skin" muted preload="auto" width="100%" height="100%">' +
-					/*'<source src="./images/torrent/test_backwards.mp4" type="video/mp4" />' +
+					'<source src="./images/torrent/test.ogv" type="video/ogg" />';
+				var backward = '<source src="./images/torrent/test_reverse.mp4" type="video/mp4" />' +
 					'<source src="./images/torrent/test_reverse.webm" type="video/webm" />' +
-					'<source src="./images/torrent/test_reverse.ogv" type="video/ogg" />' +*/
-					'</video>';
-				$('#timeline').append(forward).append(backward);
-				torrentInit();
+					'<source src="./images/torrent/test_reverse.ogv" type="video/ogg" />';
+				$('#forward').append(forward);
+				$('#backward').append(backward);
+
+				timeline = new Timeline({
+			        fps: 24,
+			        keyframes: [2.5, 4.5, 4.55, 5.5, 7.5, 8.6, 10.3, 11.5, 12.6, 13.7, 15.7, 16.4, 17.3, 19],
+			        mode: 'video'
+			    });
+			    videojs("forward", {}, function() {
+			        timeline.forwardVideo = this;
+			    });
+			    videojs("backward", {}, function() {
+			        timeline.backwardVideo = this;
+			    });
+
+			    init();
 			}
 		}
 	});
-</script>-->
+</script>
 </body>
 </html>

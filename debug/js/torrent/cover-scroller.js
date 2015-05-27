@@ -70,7 +70,6 @@ var CoverScroller = (function (_Messenger) {
             var height = $(window).height() - menuSize;
             var nheight = height - $('#navbar-wrapper').height();
             menuSize += $('#navbar-wrapper').height();
-            console.log(nheight);
             var width = $(window).width();
 
             $('.cover-wrapper,.cover').css({
@@ -136,22 +135,26 @@ var CoverScroller = (function (_Messenger) {
 
             this.direction = id < this.curCover ? 0 : 1;
 
-            //animate cover
-            this.animating = true;
-            $(this.target).velocity({ top: -this.elHeight * id }, { duration: this.duration, complete: function complete() {
-                    _self.emit('scrollEnd');
-                    _self.animating = false;
-                } });
+            if (isMobile) {
+                $('.cover-wrapper').scrollTop($('.cover-item-' + (id + 1)).offset().top);
+            } else {
+                //animate cover
+                this.animating = true;
+                $(this.target).velocity({ top: -this.elHeight * id }, { duration: this.duration, complete: function complete() {
+                        _self.emit('scrollEnd');
+                        _self.animating = false;
+                    } });
 
-            //animate color and cover pickers, don't animate them to the first cover
-            var multiplier = id === 0 ? 1 : id;
-            var coverTop = this.elHeight * multiplier + this.elHeight / 2;
-            $('.cover-picker').velocity({ top: coverTop }, { duration: this.duration });
-            $('.cover-picker').find('li').removeClass('selected');
-            $('.cover-picker').find('li').eq(id).addClass('selected');
+                //animate color and cover pickers, don't animate them to the first cover
+                var multiplier = id === 0 ? 1 : id;
+                var coverTop = this.elHeight * multiplier + this.elHeight / 2;
+                $('.cover-picker').velocity({ top: coverTop }, { duration: this.duration });
+                $('.cover-picker').find('li').removeClass('selected');
+                $('.cover-picker').find('li').eq(id).addClass('selected');
 
-            var colorTop = this.elHeight * multiplier + this.elHeight / 2 - parseInt($('.color-picker').height()) / 2;
-            $('.color-picker').velocity({ top: colorTop }, { duration: this.duration });
+                var colorTop = this.elHeight * multiplier + this.elHeight / 2 - parseInt($('.color-picker').height()) / 2;
+                $('.color-picker').velocity({ top: colorTop }, { duration: this.duration });
+            }
 
             this.curCover = id;
             this.emit('scroll');

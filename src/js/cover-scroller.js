@@ -50,7 +50,6 @@ class CoverScroller extends Messenger {
         let height = $(window).height() - menuSize;
         let nheight = height - $('#navbar-wrapper').height();
         menuSize += $('#navbar-wrapper').height();
-        console.log(nheight);
         let width = $(window).width();
 
         $('.cover-wrapper,.cover').css({
@@ -105,22 +104,26 @@ class CoverScroller extends Messenger {
 
         this.direction = id < this.curCover ? 0 : 1;
 
+        if (isMobile) {
+            $('.cover-wrapper').scrollTop($('.cover-item-'+(id+1)).offset().top);
+        } else {
         //animate cover
-        this.animating = true;
-        $(this.target).velocity({top:-this.elHeight*id}, {duration: this.duration, complete: function(){
-            _self.emit('scrollEnd');
-            _self.animating = false;
-        }});
+            this.animating = true;
+            $(this.target).velocity({top:-this.elHeight*id}, {duration: this.duration, complete: function(){
+                _self.emit('scrollEnd');
+                _self.animating = false;
+            }});
 
-        //animate color and cover pickers, don't animate them to the first cover
-        let multiplier = id === 0 ? 1 : id;
-        let coverTop = this.elHeight*multiplier + this.elHeight / 2;
-        $('.cover-picker').velocity({top: coverTop}, {duration: this.duration});
-        $('.cover-picker').find('li').removeClass('selected');
-        $('.cover-picker').find('li').eq(id).addClass('selected');
+            //animate color and cover pickers, don't animate them to the first cover
+            let multiplier = id === 0 ? 1 : id;
+            let coverTop = this.elHeight*multiplier + this.elHeight / 2;
+            $('.cover-picker').velocity({top: coverTop}, {duration: this.duration});
+            $('.cover-picker').find('li').removeClass('selected');
+            $('.cover-picker').find('li').eq(id).addClass('selected');
 
-        let colorTop = this.elHeight*multiplier + this.elHeight / 2 - parseInt($('.color-picker').height())/2;
-        $('.color-picker').velocity({top: colorTop}, {duration: this.duration});
+            let colorTop = this.elHeight*multiplier + this.elHeight / 2 - parseInt($('.color-picker').height())/2;
+            $('.color-picker').velocity({top: colorTop}, {duration: this.duration});
+        }
 
         this.curCover = id;
         this.emit('scroll');

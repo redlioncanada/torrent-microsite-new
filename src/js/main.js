@@ -1,25 +1,26 @@
-var timeline = undefined;
+var timeline = undefined, scroller = undefined;
 var isMobile = Modernizr.mobile;
 var isPhone = Modernizr.phone;
 var isTablet = Modernizr.tablet;
-if (!isMobile) {
-    timeline = new Timeline({
-        fps: 24,
-        keyframes: [2.5, 4.5, 4.55, 5.5, 7.5, 8.6, 10.3, 11.5, 12.6, 13.7, 15.7, 16.4, 17.3, 19],
-        mode: 'video'
-    });
-    videojs("forward", {}, function() {
-        timeline.forwardVideo = this;
-    });
-    videojs("backward", {}, function() {
-        timeline.backwardVideo = this;
-    });
-}
-var scroller = new CoverScroller({duration: 1},timeline);    //handles scrolling of page
 var youtubePlayers = {};
 
+//if desktop, init will be called in index.html
+if (isMobile) init();
 
-$(document).ready(function(){
+function init() {
+    scroller = new CoverScroller({duration: 1},timeline);    //handles scrolling of page
+
+    //nav toggle
+    $('#navbar-wrapper .navbar-toggle').click(function() {
+        if ($('#navbar-wrapper .navbar-collapse').css('display') == 'block') {
+            $('#navbar-wrapper .navbar-collapse').fadeOut();
+        } else {
+            $('#navbar-wrapper .navbar-collapse').fadeIn();
+        }
+    });
+    $('#navbar-wrapper .navbar-nav li').click(function() {
+        $('#navbar-wrapper .navbar-collapse').fadeOut();
+    });
 
     //set header position
     if (isPhone) {
@@ -27,16 +28,19 @@ $(document).ready(function(){
         $('#navbar-wrapper').css('top', '50px');
     }
 
-    //scroll the page on mousewheel scroll
-    $('.cover-wrapper').mousewheel(function(event) {
-        if (event.deltaY > 0) {
-            scroller.scroll(1);
-        } else if (event.deltaY < 0) {
-            scroller.scroll(0);
-        }
-    });
-
     if (!isMobile) {
+        //don't show scrollbar on desktop
+        $('.cover-wrapper').css('overflow', 'hidden');
+
+        //scroll the page on mousewheel scroll
+        $('.cover-wrapper').mousewheel(function(event) {
+            if (event.deltaY > 0) {
+                scroller.scroll(1);
+            } else if (event.deltaY < 0) {
+                scroller.scroll(0);
+            }
+        });
+
         timeline.redraw();
         $('#timeline *').animate({'marginTop':'-3%'});
     
@@ -199,6 +203,11 @@ $(document).ready(function(){
     //on window resize, resize components
     $(window).resize(function() {
         scroller.redraw();
-        if (!isMobile) timeline.redraw();
+        if (!isMobile) {
+            //don't show scrollbar on desktop
+            $('.cover-wrapper').css('overflow', 'hidden');
+            
+            timeline.redraw();
+        }
     });
-});
+}

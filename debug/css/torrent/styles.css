@@ -38,7 +38,7 @@ body {
   background-color: white !important;
 }
 #navbar-wrapper ul.nav {
-  padding: 14px 0 0 20px !important;
+  padding-left: 20px;
 }
 #navbar-wrapper .nav li {
   padding-right: 18px !important;
@@ -421,6 +421,7 @@ body {
   height: inherit;
   overflow: hidden;
   z-index: 1000;
+  min-height: 520px;
 }
 #main-container .cover > div {
   height: 100%;
@@ -837,6 +838,17 @@ body {
 #main-container .mobile .col-xs-8 {
   z-index: 3;
 }
+@media (max-width: 400px) {
+  #main-container body {
+    font-size: 12pt !important;
+  }
+  #main-container #main-container h1 {
+    font-size: 19pt !important;
+  }
+  #main-container #main-container h3 {
+    font-size: 18pt !important;
+  }
+}
 @media (max-width: 768px), only screen and (max-device-width: 1536px) and (-webkit-min-device-pixel-ratio: 2) {
   #main-container .coverscroller {
     overflow-y: scroll;
@@ -992,6 +1004,7 @@ body {
   #main-container .cover-item-5 .mobile > img {
     top: 3%;
     margin-left: 7%;
+    width: 80%;
   }
   #main-container .cover-item-5 .col-xs-10 {
     top: 50%;
@@ -1068,6 +1081,7 @@ body {
   #main-container .cover-item-9 .mobile > img {
     top: 7%;
     margin-left: 14%;
+    width: 80%;
   }
   #main-container .cover-item-9 .col-xs-8 {
     top: 40%;
@@ -1127,17 +1141,6 @@ body {
   }
   #main-container .cover-item-12 .legal a {
     text-decoration: underline !important;
-  }
-}
-@media (min-width: 400px) {
-  #main-container body {
-    font-size: 12pt !important;
-  }
-  #main-container #main-container h1 {
-    font-size: 19pt !important;
-  }
-  #main-container #main-container h3 {
-    font-size: 18pt !important;
   }
 }
 @media (max-width: 640px) {

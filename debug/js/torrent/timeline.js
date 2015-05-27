@@ -168,25 +168,14 @@ var Timeline = (function (_Messenger) {
       }
     }
   }, {
-    key: 'scroll',
-    value: function scroll(direction) {
-      var self = this;
-      if (self.playing || self.playInterval) {
-        return;
-      }if (self.mode == 'video') self.totalFrames = self.fps * self._forwardVideo.duration();
-
-      if (!direction) {
-        if (self.currentKeyframe <= 0) {
-          return;
-        }self.currentKeyframe--;
-      } else {
-        if (self.currentKeyframe >= self.keyframes.length) {
-          return;
-        }self.currentKeyframe++;
-      }
-
-      self.currentYoffset = window.pageYOffset;
-      !direction ? self.playBackwards() : self.play();
+    key: 'next',
+    value: function next() {
+      this.playTo(self.currentKeyframe + 1);
+    }
+  }, {
+    key: 'prev',
+    value: function prev() {
+      this.playTo(self.currentKeyframe - 1);
     }
   }, {
     key: 'playTo',
@@ -196,6 +185,7 @@ var Timeline = (function (_Messenger) {
         return false;
       }var idDiff = Math.abs(self.currentKeyframe - id);
       var timeDiff = Math.abs(self.keyframes[self.currentKeyframe] - self.keyframes[id]);
+      console.log(idDiff, timeDiff);
       var speed = idDiff > 1 ? 1 / timeDiff : undefined;
       self.keyframes[id] < self.keyframes[self.currentKeyframe] ? self.play(self.keyframes[id], 0, speed) : self.play(self.keyframes[id], 1, speed);
       self.log('playing to keyframe #' + id + ', time ' + self.keyframes[id] + 's');
@@ -233,6 +223,7 @@ var Timeline = (function (_Messenger) {
           var ct = primary.currentTime();
           if (speed) {
             ct += speed;
+            console.log(speed * 1000, ct);
             primary.currentTime(ct);
           }
           if (ct >= val) {

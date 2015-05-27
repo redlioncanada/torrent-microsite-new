@@ -139,21 +139,12 @@ class Timeline extends Messenger {
     }
   }
 
-  scroll(direction) {
-      let self = this;
-      if (self.playing || self.playInterval) return;
-      if (self.mode == 'video') self.totalFrames = self.fps * self._forwardVideo.duration();
+  next() {
+    this.playTo(self.currentKeyframe+1);
+  }
 
-      if (!direction) {
-        if (self.currentKeyframe <= 0) return;
-        self.currentKeyframe--;
-      } else {
-        if (self.currentKeyframe >= self.keyframes.length) return;
-        self.currentKeyframe++;
-      }
-
-      self.currentYoffset = window.pageYOffset;
-      !direction ? self.playBackwards() : self.play();
+  prev() {
+    this.playTo(self.currentKeyframe-1);
   }
 
   playTo(id) {
@@ -161,6 +152,7 @@ class Timeline extends Messenger {
     if (id < 0 || id >= self.keyframes.length || id == self.currentKeyframe || self.playing || self.playInterval) return false;
     let idDiff = Math.abs(self.currentKeyframe - id);
     let timeDiff = Math.abs(self.keyframes[self.currentKeyframe] - self.keyframes[id]);
+    console.log(idDiff,timeDiff);
     let speed = idDiff > 1 ? 1/timeDiff : undefined;
     self.keyframes[id] < self.keyframes[self.currentKeyframe] ? self.play(self.keyframes[id],0,speed) : self.play(self.keyframes[id],1,speed);
     self.log('playing to keyframe #'+id+', time '+self.keyframes[id]+'s');
@@ -195,6 +187,7 @@ class Timeline extends Messenger {
         let ct = primary.currentTime();
         if (speed) {
           ct += speed;
+          console.log(speed*1000,ct);
           primary.currentTime(ct);
         }
         if (ct >= val) {
