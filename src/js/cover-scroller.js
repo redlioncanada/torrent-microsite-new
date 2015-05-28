@@ -47,15 +47,14 @@ class CoverScroller extends Messenger {
     redraw() {
         let menuSize = isPhone ? 50 : 116;  //magical
         let height = $(window).height() - menuSize;
-        let nheight = height - menuSize
         let width = $(window).width();
 
         $('.cover-wrapper,.cover').css({
             width: width,
-            height: nheight
+            height: height
         });
 
-        this.elHeight = nheight;
+        this.elHeight = height;
         this.emit('redraw');
         $(this.target).css('top',-this.elHeight*this.curCover);
 

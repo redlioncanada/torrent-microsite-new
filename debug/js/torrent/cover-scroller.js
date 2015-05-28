@@ -66,15 +66,14 @@ var CoverScroller = (function (_Messenger) {
         value: function redraw() {
             var menuSize = isPhone ? 50 : 116; //magical
             var height = $(window).height() - menuSize;
-            var nheight = height - menuSize;
             var width = $(window).width();
 
             $('.cover-wrapper,.cover').css({
                 width: width,
-                height: nheight
+                height: height
             });
 
-            this.elHeight = nheight;
+            this.elHeight = height;
             this.emit('redraw');
             $(this.target).css('top', -this.elHeight * this.curCover);
 
