@@ -164,7 +164,7 @@ function init() {
     });
 
     //on view recipes button click, show recipe
-    $('#recipe').click(function () {
+    $('.open-recipe').click(function () {
         $('#show-recipe').css('display', 'none').css('left', 'initial').fadeIn();
     });
 

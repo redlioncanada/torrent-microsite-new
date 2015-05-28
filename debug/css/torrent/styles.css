@@ -239,7 +239,7 @@ body {
 #main-container .view-photos,
 #main-container .play-video,
 #main-container #play-video img,
-#main-container #recipe {
+#main-container .show-recipe {
   cursor: pointer;
 }
 #main-container #view-photo,
@@ -263,6 +263,7 @@ body {
 #main-container #play-video .slick > div img,
 #main-container #show-recipe .slick > div img {
   max-height: 666px;
+  width: 100%;
   z-index: 2;
   margin: 0 auto;
 }
@@ -858,9 +859,6 @@ body {
   }
   #main-container #navbar-wrapper .nav li {
     padding-right: 0 !important;
-  }
-  #main-container #show-recipe {
-    width: 700px;
   }
   #main-container #view-photo .slick-prev,
   #main-container #view-photo .slick-next {

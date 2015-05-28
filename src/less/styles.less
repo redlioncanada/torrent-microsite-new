@@ -151,7 +151,7 @@ a img {
   background-color: black;
   opacity: 0.3;
 }
-.view-photos,.play-video,#play-video img,#recipe {
+.view-photos,.play-video,#play-video img,.show-recipe {
   cursor: pointer;
 }
 #view-photo, #play-video, #show-recipe {
@@ -169,6 +169,7 @@ a img {
     
     > div img {
       max-height: 666px;
+      width: 100%;
       z-index: 2;
       margin: 0 auto;
     }
@@ -785,9 +786,6 @@ p > span, h1 > span, h2 > span, h3 > span, h4 > span {
     .nav li {
       padding-right: 0 !important;
     }
-  }
-  #show-recipe {
-    width: 700px;
   }
   #view-photo .slick-prev, #view-photo .slick-next {
     top: 29% !important;
