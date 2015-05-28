@@ -97,8 +97,7 @@ var Timeline = (function (_Messenger) {
       //make sure video's aspect/position is maintained
       var menuSize = isPhone ? 50 : 116;
       var width = $(window).width();
-      var offset = $('#navbar-wrapper').height() + menuSize;
-      var height = $(window).height() - offset;
+      var height = $(window).height() - menuSize;
       var viewportAspect = width / height;
       var imageAspect = 16 / 9;
       if (isNaN(imageAspect) || !imageAspect) {
@@ -115,7 +114,7 @@ var Timeline = (function (_Messenger) {
         $('#timeline').css({
           height: nheight,
           width: nwidth,
-          top: offset - hdiff / 2,
+          top: menuSize - hdiff / 2,
           left: -wdiff / 2
         });
       } else if (viewportAspect < imageAspect) {
@@ -127,7 +126,7 @@ var Timeline = (function (_Messenger) {
         $('#timeline').css({
           height: nheight,
           width: nwidth,
-          top: offset - hdiff / 2,
+          top: menuSize - hdiff / 2,
           left: -wdiff / 2
         });
       } else {
@@ -138,7 +137,7 @@ var Timeline = (function (_Messenger) {
         $('#timeline').css({
           height: nheight,
           width: nwidth,
-          top: offset - hdiff / 2,
+          top: menuSize - hdiff / 2,
           left: -wdiff / 2
         });
       }

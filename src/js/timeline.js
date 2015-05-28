@@ -74,8 +74,7 @@ class Timeline extends Messenger {
     //make sure video's aspect/position is maintained
     let menuSize = isPhone ? 50 : 116;
     let width = $(window).width();
-    let offset = $('#navbar-wrapper').height() + menuSize;
-    let height = $(window).height() - offset;
+    let height = $(window).height() - menuSize;
     let viewportAspect = width/height;
     let imageAspect = 16/9;
     if (isNaN(imageAspect) || !imageAspect) return false;
@@ -92,7 +91,7 @@ class Timeline extends Messenger {
       $('#timeline').css({
           'height': nheight,
           'width': nwidth,
-          'top': offset - hdiff/2,
+          'top': menuSize - hdiff/2,
           'left': -wdiff/2
       });
     } else if (viewportAspect < imageAspect) {
@@ -104,7 +103,7 @@ class Timeline extends Messenger {
       $('#timeline').css({  
           'height': nheight,
           'width': nwidth,
-          'top': offset - hdiff/2,
+          'top': menuSize - hdiff/2,
           'left': -wdiff/2
       });
     } else {
@@ -115,7 +114,7 @@ class Timeline extends Messenger {
       $('#timeline').css({
           'height': nheight,
           'width': nwidth,
-          top: offset - hdiff/2,
+          top: menuSize - hdiff/2,
           left: -wdiff/2
       });
     }

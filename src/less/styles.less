@@ -1,6 +1,6 @@
 @outerPadding: 70px;
 body {overflow: hidden; background-color: black !important; font-size: 13pt; min-width: 320px;}
-#main-container,.navbar {
+#main-container {
   @font-face {
     font-family: 'Avenir-Heavy';
     src: url('/css/torrent/font/Avenir-Heavy.eot?#iefix') format('embedded-opentype'),  url('/css/torrent/font/Avenir-Heavy.woff') format('woff'), url('/css/torrent/font/Avenir-Heavy.ttf')  format('truetype'), url('/css/torrent/font/Avenir-Heavy.svg#Avenir-Heavy') format('svg');
@@ -14,41 +14,6 @@ body {overflow: hidden; background-color: black !important; font-size: 13pt; min
     font-style: normal;
   }
   font-family: 'Avenir-Medium', 'Helvetica', Arial, sans-serif;
-}
-#navbar-wrapper {
-  width: 100%;
-  position: fixed;
-  top: 116px;
-  height: 50px;
-  background-color: white;
-  z-index: 1001;
-
-  .navbar, .navbar-default {
-    position: fixed;
-    margin: 0 auto !important;
-    width: 950px !important;
-    border-radius: 0px !important;
-    border: none !important;
-    background-color: white !important;
-  }
-  ul.nav {
-    padding-left: 20px;
-  }
-  .nav li {
-    padding-right: 18px !important;
-  }
-  .navbar span {
-    font-weight: 600;
-    color: #777 !important;
-  }
-  .navbar a:hover span {
-    border-bottom: solid 2px #c80803 !important;
-  }
-  a.navbar-brand {
-    font-weight: 700;
-    color: #c80803 !important;
-    padding: 15px 0 0 10px !important;
-  }
 }
 #main-container {
   border: 0;
@@ -309,7 +274,7 @@ a img {
   width: 100%;
   height: 100%;
   position: absolute;
-  top: 152px;
+  top: 102px;
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
@@ -771,6 +736,74 @@ p > span, h1 > span, h2 > span, h3 > span, h4 > span {
     body {font-size: 12pt !important;}
     #main-container h1 {font-size: 19pt !important;}
     #main-container h3 {font-size: 18pt !important;}
+
+    .cover-item-3 {
+      .fade {
+        height: 100% !important;
+      }
+    }
+    .cover-item-4 {
+      .mobile {
+        >img {
+          top: 75%;
+        }
+        .col-xs-8 {
+          top: 68%;
+        }
+        ul {
+          font-size: 9pt;
+          padding-top: 19px !important;
+        } 
+        li {
+          margin-bottom: 6px !important;
+        }
+        li > div:last-child {
+          width: 72% !important;
+        }
+      }
+    }
+    .cover-item-6 {
+      .col-xs-8 {
+        top: 32% !important;
+      }
+      .fade {
+        height: 64% !important;
+        top: 28% !important;
+      }
+    }
+    .cover-item-7 {
+      .mobile {
+        .fade {
+          top: 40%;
+          height: 86%;
+        }
+      }
+    }
+    .cover-item-8 {
+      .mobile .fade {height: 37%;}
+    }
+    .cover-item-9 {
+      .mobile {
+        .col-xs-8 {
+          top: 38%;
+        }
+        .fade {
+          height: 60%;
+          top: 24%;
+        }
+      }
+    }
+    .cover-item-10 {
+      .fade {height: 55% !important;}
+    }
+    .cover-item-11 {
+      .fade {height: 87% !important;}
+    }
+    .cover-item-12 {
+      .col-xs-10 {
+        top: 48%;
+      }
+    }
 }
 //ipad
 @media(max-width:768px), only screen 
@@ -779,19 +812,26 @@ p > span, h1 > span, h2 > span, h3 > span, h4 > span {
   .coverscroller {
     overflow-y: scroll;
   }
-  #navbar-wrapper {
-    ul.nav {
-      padding-top: 0 !important
-    }
-    .nav li {
-      padding-right: 0 !important;
-    }
-  }
   #view-photo .slick-prev, #view-photo .slick-next {
     top: 29% !important;
   }
   #play-video .slick-prev, #play-video .slick-next {
     top: 41% !important;
+  }
+  #slick-colors-wrapper {
+    position: absolute;
+    width: 100%;
+  }
+  #slick-colors {
+    .slick-next {
+      right: 40px;
+    }
+    .slick-prev {
+      left: 38px;
+    }
+    .slick-slide img {
+      width: 60%;
+    }
   }
   #view-photo,#play-video {
     .slick {
@@ -800,6 +840,9 @@ p > span, h1 > span, h2 > span, h3 > span, h4 > span {
     .slick-slide img {
       width: 100%;
     }
+  }
+  #scroll-explore {
+    cursor: initial;
   }
   video {
     display: none;
@@ -958,6 +1001,7 @@ p > span, h1 > span, h2 > span, h3 > span, h4 > span {
     .mobile > img {
       top: 2%;
       margin-left: 14%;
+      width: 80%;
     }
     .col-xs-8 {
       top: 60%;
@@ -1139,11 +1183,4 @@ p > span, h1 > span, h2 > span, h3 > span, h4 > span {
     width: 63%;
   }
 }
-}
-@media(max-width:768px) {
-  #navbar-wrapper {
-    .navbar {
-      width: 100% !important;
-    }
-  }
 }

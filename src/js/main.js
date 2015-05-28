@@ -13,22 +13,10 @@ if (!isMobile) {
 var scroller = new CoverScroller({ duration: 1 }, timeline); //handles scrolling of page
 
 $(document).ready(function(){
-    //nav toggle
-    $('#navbar-wrapper .navbar-toggle').click(function() {
-        if ($('#navbar-wrapper .navbar-collapse').css('display') == 'block') {
-            $('#navbar-wrapper .navbar-collapse').fadeOut();
-        } else {
-            $('#navbar-wrapper .navbar-collapse').fadeIn();
-        }
-    });
-    $('#navbar-wrapper .navbar-nav li').click(function() {
-        $('#navbar-wrapper .navbar-collapse').fadeOut();
-    });
 
     //set header position
     if (isPhone) {
-        $('.cover-wrapper').css('top', '100px');
-        $('#navbar-wrapper').css('top', '50px');
+        $('.cover-wrapper').css('top', '50px');
     }
 
     if (!isMobile) {
@@ -95,10 +83,12 @@ $(document).ready(function(){
                 scroller.scroll(0);
             }
         });
+    } else {
+        scroller.hideLoader();
     }
 
     //init mobile gallery
-    $('#slick-colors').slick({
+    $('#slick-colors .slick').slick({
         prevArrow: "<img class='slick-prev' src='/images/torrent/arrow.png'></img>",
         nextArrow: "<img class='slick-next' src='/images/torrent/arrow.png'></img>",
         lazyLoad: 'progressive'

@@ -47,8 +47,7 @@ class CoverScroller extends Messenger {
     redraw() {
         let menuSize = isPhone ? 50 : 116;  //magical
         let height = $(window).height() - menuSize;
-        let nheight = height - $('#navbar-wrapper').height();
-        menuSize += $('#navbar-wrapper').height();
+        let nheight = height - menuSize
         let width = $(window).width();
 
         $('.cover-wrapper,.cover').css({
@@ -104,7 +103,7 @@ class CoverScroller extends Messenger {
         this.direction = id < this.curCover ? 0 : 1;
 
         if (isMobile) {
-            $('.cover-wrapper').scrollTop($('.cover-item-'+(id+1)).offset().top);
+            $('.cover-wrapper').animate({scrollTop: $('.cover-item-'+(id+1)).offset().top});
         } else {
             //animate cover
             this.animating = true;

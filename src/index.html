@@ -1,6 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<style><!--
+body {font-size: 10px !important;}
+#page {width: 100%;}
+#header {
+  position: fixed;
+  width: 100%;
+  z-index: 6000;
+  background-color: white;
+}
+#header-wrap {position:initial;}
+#header_sub_nav_1 {height: 36px;}
+#header_sub_nav_2 {top: 0px;}
+#header-main-nav {height: 41px;}
+#majors-secondary .sidethingy {margin: 15px 64px 0 0;}
+#main-container {width: 100%;}
+#footer-container {display: none;}
+--></style>
 <link rel="stylesheet" href="./css/torrent/styles.css">
 <link rel="stylesheet" href="./css/torrent/videojs.css">
 <link rel="stylesheet" href="./css/torrent/bootstrap.css">
@@ -10,30 +27,6 @@
 <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0' name='viewport' />
 </head>
 <body>
-<div id="navbar-wrapper">
-<nav class="navbar navbar-default">
-  <div class="container-fluid">
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <a class="navbar-brand" href="#">BLENDERS</a>
-    </div>
-
-    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-      <ul class="nav navbar-nav">
-        <li><a href="#" id="nav-torrent" onclick="scroller.scrollTo(1);"><span>TORRENT</span></a></li>
-        <li><a href="#" id="nav-diamond" onclick="scroller.scrollTo(6);"><span>DIAMOND</span></a></li>
-        <li><a href="#" id="nav-classic" onclick="scroller.scrollTo(7);"><span>CLASSIC 5-SPEED</span></a></li>
-        <li><a href="#" id="nav-recipes" onclick="scroller.scrollTo(9);"><span>BLENDER RECIPES</span></a></li>
-      </ul>
-    </div><!-- /.navbar-collapse -->
-  </div><!-- /.container-fluid -->
-</nav>
-</div>
 <div id="main-container">
 	<div id="timeline" data-src="./images/torrent/sequence/red/RED_halfRez_00000.jpg"></div>
 	<div id="loader"><img src="./images/torrent/ajax-loader.gif"/></div>
@@ -65,11 +58,11 @@
 	</div>
 	<div id="show-recipe">
 		<div class="close-overlay"></div>
-		<div class="recipe-wrapper">
+		<div class="recipe-wrapper red">
 			<div class="recipe-background"></div>
 			<div class="close-x animate-all">X</div>
 			<img class="recipe-overlay" src="./images/torrent/recipe-header.jpg"></img>
-			<div class="recipe-content">
+			<div class="recipe-content en">
 				<h3>BERRY SOY-CREAM BLEND</h3>
 				<div class="left">
 					<h3>INGREDIENTS</h3>
@@ -92,7 +85,145 @@
 					</div>
 				</div>
 			</div>
-			<div class="download-recipes animate-all"><div>DOWNLOAD RECIPES</div></div>
+			<div class="download-recipes animate-all en"><a href="./images/torrent/pdf/torrent-recipes-smoothies-en.pdf" target="_blank"><div>DOWNLOAD RECIPES</div></a></div>
+
+			<!--<div class="recipe-content fr">
+				<h3>BERRY SOY-CREAM BLEND</h3>
+				<div class="left">
+					<h3>INGREDIENTS</h3>
+					<p>Makes 2 servings</p>
+					<div><div>2</div><p>cups frozen mixed berries</p></div>
+					<div><div>14</div><p>ounces blackberries with juice or 1 cup fresh blackberries</p></div>
+					<div><div>1</div><p>cup soy milk or almond milk</p></div>
+					<div><div>1</div><p>cup apple juice</p></div>
+					<div><div>1</div><p>cup soft tofu (4 ounces)</p></div>
+				</div>
+				<div class="right">
+					<h3>INSTRUCTIONS</h3>
+					<div>
+						<div class="circle">1</div>
+						<p>Place frozen berries, blackberries, soy milk, apple juice and tofu in pitcher of KitchenAid<sup>&reg;</sup> Torrent<sup>&trade;</sup> Blender. Cover and blend on Icy Drinks/Smoothies setting.</p>
+					</div>
+					<div>
+						<div class="circle">2</div>
+						<p>Pour into two glasses; serve immediately.</p>
+					</div>
+				</div>
+			</div>
+			<div class="download-recipes animate-all fr"><a href="./images/torrent/pdf/torrent-recipes-smoothies-en.pdf" target="_blank"><div>DOWNLOAD RECIPES</div></a></div>-->
+		</div>
+		<div class="recipe-wrapper red">
+			<div class="recipe-background"></div>
+			<div class="close-x animate-all">X</div>
+			<img class="recipe-overlay" src="./images/torrent/recipe-header.jpg"></img>
+			<div class="recipe-content en">
+				<h3>BERRY SOY-CREAM BLEND</h3>
+				<div class="left">
+					<h3>INGREDIENTS</h3>
+					<p>Makes 2 servings</p>
+					<div><div>2</div><p>cups frozen mixed berries</p></div>
+					<div><div>14</div><p>ounces blackberries with juice or 1 cup fresh blackberries</p></div>
+					<div><div>1</div><p>cup soy milk or almond milk</p></div>
+					<div><div>1</div><p>cup apple juice</p></div>
+					<div><div>1</div><p>cup soft tofu (4 ounces)</p></div>
+				</div>
+				<div class="right">
+					<h3>INSTRUCTIONS</h3>
+					<div>
+						<div class="circle">1</div>
+						<p>Place frozen berries, blackberries, soy milk, apple juice and tofu in pitcher of KitchenAid<sup>&reg;</sup> Torrent<sup>&trade;</sup> Blender. Cover and blend on Icy Drinks/Smoothies setting.</p>
+					</div>
+					<div>
+						<div class="circle">2</div>
+						<p>Pour into two glasses; serve immediately.</p>
+					</div>
+				</div>
+			</div>
+			<div class="download-recipes animate-all en"><a href="./images/torrent/pdf/torrent-recipes-smoothies-en.pdf" target="_blank"><div>DOWNLOAD RECIPES</div></a></div>
+
+			<!--<div class="recipe-content fr">
+				<h3>BERRY SOY-CREAM BLEND</h3>
+				<div class="left">
+					<h3>INGREDIENTS</h3>
+					<p>Makes 2 servings</p>
+					<div><div>2</div><p>cups frozen mixed berries</p></div>
+					<div><div>14</div><p>ounces blackberries with juice or 1 cup fresh blackberries</p></div>
+					<div><div>1</div><p>cup soy milk or almond milk</p></div>
+					<div><div>1</div><p>cup apple juice</p></div>
+					<div><div>1</div><p>cup soft tofu (4 ounces)</p></div>
+				</div>
+				<div class="right">
+					<h3>INSTRUCTIONS</h3>
+					<div>
+						<div class="circle">1</div>
+						<p>Place frozen berries, blackberries, soy milk, apple juice and tofu in pitcher of KitchenAid<sup>&reg;</sup> Torrent<sup>&trade;</sup> Blender. Cover and blend on Icy Drinks/Smoothies setting.</p>
+					</div>
+					<div>
+						<div class="circle">2</div>
+						<p>Pour into two glasses; serve immediately.</p>
+					</div>
+				</div>
+			</div>
+			<div class="download-recipes animate-all fr"><a href="./images/torrent/pdf/torrent-recipes-smoothies-en.pdf" target="_blank"><div>DOWNLOAD RECIPES</div></a></div>-->
+		</div>
+
+		<div class="recipe-wrapper black">
+			<div class="recipe-background"></div>
+			<div class="close-x animate-all">X</div>
+			<img class="recipe-overlay" src="./images/torrent/recipe-header.jpg"></img>
+			<div class="recipe-content en">
+				<h3>DOUBLE PEA SOUP</h3>
+				<div class="left">
+					<h3>INGREDIENTS</h3>
+					<p>Makes 4-6 servings</p>
+					<div><div>1</div><p>tablespoon canola or vegetable oil</p></div>
+					<div><div>1</div><p>onion, finely chopped</p></div>
+					<div><div>3</div><p>cloves garlic, mixed</p></div>
+					<div><div>6</div><p>cups water or vegetable broth<sup>*</sup></p></div>
+					<div><div>2</div><p>cups dried split peas</p></div>
+					<div><div>1</div><p>bay leaf</p></div>
+					<div><div>1</div><p>teaspoon ground mustard</p></div>
+					<div><div>1 1/2</div><p>cups frozen green peas</p></div>
+					<div><div>1</div><p>teaspoon salt</p></div>
+				</div>
+				<div class="right">
+					<h3>INSTRUCTIONS</h3>
+					<div>
+						<div class="circle">1</div>
+						<p>Place frozen berries, blackberries, soy milk, apple juice and tofu in pitcher of KitchenAid<sup>&reg;</sup> Torrent<sup>&trade;</sup> Blender. Cover and blend on Icy Drinks/Smoothies setting.</p>
+					</div>
+					<div>
+						<div class="circle">2</div>
+						<p>Pour into two glasses; serve immediately.</p>
+					</div>
+				</div>
+			</div>
+			<div class="download-recipes animate-all en"><a href="./images/torrent/pdf/torrent-recipes-smoothies-en.pdf" target="_blank"><div>DOWNLOAD RECIPES</div></a></div>
+
+			<!--<div class="recipe-content fr">
+				<h3>BERRY SOY-CREAM BLEND</h3>
+				<div class="left">
+					<h3>INGREDIENTS</h3>
+					<p>Makes 2 servings</p>
+					<div><div>2</div><p>cups frozen mixed berries</p></div>
+					<div><div>14</div><p>ounces blackberries with juice or 1 cup fresh blackberries</p></div>
+					<div><div>1</div><p>cup soy milk or almond milk</p></div>
+					<div><div>1</div><p>cup apple juice</p></div>
+					<div><div>1</div><p>cup soft tofu (4 ounces)</p></div>
+				</div>
+				<div class="right">
+					<h3>INSTRUCTIONS</h3>
+					<div>
+						<div class="circle">1</div>
+						<p>Place frozen berries, blackberries, soy milk, apple juice and tofu in pitcher of KitchenAid<sup>&reg;</sup> Torrent<sup>&trade;</sup> Blender. Cover and blend on Icy Drinks/Smoothies setting.</p>
+					</div>
+					<div>
+						<div class="circle">2</div>
+						<p>Pour into two glasses; serve immediately.</p>
+					</div>
+				</div>
+			</div>
+			<div class="download-recipes animate-all fr"><a href="./images/torrent/pdf/torrent-recipes-smoothies-en.pdf" target="_blank"><div>DOWNLOAD RECIPES</div></a></div>-->
 		</div>
 	</div>
 	<div class="cover-wrapper coverscroller">
@@ -540,17 +671,17 @@
 				<div class="col-xs-1">&nbsp;</div>
 				<p>
 					<sup>&reg;</sup>/&trade; &copy;2015 Kitchenaid. All Rights reserved. Used under licence in Canada.<br/>
-					<a href="#">Terms of use</a>&nbsp;<a href="#">Privacy Links</a>
+					<a target="_blank" href="/en_CA/terms-of-use/">Terms of use</a>&nbsp;<a target="_blank" href="http://www.whirlpoolcorp.com/privacy-canada/">Privacy Policy</a>
 				</p>
 			</div>
 			<div class="mobile">
-				<div id="slick-colors-wrapper">
-				<div id="slick-colors" class="slick">
+				<div id="slick-colors-wrapper">	
+				<div id="slick-colors">
 					<div class="slick">
 						<div><img src="./images/torrent/blender-candyapple.jpg"/></div>
-						<div><img src="./images/torrent/blender-candyapple.jpg"/></div>
-						<div><img src="./images/torrent/blender-candyapple.jpg"/></div>
-						<div><img src="./images/torrent/blender-candyapple.jpg"/></div>
+						<div><img src="./images/torrent/blender-liquidgraphite.jpg"/></div>
+						<div><img src="./images/torrent/blender-onyxblack.jpg"/></div>
+						<div><img src="./images/torrent/blender-sugarpearl.jpg"/></div>
 					</div>
 				</div>
 				</div>
@@ -566,7 +697,7 @@
 				<div class="legal">
 					<p><em>*</em> Please see the Use & Care Guide for more details regarding blender use and performance.</p>
 					<sup>&reg;</sup>/&trade; &copy;2015 Kitchenaid. All Rights reserved. Used under licence in Canada.<br/>
-					<a href="#">Terms of use</a>&nbsp;<a href="#">Privacy Links</a>
+					<a target="_blank" href="/en_CA/terms-of-use/">Terms of use</a>&nbsp;<a target="_blank" href="http://www.whirlpoolcorp.com/privacy-canada/">Privacy Policy</a>
 				</div>
 			</div>
 		</div>

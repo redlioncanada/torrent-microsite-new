@@ -66,8 +66,7 @@ var CoverScroller = (function (_Messenger) {
         value: function redraw() {
             var menuSize = isPhone ? 50 : 116; //magical
             var height = $(window).height() - menuSize;
-            var nheight = height - $('#navbar-wrapper').height();
-            menuSize += $('#navbar-wrapper').height();
+            var nheight = height - menuSize;
             var width = $(window).width();
 
             $('.cover-wrapper,.cover').css({
@@ -134,7 +133,7 @@ var CoverScroller = (function (_Messenger) {
             this.direction = id < this.curCover ? 0 : 1;
 
             if (isMobile) {
-                $('.cover-wrapper').scrollTop($('.cover-item-' + (id + 1)).offset().top);
+                $('.cover-wrapper').animate({ scrollTop: $('.cover-item-' + (id + 1)).offset().top });
             } else {
                 //animate cover
                 this.animating = true;
