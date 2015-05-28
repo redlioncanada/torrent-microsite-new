@@ -535,6 +535,7 @@ body {
 }
 #main-container .cover-item-4 li {
   width: 33%;
+  font-size: 10pt;
   float: left;
 }
 #main-container .cover-item-4 li > div:first-child {

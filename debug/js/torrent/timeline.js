@@ -102,7 +102,7 @@ var Timeline = (function (_Messenger) {
       var imageAspect = 16 / 9;
       if (isNaN(imageAspect) || !imageAspect) {
         return false;
-      }var mod = 1;
+      }var mod = 1.2;
 
       $('.black-to-transparent-gradient-top,.black-to-transparent-gradient-bottom,.black-to-transparent-gradient-left,.black-to-transparent-gradient-right').removeClass('timeline-ignore');
       if (viewportAspect > imageAspect) {
@@ -241,18 +241,17 @@ var Timeline = (function (_Messenger) {
         }, speed ? speed * 1000 : 0.05);
       } else {
         (function () {
-          var resetInterval = function (speed) {
-            var allowReset = arguments[1] === undefined ? true : arguments[1];
+          var resetInterval = function () {
+            var allowReset = arguments[0] === undefined ? true : arguments[0];
 
             clearInterval(self.playInterval);
             self.playInterval = setInterval(function () {
-              var delta = Math.round(speed) > 3 ? 3 * direction : Math.round(speed * direction);
               var lastFrame = self.currentFrame;
-              self.currentFrame += delta; //skip some frames if playing super fast
+              self.currentFrame += delta;
 
-              if ((direction == 1 && self.currentFrame >= self.keyframes[self.currentKeyframe - 1] || direction == -1 && self.currentFrame <= self.keyframes[self.currentKeyframe + 1]) && allowReset) resetInterval(1, false);
+              if ((direction == 1 && self.currentFrame > self.keyframes[self.currentKeyframe - 1] || direction == -1 && self.currentFrame <= self.keyframes[self.currentKeyframe + 1]) && allowReset) resetInterval(1, false);
 
-              if (direction == 1 && self.currentFrame >= parseInt(val) - 1 || direction == -1 && self.currentFrame <= parseInt(val) + 1) {
+              if (direction == 1 && self.currentFrame > parseInt(val) - 1 || direction == -1 && self.currentFrame < parseInt(val) + 1) {
                 self.currentFrame = parseInt(val);
                 $('#timeline .timeline-frame-' + self.currentFrame).css({ zIndex: '2', display: 'block' });
                 $('#timeline .timeline-frame').not('#timeline .timeline-frame-' + self.currentFrame).css({ zIndex: '1', display: 'none' });
@@ -267,6 +266,7 @@ var Timeline = (function (_Messenger) {
               //display current frame
               $('#timeline .timeline-frame-' + self.currentFrame).not('.old').css({ zIndex: '2', display: 'block' });
 
+              console.log(lastFrame, self.currentFrame);
               if (delta == 0) return;
               if (direction == 1) {
                 //buffer surrounding frames
@@ -284,7 +284,8 @@ var Timeline = (function (_Messenger) {
 
           if (val) self.currentKeyframe = parseInt(val);
           direction = direction ? 1 : -1;
-          resetInterval(speed);
+          var delta = Math.round(speed) > 3 ? 3 * direction : direction; //skip some frames if playing super fast
+          resetInterval();
         })();
       }
     }

@@ -79,7 +79,7 @@ class Timeline extends Messenger {
     let imageAspect = 16/9;
     if (isNaN(imageAspect) || !imageAspect) return false;
 
-    let mod = 1.0;
+    let mod = 1.2;
 
     $('.black-to-transparent-gradient-top,.black-to-transparent-gradient-bottom,.black-to-transparent-gradient-left,.black-to-transparent-gradient-right').removeClass('timeline-ignore');
     if (viewportAspect > imageAspect) {
@@ -206,18 +206,18 @@ class Timeline extends Messenger {
     } else {
       if (val) self.currentKeyframe = parseInt(val);
       direction = direction ? 1 : -1;
-      resetInterval(speed);
+      let delta = Math.round(speed) > 3 ? 3*direction : direction; //skip some frames if playing super fast 
+      resetInterval();
 
-      function resetInterval(speed,allowReset=true) {
+      function resetInterval(allowReset=true) {
         clearInterval(self.playInterval);
         self.playInterval = setInterval(function() {
-          let delta = Math.round(speed) > 3 ? 3*direction : Math.round(speed*direction);
           let lastFrame = self.currentFrame;
-          self.currentFrame += delta; //skip some frames if playing super fast 
+          self.currentFrame += delta; 
 
-          if ((direction == 1 && self.currentFrame >= self.keyframes[self.currentKeyframe-1] || direction == -1 && self.currentFrame <= self.keyframes[self.currentKeyframe+1]) && allowReset) resetInterval(1,false);
+          if ((direction == 1 && self.currentFrame > self.keyframes[self.currentKeyframe-1] || direction == -1 && self.currentFrame <= self.keyframes[self.currentKeyframe+1]) && allowReset) resetInterval(1,false);
 
-          if ((direction == 1 && self.currentFrame >= parseInt(val)-1) || (direction == -1 && self.currentFrame <= parseInt(val)+1)) {
+          if ((direction == 1 && self.currentFrame > parseInt(val)-1) || (direction == -1 && self.currentFrame < parseInt(val)+1)) {
             self.currentFrame = parseInt(val);
             $('#timeline .timeline-frame-'+self.currentFrame).css({'zIndex':'2','display':'block'});
             $('#timeline .timeline-frame').not('#timeline .timeline-frame-'+self.currentFrame).css({'zIndex':'1','display':'none'});
@@ -232,6 +232,7 @@ class Timeline extends Messenger {
           //display current frame
           $('#timeline .timeline-frame-'+self.currentFrame).not('.old').css({'zIndex':'2','display':'block'});
 
+          console.log(lastFrame,self.currentFrame);
           if (delta == 0) return;
           if (direction == 1) {
             //buffer surrounding frames

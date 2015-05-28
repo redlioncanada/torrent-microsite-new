@@ -5,7 +5,7 @@ var youtubePlayers = {};
 if (!isMobile) {
     var timeline = new Timeline({ //handles animation of video/sequence
         fps: 24,
-        keyframes: ['00000', '00060', '00096', '00108', '00120', '00168', '00201', '00250', '00266', '00302', '00327', '00365', '00395', '00420', '00449'],
+        keyframes: ['00000', '00060', '00096', '00108', '00120', '00168', '00201', '00250', '00267', '00302', '00327', '00365', '00395', '00420', '00449'],
         border: true,
         mode: 'sequence'
     });
@@ -53,9 +53,7 @@ $(document).ready(function(){
                 //force correct positioning, temp
                 if (this.curCover == 0) $('#timeline *').animate({'marginTop':'-3%'});
                 else if (this.curCover == 3) $('#timeline *').animate({'marginTop':'7%'});
-                else if (this.curCover == 4) $('#timeline *').animate({'marginTop':'2%'});
-                else if (this.curCover == 6) $('#timeline *').animate({'marginTop':'-3%'});
-                else if (this.curCover == 7) $('#timeline *').animate({'marginTop':'-5%'});
+                else if (this.curCover == 4) $('#timeline *').animate({'marginTop':'4%'});
                 else if (this.curCover == 11) $('#timeline *').animate({'marginTop':'-5%'});
                 else $('#timeline *').animate({'marginTop':'0'});
 
