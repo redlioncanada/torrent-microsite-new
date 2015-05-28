@@ -15,7 +15,7 @@ class Timeline extends Messenger {
     this.playing = false;
     this.playInterval = undefined;
     this.keyframes = opts.keyframes;
-    this.currentKeyframe = -1;
+    this.currentKeyframe = this.mode == 'video' ? -1 : 0;
     this.currentFrame = parseInt(this.keyframes[0]);
     this.currentYoffset = window.pageYOffset;
     this.ready = false;
@@ -24,7 +24,7 @@ class Timeline extends Messenger {
 
     let self = this;
     if (opts.mode == 'sequence') {
-      console.log('sequence init');
+      self.fps = opts.fps;
       self.src = $('#timeline img').attr('src');
       self._setURL();
       $('#timeline img').attr('src', self._constructURL()).addClass('timeline-frame timeline-frame-0');
@@ -150,10 +150,14 @@ class Timeline extends Messenger {
   playTo(id) {
     let self = this;
     if (id < 0 || id >= self.keyframes.length || id == self.currentKeyframe || self.playing || self.playInterval) return false;
-    let idDiff = Math.abs(self.currentKeyframe - id);
-    let timeDiff = Math.abs(self.keyframes[self.currentKeyframe] - self.keyframes[id]);
-    console.log(idDiff,timeDiff);
-    let speed = idDiff > 1 ? 1/timeDiff : undefined;
+    let speed = 1;
+    if (self.mode === 'video') {
+      let idDiff = Math.abs(self.currentKeyframe - id);
+      let timeDiff = Math.abs(self.keyframes[self.currentKeyframe] - self.keyframes[id]);
+      speed = idDiff > 1 ? 1/timeDiff : undefined;
+    } else {
+      speed = Math.abs(self.keyframes[self.currentKeyframe] - self.keyframes[id]) / self.fps;
+    }
     self.keyframes[id] < self.keyframes[self.currentKeyframe] ? self.play(self.keyframes[id],0,speed) : self.play(self.keyframes[id],1,speed);
     self.log('playing to keyframe #'+id+', time '+self.keyframes[id]+'s');
     self.currentKeyframe = id;
@@ -187,7 +191,6 @@ class Timeline extends Messenger {
         let ct = primary.currentTime();
         if (speed) {
           ct += speed;
-          console.log(speed*1000,ct);
           primary.currentTime(ct);
         }
         if (ct >= val) {
@@ -204,12 +207,13 @@ class Timeline extends Messenger {
     } else {
       if (val) self.currentKeyframe = parseInt(val);
       resetInterval(speed);
+      direction = direction ? 1 : -1;
 
       function resetInterval(speed,allowReset=true) {
         clearInterval(self.playInterval);
         self.playInterval = setInterval(function() {
           let lastFrame = self.currentFrame;
-          self.currentFrame += Math.round(speed) > 3 ? 3 : Math.round(speed); //skip some frames if playing super fast
+          self.currentFrame += Math.round(speed) > 3 ? 3*direction : Math.round(speed*direction); //skip some frames if playing super fast 
 
           if (self.currentFrame >= self.keyframes[self.currentKeyframe-1] && allowReset) resetInterval(1,false);
 
@@ -221,6 +225,9 @@ class Timeline extends Messenger {
             self.emit('pause');
             return;
           }
+
+          $('#timeline .timeline-frame-'+self.currentFrame).css('zIndex','2');
+          $('#timeline .timeline-frame').not('.timeline-frame-'+self.currentFrame).css('zIndex','1');
         }, self.deltaTime*1000/speed);
       }
     }
@@ -308,9 +315,65 @@ class Timeline extends Messenger {
   }
 
   _cache() {
-    /*for (var i = 0; i <= self.keyframes[self.keyframes.length-1]); i++) {
-      $('#timeline').append(`<img src=""/>`);
-    }*/
+    //TODO if source is changed while caching, cancel the current cache job
+    let self = this;
+
+    //cache the most relevant frames first
+    for (let i = 0; i <= Math.round(self.keyframes.length); i++) {
+      cacheFrameSet(self.currentKeyframe+i, loadedCallback);
+      if (i !== 0) cacheFrameSet(self.currentKeyframe-i, loadedCallback);
+    }
+
+    function cacheFrameSet(id, fn) {
+      if (!frameIsValid(id)) return;
+      
+      let start = parseInt(self.keyframes[id]), end = parseInt(self.keyframes[id+1]);
+      let total = end-start;
+      let loaded = 0;
+      let error = 0;
+
+      for (let i = start; i < end; i++) {
+        if (i == 0) {total -= 1; continue;}
+        let suffix = self._constructURL(i);
+
+        $.loadImage(suffix)
+          .done(function(image) {
+            $(image).addClass('timeline-frame timeline-frame-'+i).css('zIndex','1');
+            $('#timeline').append(image);
+            if (++loaded + error >= total) {
+              if (typeof fn === 'function') fn(id,loaded,error);
+            }
+          })
+          .fail(function(image) {
+            self.log('failed to cache '+suffix,1);
+            if (++error + loaded >= total) {
+              if (typeof fn === 'function') fn(id,loaded,error);
+            }
+          });
+      } 
+    }
+
+    let loadedTrack = [];
+    let loadedTotal = 0;
+    let errorTotal = 0;
+    function loadedCallback(id,loaded,error) {
+      if (loadedTrack.indexOf(id) > -1) return;
+      else loadedTrack.push(id);
+      loadedTotal += loaded;
+      errorTotal += error;
+      self.log('finished loading frame set '+id+' ('+loaded+' loaded, '+error+' errors)',2);
+      self.emit('loaded'+id);
+
+      if (loadedTrack.length >= self.keyframes.length-1) {
+        self.emit('loaded');
+        self.log('load complete ('+loadedTotal+' loaded, '+errorTotal+' errors)',2);
+      }
+    }
+
+    function frameIsValid(id) {
+      if (id < 0 || id >= self.keyframes.length-1) return false;
+      return true;
+    }
   }
 } 
 

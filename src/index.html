@@ -35,11 +35,8 @@
 </nav>
 </div>
 <div id="main-container">
-	<div id="timeline" data-src="./images/torrent/">
-		<video id="forward" class="video-js vjs-default-skin" muted preload="auto" width="100%" height="100%">
-		</video>
-		<video id="backward" class="video-js vjs-default-skin" muted preload="auto" width="100%" height="100%">
-		</video>
+	<div id="timeline">
+		<img src="./images/torrent/sequence/red/RED_halfRez_00001.jpg"/>
 	</div>
 	<div id="loader"><img src="./images/torrent/ajax-loader.gif"/></div>
 	<div id="play-video" class="slick">
@@ -589,47 +586,12 @@
 <script src="./js/torrent/timeline.js"></script>
 <script src="./js/torrent/cover-scroller.js"></script>
 <script src="./js/torrent/main.js"></script>
-<script src="http://jsconsole.com/remote.js?38AFED34-7A74-4C33-BBEC-A687C248AF5D"></script>
 <script>
   // Load the youtube IFrame Player API code asynchronously.
   var tag = document.createElement('script');
   tag.src = "http://www.youtube.com/player_api";
   var firstScriptTag = document.getElementsByTagName('script')[0];
   firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-</script>
-<script>
-	Modernizr.load({
-		test: Modernizr.mobile,
-		nope: {
-			'videojs': './js/torrent/lib/video.js'
-		},
-		callback: {
-			'videojs': function() {
-				var forward = '<source src="./images/torrent/test.mp4" type="video/mp4" />' +
-					'<source src="./images/torrent/test.webm" type="video/webm" />' +
-					'<source src="./images/torrent/test.ogv" type="video/ogg" />';
-				var backward = '<source src="./images/torrent/test_reverse.mp4" type="video/mp4" />' +
-					'<source src="./images/torrent/test_reverse.webm" type="video/webm" />' +
-					'<source src="./images/torrent/test_reverse.ogv" type="video/ogg" />';
-				$('#forward').append(forward);
-				$('#backward').append(backward);
-
-				timeline = new Timeline({
-			        fps: 24,
-			        keyframes: [2.5, 4.5, 4.55, 5.5, 7.5, 8.6, 10.3, 11.5, 12.6, 13.7, 15.7, 16.4, 17.3, 19],
-			        mode: 'video'
-			    });
-			    videojs("forward", {}, function() {
-			        timeline.forwardVideo = this;
-			    });
-			    videojs("backward", {}, function() {
-			        timeline.backwardVideo = this;
-			    });
-
-			    init();
-			}
-		}
-	});
 </script>
 </body>
 </html>

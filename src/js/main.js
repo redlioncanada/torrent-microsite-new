@@ -1,15 +1,16 @@
-var timeline = undefined, scroller = undefined;
 var isMobile = Modernizr.mobile;
 var isPhone = Modernizr.phone;
 var isTablet = Modernizr.tablet;
 var youtubePlayers = {};
+var timeline = new Timeline({ //handles animation of video/sequence
+    fps: 24,
+    keyframes: ['00000', '00060', '00096', '00097', '00120', '00168', '00201', '00250', '00278', '00305', '00327', '00348', '00374', '00395', '00420', '00449'],
+    border: true,
+    mode: 'sequence'
+});
+var scroller = new CoverScroller({ duration: 1 }, timeline); //handles scrolling of page
 
-//if desktop, init will be called in index.html
-if (isMobile) init();
-
-function init() {
-    scroller = new CoverScroller({duration: 1},timeline);    //handles scrolling of page
-
+$(document).ready(function(){
     //nav toggle
     $('#navbar-wrapper .navbar-toggle').click(function() {
         if ($('#navbar-wrapper .navbar-collapse').css('display') == 'block') {
@@ -42,7 +43,7 @@ function init() {
         });
 
         timeline.redraw();
-        $('#timeline *').animate({'marginTop':'-3%'});
+        $('#timeline img').animate({'marginTop':'-3%'});
     
         scroller.on('scroll', function () {
             //make sure blender is visible when a background is being displayed
@@ -62,7 +63,7 @@ function init() {
 
                 //play the video
                 if (self.currentFrame != 0 && !(this.curCover == 11 && timeline.currentKeyframe > 11)) {
-                    timeline.playTo(this.curCover-1);
+                    timeline.playTo(this.curCover);
                 }
 
                 if (this.curCover == 11 && this.direction) {
@@ -79,19 +80,17 @@ function init() {
             }
         });
 
-        $('#spin-right').click(spinRightClick);
-        function spinRightClick() {
-            timeline.playTo(timeline.currentKeyframe+1);
-        }
+        $('#spin-right').click(function () {
+            timeline.playTo(timeline.currentKeyframe + 1);
+        });
 
-        $('#spin-left').click(spinLeftClick);
-        function spinLeftClick() {
-            if (timeline.currentKeyframe > 11) {
-                timeline.playTo(timeline.currentKeyframe-1);
+        $('#spin-left').click(function () {
+            if (timeline.currentKeyframe > 12) {
+                timeline.playTo(timeline.currentKeyframe - 1);
             } else {
                 scroller.scroll(0);
             }
-        }
+        });
     }
 
     //init mobile gallery
@@ -168,11 +167,9 @@ function init() {
     });
 
     //on color click, change the timeline's sequence
-    $('.color-picker li').click(function(e) {
-        if (!isMobile) {
-            let source = $(e.currentTarget).attr('data-source');
-            timeline.changeSource(source);
-        }
+    $('.color-picker li').click(function (e) {
+        var source = $(e.currentTarget).attr('data-source');
+        timeline.changeSource(source);
     });
 
     //on youtube poster click, embed the video and play it
@@ -210,4 +207,4 @@ function init() {
             timeline.redraw();
         }
     });
-}
+});

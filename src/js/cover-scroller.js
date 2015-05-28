@@ -18,20 +18,20 @@ class CoverScroller extends Messenger {
 
             //track when a frameset loads
             if (timeline) {
-                _self.timeline.on('loaded', function() {
-                    _self.hideLoader();
+                _self.timeline.on('loaded'+index, function() {
+                    if (index == 0) {
+                        console.log('loaded0');
+                        _self.hideLoader();
+                    }
                     _self.coverState[index] = true;
                 });
-            } else {
-                _self.hideLoader();
             }
         }
 
         $('.cover-picker li').click(function() {
             let index = $(this).index();
-            //if (_self.coverState[index]) _self.scrollTo(index);
-            _self.scrollTo(index);
-            /*else {
+            if (_self.coverState[index]) _self.scrollTo(index);
+            else {
                 //if a frameset is still loading, activate the loading overlay and wait until it's done
                 _self.showLoader();
                 _self.timeline.on('loaded'+index, function() {
@@ -39,7 +39,7 @@ class CoverScroller extends Messenger {
                     _self.hideLoader();
                     _self.scrollTo(index);
                 });
-            }*/
+            }
         });
 
         this.redraw();
@@ -107,7 +107,7 @@ class CoverScroller extends Messenger {
         if (isMobile) {
             $('.cover-wrapper').scrollTop($('.cover-item-'+(id+1)).offset().top);
         } else {
-        //animate cover
+            //animate cover
             this.animating = true;
             $(this.target).velocity({top:-this.elHeight*id}, {duration: this.duration, complete: function(){
                 _self.emit('scrollEnd');
@@ -130,6 +130,7 @@ class CoverScroller extends Messenger {
     }
 
     scroll(direction=1) {
+        console.log(this.timeline.playing);
         if (this.timeline && this.timeline.playing) return;
         this.scrollTo(direction ? this.curCover+1 : this.curCover-1);
     }

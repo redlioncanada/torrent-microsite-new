@@ -1,18 +1,18 @@
 'use strict';
 
-var timeline = undefined,
-    scroller = undefined;
 var isMobile = Modernizr.mobile;
 var isPhone = Modernizr.phone;
 var isTablet = Modernizr.tablet;
 var youtubePlayers = {};
+var timeline = new Timeline({ //handles animation of video/sequence
+    fps: 24,
+    keyframes: ['00000', '00060', '00096', '00097', '00120', '00168', '00201', '00250', '00278', '00305', '00327', '00348', '00374', '00395', '00420', '00449'],
+    border: true,
+    mode: 'sequence'
+});
+var scroller = new CoverScroller({ duration: 1 }, timeline); //handles scrolling of page
 
-//if desktop, init will be called in index.html
-if (isMobile) init();
-
-function init() {
-    scroller = new CoverScroller({ duration: 1 }, timeline); //handles scrolling of page
-
+$(document).ready(function () {
     //nav toggle
     $('#navbar-wrapper .navbar-toggle').click(function () {
         if ($('#navbar-wrapper .navbar-collapse').css('display') == 'block') {
@@ -32,67 +32,61 @@ function init() {
     }
 
     if (!isMobile) {
-        (function () {
-            var spinRightClick = function () {
-                timeline.playTo(timeline.currentKeyframe + 1);
-            };
+        //don't show scrollbar on desktop
+        $('.cover-wrapper').css('overflow', 'hidden');
 
-            var spinLeftClick = function () {
-                if (timeline.currentKeyframe > 11) {
-                    timeline.playTo(timeline.currentKeyframe - 1);
-                } else {
-                    scroller.scroll(0);
+        //scroll the page on mousewheel scroll
+        $('.cover-wrapper').mousewheel(function (event) {
+            if (event.deltaY > 0) {
+                scroller.scroll(1);
+            } else if (event.deltaY < 0) {
+                scroller.scroll(0);
+            }
+        });
+
+        timeline.redraw();
+        $('#timeline img').animate({ marginTop: '-3%' });
+
+        scroller.on('scroll', function () {
+            //make sure blender is visible when a background is being displayed
+            if (!isMobile) {
+                if (this.curCover == 0) {
+                    timeline.hideBorder();
                 }
-            };
 
-            //don't show scrollbar on desktop
-            $('.cover-wrapper').css('overflow', 'hidden');
+                //force correct positioning, temp
+                if (this.curCover == 0) $('#timeline *').animate({ marginTop: '-3%' });else if (this.curCover == 3) $('#timeline *').animate({ marginTop: '7%' });else if (this.curCover == 4) $('#timeline *').animate({ marginTop: '2%' });else if (this.curCover == 6) $('#timeline *').animate({ marginTop: '-3%' });else if (this.curCover == 7) $('#timeline *').animate({ marginTop: '-5%' });else if (this.curCover == 11) $('#timeline *').animate({ marginTop: '-5%' });else $('#timeline *').animate({ marginTop: '0' });
 
-            //scroll the page on mousewheel scroll
-            $('.cover-wrapper').mousewheel(function (event) {
-                if (event.deltaY > 0) {
-                    scroller.scroll(1);
-                } else if (event.deltaY < 0) {
-                    scroller.scroll(0);
+                //play the video
+                if (self.currentFrame != 0 && !(this.curCover == 11 && timeline.currentKeyframe > 11)) {
+                    timeline.playTo(this.curCover);
                 }
-            });
 
-            timeline.redraw();
-            $('#timeline *').animate({ marginTop: '-3%' });
-
-            scroller.on('scroll', function () {
-                //make sure blender is visible when a background is being displayed
-                if (!isMobile) {
-                    if (this.curCover == 0) {
-                        timeline.hideBorder();
-                    }
-
-                    //force correct positioning, temp
-                    if (this.curCover == 0) $('#timeline *').animate({ marginTop: '-3%' });else if (this.curCover == 3) $('#timeline *').animate({ marginTop: '7%' });else if (this.curCover == 4) $('#timeline *').animate({ marginTop: '2%' });else if (this.curCover == 6) $('#timeline *').animate({ marginTop: '-3%' });else if (this.curCover == 7) $('#timeline *').animate({ marginTop: '-5%' });else if (this.curCover == 11) $('#timeline *').animate({ marginTop: '-5%' });else $('#timeline *').animate({ marginTop: '0' });
-
-                    //play the video
-                    if (self.currentFrame != 0 && !(this.curCover == 11 && timeline.currentKeyframe > 11)) {
-                        timeline.playTo(this.curCover - 1);
-                    }
-
-                    if (this.curCover == 11 && this.direction) {
-                        spinLeftClick();
-                    } else if (this.curCover == 11 && !this.direction) {
-                        spinRightClick();
-                    }
+                if (this.curCover == 11 && this.direction) {
+                    spinLeftClick();
+                } else if (this.curCover == 11 && !this.direction) {
+                    spinRightClick();
                 }
-            });
+            }
+        });
 
-            scroller.on('scrollEnd', function () {
-                if (this.curCover != 0) {
-                    timeline.showBorder();
-                }
-            });
+        scroller.on('scrollEnd', function () {
+            if (this.curCover != 0) {
+                timeline.showBorder();
+            }
+        });
 
-            $('#spin-right').click(spinRightClick);
+        $('#spin-right').click(function () {
+            timeline.playTo(timeline.currentKeyframe + 1);
+        });
 
-            $('#spin-left').click(spinLeftClick);
-        })();
+        $('#spin-left').click(function () {
+            if (timeline.currentKeyframe > 12) {
+                timeline.playTo(timeline.currentKeyframe - 1);
+            } else {
+                scroller.scroll(0);
+            }
+        });
     }
 
     //init mobile gallery
@@ -170,10 +164,8 @@ function init() {
 
     //on color click, change the timeline's sequence
     $('.color-picker li').click(function (e) {
-        if (!isMobile) {
-            var source = $(e.currentTarget).attr('data-source');
-            timeline.changeSource(source);
-        }
+        var source = $(e.currentTarget).attr('data-source');
+        timeline.changeSource(source);
     });
 
     //on youtube poster click, embed the video and play it
@@ -215,4 +207,4 @@ function init() {
             timeline.redraw();
         }
     });
-}
+});
