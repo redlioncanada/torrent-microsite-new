@@ -82,7 +82,7 @@ var CoverScroller = (function (_Messenger) {
             $(this.target).css('top', -this.elHeight * this.curCover);
 
             var multiplier = this.curCover === 0 ? 1 : this.curCover;
-            var coverTop = this.elHeight * multiplier + this.elHeight / 2;
+            var coverTop = this.elHeight * multiplier + this.elHeight / 2 - parseInt($('.cover-picker').height());
             $('.cover-picker').css({ top: coverTop });
 
             var colorTop = this.elHeight * multiplier + this.elHeight / 2 - parseInt($('.color-picker').height()) / 2;

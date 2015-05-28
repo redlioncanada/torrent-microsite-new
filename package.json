@@ -15,6 +15,7 @@
   },
   "devDependencies": {
     "gulp-load-plugins": "^0.10.0",
+    "gulp-replace": "^0.5.3",
     "gulp-rimraf": "^0.1.1",
     "gulp-sourcemaps": "^1.5.2"
   },
