@@ -25,10 +25,9 @@ class Timeline extends Messenger {
     let self = this;
     if (opts.mode == 'sequence') {
       self.fps = opts.fps;
-      self.src = $('#timeline img').attr('src');
       self._setURL();
-      $('#timeline img').attr('src', self._constructURL()).addClass('timeline-frame timeline-frame-0');
       self._cache();
+      self.keyframes[self.keyframes.length-1] -= 1; //you're a wizard harry
     }
 
     if (this.border) {
@@ -155,11 +154,12 @@ class Timeline extends Messenger {
       let idDiff = Math.abs(self.currentKeyframe - id);
       let timeDiff = Math.abs(self.keyframes[self.currentKeyframe] - self.keyframes[id]);
       speed = idDiff > 1 ? 1/timeDiff : undefined;
+      self.log('playing to keyframe #'+id+', time '+self.keyframes[id]+'s');
     } else {
       speed = Math.abs(self.keyframes[self.currentKeyframe] - self.keyframes[id]) / self.fps;
+      self.log('playing to keyframe #'+id+', frame #'+self.keyframes[id]);
     }
     self.keyframes[id] < self.keyframes[self.currentKeyframe] ? self.play(self.keyframes[id],0,speed) : self.play(self.keyframes[id],1,speed);
-    self.log('playing to keyframe #'+id+', time '+self.keyframes[id]+'s');
     self.currentKeyframe = id;
     return true;
   }
@@ -206,28 +206,45 @@ class Timeline extends Messenger {
       }, speed ? speed*1000 : 0.05);
     } else {
       if (val) self.currentKeyframe = parseInt(val);
-      resetInterval(speed);
       direction = direction ? 1 : -1;
+      resetInterval(speed);
 
       function resetInterval(speed,allowReset=true) {
         clearInterval(self.playInterval);
         self.playInterval = setInterval(function() {
+          let delta = Math.round(speed) > 3 ? 3*direction : Math.round(speed*direction);
           let lastFrame = self.currentFrame;
-          self.currentFrame += Math.round(speed) > 3 ? 3*direction : Math.round(speed*direction); //skip some frames if playing super fast 
+          self.currentFrame += delta; //skip some frames if playing super fast 
 
-          if (self.currentFrame >= self.keyframes[self.currentKeyframe-1] && allowReset) resetInterval(1,false);
+          if ((direction == 1 && self.currentFrame >= self.keyframes[self.currentKeyframe-1] || direction == -1 && self.currentFrame <= self.keyframes[self.currentKeyframe+1]) && allowReset) resetInterval(1,false);
 
-          if (self.currentFrame >= parseInt(val)-1) {
+          if ((direction == 1 && self.currentFrame >= parseInt(val)-1) || (direction == -1 && self.currentFrame <= parseInt(val)+1)) {
             self.currentFrame = parseInt(val);
-            clearInterval(self.playInterval);
+            $('#timeline .timeline-frame-'+self.currentFrame).css({'zIndex':'2','display':'block'});
+            $('#timeline .timeline-frame').not('#timeline .timeline-frame-'+self.currentFrame).css({'zIndex':'1','display':'none'});
+            $('#timeline .timeline-frame').removeClass('old');
+            clearInterval(self.playInterval); 
             self.playInterval = false;
             self.playing = false;
             self.emit('pause');
             return;
           }
 
-          $('#timeline .timeline-frame-'+self.currentFrame).css('zIndex','2');
-          $('#timeline .timeline-frame').not('.timeline-frame-'+self.currentFrame).css('zIndex','1');
+          //display current frame
+          $('#timeline .timeline-frame-'+self.currentFrame).not('.old').css({'zIndex':'2','display':'block'});
+
+          if (delta == 0) return;
+          if (direction == 1) {
+            //buffer surrounding frames
+            $('#timeline .timeline-frame-'+(self.currentFrame+delta)).not('.old').css({'zIndex':'1','display':'block'});
+            //discard old frame(s)
+            $('#timeline .timeline-frame-'+(self.currentFrame-delta)).css({'zIndex':'1','display':'none'}).addClass('old');
+          } else if (direction == -1) {
+            //buffer surrounding frames
+            $('#timeline .timeline-frame-'+(self.currentFrame+delta)).not('.old').css({'zIndex':'1','display':'block'});
+            //discard old frame(s)
+            $('#timeline .timeline-frame-'+(self.currentFrame-delta)).css({'zIndex':'1','display':'none'}).addClass('old');
+          }
         }, self.deltaTime*1000/speed);
       }
     }
@@ -238,14 +255,17 @@ class Timeline extends Messenger {
     if (self.mode == 'video') {
       //TODO implement transitioning video source
     } else if (self.mode == 'sequence') {
-      self.src = url;
+      $('#timeline').attr('data-src',url);
       self._setURL();
       url = self._constructURL();
       self.animating = true;
+      self.loaded = false;
 
-      $('#timeline').append(`<img src="${url}"/>`)
-      $('#timeline img').eq(0).fadeOut("fast", function() {self.animating = false; $(this).css('zIndex','2'); self.emit('changeSource'); $('#timeline img').eq(0).remove();});
-      $('#timeline img').eq(1).fadeIn("fast");
+      $('#timeline img').fadeOut("fast", function() {
+        self.animating = false; 
+        self.emit('changeSource'); 
+        $('#timeline img').remove();
+      });
       self._cache();
     }
   }
@@ -300,6 +320,7 @@ class Timeline extends Messenger {
 
   _setURL() {
     let self = this;
+    self.src = $('#timeline').attr('data-src');
     self.filetype = self.src.split('.').pop();
     self.suffix = self.src.match(/[0-9]{1,}/g);
     self.suffix = self.suffix[self.suffix.length-1];
@@ -317,6 +338,9 @@ class Timeline extends Messenger {
   _cache() {
     //TODO if source is changed while caching, cancel the current cache job
     let self = this;
+
+    $('#timeline').append(`<img/>`);
+    $('#timeline img').attr('src', self._constructURL()).addClass('timeline-frame timeline-frame-'+self.currentFrame);
 
     //cache the most relevant frames first
     for (let i = 0; i <= Math.round(self.keyframes.length); i++) {
@@ -338,7 +362,7 @@ class Timeline extends Messenger {
 
         $.loadImage(suffix)
           .done(function(image) {
-            $(image).addClass('timeline-frame timeline-frame-'+i).css('zIndex','1');
+            $(image).addClass('timeline-frame timeline-frame-'+i).css({'display':'none','zIndex':'1'});
             $('#timeline').append(image);
             if (++loaded + error >= total) {
               if (typeof fn === 'function') fn(id,loaded,error);

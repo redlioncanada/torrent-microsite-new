@@ -2,12 +2,14 @@ var isMobile = Modernizr.mobile;
 var isPhone = Modernizr.phone;
 var isTablet = Modernizr.tablet;
 var youtubePlayers = {};
-var timeline = new Timeline({ //handles animation of video/sequence
-    fps: 24,
-    keyframes: ['00000', '00060', '00096', '00097', '00120', '00168', '00201', '00250', '00278', '00305', '00327', '00348', '00374', '00395', '00420', '00449'],
-    border: true,
-    mode: 'sequence'
-});
+if (!isMobile) {
+    var timeline = new Timeline({ //handles animation of video/sequence
+        fps: 24,
+        keyframes: ['00000', '00060', '00096', '00108', '00120', '00168', '00201', '00250', '00266', '00302', '00327', '00365', '00395', '00420', '00449'],
+        border: true,
+        mode: 'sequence'
+    });
+}
 var scroller = new CoverScroller({ duration: 1 }, timeline); //handles scrolling of page
 
 $(document).ready(function(){
@@ -37,8 +39,16 @@ $(document).ready(function(){
         $('.cover-wrapper').mousewheel(function(event) {
             if (event.deltaY > 0) {
                 scroller.scroll(1);
+                if (scroller.curCover == 11) timeline.playTo(timeline.currentKeyframe + 1);
             } else if (event.deltaY < 0) {
                 scroller.scroll(0);
+                if (scroller.curCover == 11) {
+                    if (timeline.currentKeyframe > 12) {
+                        timeline.playTo(timeline.currentKeyframe - 1);
+                    } else {
+                        scroller.scroll(0);
+                    }
+                }
             }
         });
 
@@ -64,12 +74,6 @@ $(document).ready(function(){
                 //play the video
                 if (self.currentFrame != 0 && !(this.curCover == 11 && timeline.currentKeyframe > 11)) {
                     timeline.playTo(this.curCover);
-                }
-
-                if (this.curCover == 11 && this.direction) {
-                    spinLeftClick();
-                } else if (this.curCover == 11 && !this.direction) {
-                    spinRightClick();
                 }
             }
         });
@@ -169,7 +173,13 @@ $(document).ready(function(){
     //on color click, change the timeline's sequence
     $('.color-picker li').click(function (e) {
         var source = $(e.currentTarget).attr('data-source');
+        scroller.showLoader();
         timeline.changeSource(source);
+
+        timeline.on('loaded', function() {
+            timeline.off('loaded');
+            scroller.hideLoader();
+        })
     });
 
     //on youtube poster click, embed the video and play it

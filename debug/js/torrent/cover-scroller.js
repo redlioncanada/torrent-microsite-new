@@ -32,7 +32,6 @@ var CoverScroller = (function (_Messenger) {
             if (timeline) {
                 _self.timeline.on('loaded' + index, function () {
                     if (index == 0) {
-                        console.log('loaded0');
                         _self.hideLoader();
                     }
                     _self.coverState[index] = true;
@@ -163,7 +162,6 @@ var CoverScroller = (function (_Messenger) {
         value: function scroll() {
             var direction = arguments[0] === undefined ? 1 : arguments[0];
 
-            console.log(this.timeline.playing);
             if (this.timeline && this.timeline.playing) {
                 return;
             }this.scrollTo(direction ? this.curCover + 1 : this.curCover - 1);

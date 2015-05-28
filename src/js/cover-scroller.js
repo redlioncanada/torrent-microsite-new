@@ -20,7 +20,6 @@ class CoverScroller extends Messenger {
             if (timeline) {
                 _self.timeline.on('loaded'+index, function() {
                     if (index == 0) {
-                        console.log('loaded0');
                         _self.hideLoader();
                     }
                     _self.coverState[index] = true;
@@ -130,7 +129,6 @@ class CoverScroller extends Messenger {
     }
 
     scroll(direction=1) {
-        console.log(this.timeline.playing);
         if (this.timeline && this.timeline.playing) return;
         this.scrollTo(direction ? this.curCover+1 : this.curCover-1);
     }
