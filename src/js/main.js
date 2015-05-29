@@ -82,13 +82,97 @@ if (!isMobile) {
                                 left: dX,
                                 top: dY,
                                 opacity: 1
-                            }, 300, function() {
+                            }, 200, function() {
                                 $(newElement).remove();
                                 $(self).css('opacity',1);
                             });
 
                         });
                     }
+                }
+            ],
+            7: [
+                {
+                    'endDown': function() {
+                        let arrow = $(`<div class="arrow-animation"><img class="arrow1 up" src="./images/torrent/arrows1.png"/><img class="arrow2 down" src="./images/torrent/arrows1.png"/><img class="arrow3 up" src="./images/torrent/arrows1.png"/></div>`);
+                        $('body').append(arrow);
+                        $(arrow).animate({'opacity':1},400);
+
+                        let up = $('.arrow-animation .arrow1');
+                        let down = $('.arrow-animation .arrow2');
+                        let up2 = $('.arrow-animation .arrow3');
+                        function loop(el,mod=1,speed=1700,iteration=1) {
+                            $(el).fadeIn('fast');
+                            $(el).css({top:50*mod*-1});
+                            let sign = mod == 1 ? '+' : '-';
+                            $(el).animate ({
+                                top: sign+'=80',
+                            }, speed, 'linear', function() {
+                                if ($('.arrow-animation').length) {
+                                    $(el).fadeOut('fast', function() {
+                                        if (speed != 1700) {
+                                            speed = 1700;
+                                        }
+                                        if (iteration>=2) {
+                                            speed = 700;
+                                            iteration = 0;
+                                        }
+                                        loop(el,mod,speed,++iteration);
+                                    });
+                                }
+                            });
+                        }
+                        loop(down);
+                        loop(up,0);
+                        loop(up2,0);
+                    },
+                    'startUp': function() {
+                        $('.arrow-animation').fadeOut('fast',function() {
+                            $('.arrow-animation').remove();
+                        });
+                    }
+                }
+            ],
+            8: [
+                {
+                    'startDown': function() {
+                        $('.arrow-animation').fadeOut('fast',function() {
+                            $('.arrow-animation').remove();
+                        });
+                    },
+                    'endUp': function() {
+                        let arrow = $(`<div style="opacity:0;" class="arrow-animation"><img class="arrow1 up" src="./images/torrent/arrows1.png"/><img class="arrow2 down" src="./images/torrent/arrows1.png"/><img class="arrow3 up" src="./images/torrent/arrows1.png"/></div>`);
+                        $('body').append(arrow);
+                        $(arrow).animate({'opacity':1},400);
+
+                        let up = $('.arrow-animation .arrow1');
+                        let down = $('.arrow-animation .arrow2');
+                        let up2 = $('.arrow-animation .arrow3');
+                        function loop(el,mod=1,speed=1700,iteration=1) {
+                            $(el).fadeIn('fast');
+                            $(el).css({top:50*mod*-1});
+                            let sign = mod == 1 ? '+' : '-';
+                            $(el).animate ({
+                                top: sign+'=80',
+                            }, speed, 'linear', function() {
+                                if ($('.arrow-animation').length) {
+                                    $(el).fadeOut('fast', function() {
+                                        if (speed != 1700) {
+                                            speed = 1700;
+                                        }
+                                        if (iteration>=2) {
+                                            speed = 700;
+                                            iteration = 0;
+                                        }
+                                        loop(el,mod,speed,++iteration);
+                                    });
+                                }
+                            });
+                        }
+                        loop(down);
+                        loop(up,0);
+                        loop(up2,0);
+                    },
                 }
             ]
         },
@@ -104,8 +188,11 @@ $(document).ready(function(){
     if (isPhone) {
         $('.cover-wrapper').css('top', '50px');
     }
+    //set loader position
+    $('#loader').css({'width':$(window).width(),'height':$(window).height()-116,'top':116});
 
     if (!isMobile) {
+
         //load all the things
         var colors = ['black','graphite','grey'];
 
@@ -116,6 +203,7 @@ $(document).ready(function(){
             })
         }
         timeline.on('loaded', function() {
+            scroller.hideLoader();
             if (timeline.cached.indexOf(colors[0]) > -1) colors.shift();
             if (colors.length == 0) {
                 circleLoader.remove();
@@ -128,8 +216,17 @@ $(document).ready(function(){
             let cacheNum = timeline.cached.length-1;
             circleLoader.init($('.color-picker .'+colors[0]));
             timeline.cacheColor = colors[0];
-            let url = './images/torrent/sequence/'+colors[0]+'/'+colors[0].toUpperCase()+'_TORRENT_EDIT_00000.jpg';
+            let url = '/images/torrent/sequence/'+colors[0]+'/'+colors[0].toUpperCase()+'_TORRENT_EDIT_00000.jpg';
             timeline._cache(false,url);
+            
+            //reposition color-picker elements
+            $.each($('.color-picker li'), function(i,v) {
+                if (i == 0) return;
+                console.log($(this));
+                let t = $(this).find('div').eq(0).position().top;
+                $(this).find('div').eq(1).css('top',t);
+                //$('.color-picker li div').eq(1).css('top',t);
+            });
         });
 
         //don't show scrollbar on desktop
@@ -154,7 +251,8 @@ $(document).ready(function(){
 
         //change the blender on the first panel when the color changes
         timeline.on('changeSource', function() {
-            $('.blender-1').attr('src',$('.blender-1').attr('data-path')+this.color+'.png');
+            let path = '/'+$('.blender-1').attr('id').replace(/-/g, '/')+'/';
+            $('.blender-1').attr('src',path+this.color+'.png');
         });
 
         timeline.redraw();
@@ -314,14 +412,17 @@ $(document).ready(function(){
         }
     });
 
+    redraw();
     //on window resize, resize components
-    $(window).resize(function() {
+    $(window).resize(redraw);
+    function redraw() {
         scroller.redraw();
         if (!isMobile) {
             //don't show scrollbar on desktop
             $('.cover-wrapper').css('overflow', 'hidden');
             
             timeline.redraw();
+            circleLoader.redraw();
         }
-    });
+    }
 });

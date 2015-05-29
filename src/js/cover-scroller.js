@@ -20,9 +20,6 @@ class CoverScroller extends Messenger {
             //track when a frameset loads
             if (timeline) {
                 _self.timeline.on('loaded'+index, function() {
-                    if (index == 0) {
-                        _self.hideLoader();
-                    }
                     _self.coverState[index] = true;
                 });
             }
@@ -59,12 +56,22 @@ class CoverScroller extends Messenger {
         this.emit('redraw');
         $(this.target).css('top',-this.elHeight*this.curCover);
 
+        $('#loader').css({'width':width,'height':height,'top':menuSize});
+
         let multiplier = this.curCover === 0 ? 1 : this.curCover;
         let coverTop = this.elHeight*multiplier + this.elHeight / 2 - parseInt($('.cover-picker').height());
         $('.cover-picker').css({top: coverTop});
 
         let colorTop = this.elHeight*multiplier + this.elHeight / 2 - parseInt($('.color-picker').height())/2;
         $('.color-picker').css({top: colorTop});
+
+        $.each($('.color-picker li'), function(i,v) {
+            if (i == 0) return;
+            console.log($(this));
+            let t = $(this).find('div').eq(0).position().top;
+            $(this).find('div').eq(1).css('top',t);
+            //$('.color-picker li div').eq(1).css('top',t);
+        });
     }
 
     showLoader() {

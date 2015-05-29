@@ -227,7 +227,6 @@ class Timeline extends Messenger {
       }
       if ((direction == 0 || direction == -1) && self.animation) {
         if (self.animation[self.currentKeyframe+1] && typeof self.animation[self.currentKeyframe+1] === 'object') {
-          console.log('found object');
           for (let j in self.animation[self.currentKeyframe+1]) {
             if (typeof self.animation[self.currentKeyframe+1][j]['startUp'] === 'function') {
               self.animation[self.currentKeyframe+1][j]['startUp'].call();
@@ -235,7 +234,6 @@ class Timeline extends Messenger {
           }
         }
       }
-      console.log(self.currentKeyframe);
 
       function resetInterval(allowReset=true) {
         clearInterval(self.playInterval);
