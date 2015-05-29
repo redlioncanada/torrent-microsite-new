@@ -119,6 +119,9 @@ a img {
 .view-photos,.play-video,#play-video img,.show-recipe {
   cursor: pointer;
 }
+#play-video .slick > div img {
+  width: 100%;
+}
 #view-photo, #play-video, #show-recipe {
   left: 10000px;
   width: 100%;
@@ -134,7 +137,6 @@ a img {
     
     > div img {
       max-height: 666px;
-      width: 100%;
       z-index: 2;
       margin: 0 auto;
     }
@@ -154,6 +156,7 @@ a img {
   }
 }
 #play-video .close-x, #view-photo .close-x {color: white;}
+.open-recipe {cursor: pointer;}
 .close-x  {
     position: absolute;
     font-size: 30pt;
@@ -368,7 +371,7 @@ a img {
     z-index: 1;
     text-align: right;
     padding-right: 10px;
-    line-height: 23px;
+    line-height: 25px;
     font-size: 11pt;
     opacity: 0;
   }
@@ -455,7 +458,7 @@ a img {
   li > div:first-child {
     float: left;
     width: 25%;
-    margin: 17px 0 0 12px;
+    margin: 2px 0 0 12px;
 
     img {
       width: 70px;
@@ -494,7 +497,7 @@ a img {
     list-style: initial;
   }
 }
-.cover-item-8 {
+.cover-item-6 {
   .col-xs-4 {
     top: 58%;
   }
@@ -780,7 +783,7 @@ p > span, h1 > span, h2 > span, h3 > span, h4 > span {
         }
       }
     }
-    .cover-item-8 {
+    .cover-item-6 {
       .mobile .fade {height: 37%;}
     }
     .cover-item-9 {
@@ -837,9 +840,6 @@ p > span, h1 > span, h2 > span, h3 > span, h4 > span {
   #view-photo,#play-video {
     .slick {
       margin-top: 24%;
-    }
-    .slick-slide img {
-      width: 100%;
     }
   }
   #scroll-explore {
@@ -1044,7 +1044,7 @@ p > span, h1 > span, h2 > span, h3 > span, h4 > span {
       height: 50%;
     }
   }
-  .cover-item-8 {
+  .cover-item-6 {
     .mobile > img {
       height: 70%;
       top: 50%;

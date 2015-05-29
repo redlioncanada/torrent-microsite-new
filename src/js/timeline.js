@@ -14,6 +14,7 @@ class Timeline extends Messenger {
     this.border = opts.border;
     this.playing = false;
     this.playInterval = undefined;
+    this.animation = opts.animation;
     this.keyframes = opts.keyframes;
     this.currentKeyframe = this.mode == 'video' ? -1 : 0;
     this.currentFrame = parseInt(this.keyframes[0]);
@@ -148,18 +149,20 @@ class Timeline extends Messenger {
   playTo(id) {
     let self = this;
     if (id < 0 || id >= self.keyframes.length || id == self.currentKeyframe || self.playing || self.playInterval) return false;
+    let lastFrame = self.currentKeyframe;
+    self.currentKeyframe = id;
+
     let speed = 1;
     if (self.mode === 'video') {
-      let idDiff = Math.abs(self.currentKeyframe - id);
-      let timeDiff = Math.abs(self.keyframes[self.currentKeyframe] - self.keyframes[id]);
+      let idDiff = Math.abs(lastFrame - id);
+      let timeDiff = Math.abs(self.keyframes[lastFrame] - self.keyframes[id]);
       speed = idDiff > 1 ? 1/timeDiff : undefined;
       self.log('playing to keyframe #'+id+', time '+self.keyframes[id]+'s');
     } else {
-      speed = Math.abs(self.keyframes[self.currentKeyframe] - self.keyframes[id]) / self.fps;
+      speed = Math.abs(self.keyframes[lastFrame] - self.keyframes[id]) / self.fps;
       self.log('playing to keyframe #'+id+', frame #'+self.keyframes[id]);
     }
-    self.keyframes[id] < self.keyframes[self.currentKeyframe] ? self.play(self.keyframes[id],0,speed) : self.play(self.keyframes[id],1,speed);
-    self.currentKeyframe = id;
+    self.keyframes[id] < self.keyframes[lastFrame] ? self.play(self.keyframes[id],0,speed) : self.play(self.keyframes[id],1,speed);
     return true;
   }
 
@@ -204,10 +207,19 @@ class Timeline extends Messenger {
         }
       }, speed ? speed*1000 : 0.05);
     } else {
-      if (val) self.currentKeyframe = parseInt(val);
       direction = direction ? 1 : -1;
       let delta = Math.round(speed) > 3 ? 3*direction : direction; //skip some frames if playing super fast 
       resetInterval();
+
+      if (direction == 1 && self.animation) {
+        if (self.animation[self.currentKeyframe] && typeof self.animation[self.currentKeyframe] === 'object') {
+          for (let j in self.animation[self.currentKeyframe]) {
+            if (typeof self.animation[self.currentKeyframe][j]['start'] === 'function') {
+              self.animation[self.currentKeyframe][j]['start'].call();
+            }
+          }
+        }
+      }
 
       function resetInterval(allowReset=true) {
         clearInterval(self.playInterval);
@@ -218,6 +230,16 @@ class Timeline extends Messenger {
           if ((direction == 1 && self.currentFrame > self.keyframes[self.currentKeyframe-1] || direction == -1 && self.currentFrame <= self.keyframes[self.currentKeyframe+1]) && allowReset) resetInterval(1,false);
 
           if ((direction == 1 && self.currentFrame > parseInt(val)-1) || (direction == -1 && self.currentFrame < parseInt(val)+1)) {
+            if (direction == 1 && self.animation) {
+              if (self.animation[self.currentKeyframe] && typeof self.animation[self.currentKeyframe] === 'object') {
+                for (let i in self.animation[self.currentKeyframe]) {
+                  if (typeof self.animation[self.currentKeyframe][i]['end'] === 'function') {
+                    self.animation[self.currentKeyframe][i]['end'].call();
+                  }
+                }
+              }
+            }
+
             self.currentFrame = parseInt(val);
             $('#timeline .timeline-frame-'+self.currentFrame).css({'zIndex':'2','display':'block'});
             $('#timeline .timeline-frame').not('#timeline .timeline-frame-'+self.currentFrame).css({'zIndex':'1','display':'none'});
@@ -232,7 +254,6 @@ class Timeline extends Messenger {
           //display current frame
           $('#timeline .timeline-frame-'+self.currentFrame).not('.old').css({'zIndex':'2','display':'block'});
 
-          console.log(lastFrame,self.currentFrame);
           if (delta == 0) return;
           if (direction == 1) {
             //buffer surrounding frames

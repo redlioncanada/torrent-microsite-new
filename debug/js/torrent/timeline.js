@@ -32,6 +32,7 @@ var Timeline = (function (_Messenger) {
     this.border = opts.border;
     this.playing = false;
     this.playInterval = undefined;
+    this.animation = opts.animation;
     this.keyframes = opts.keyframes;
     this.currentKeyframe = this.mode == 'video' ? -1 : 0;
     this.currentFrame = parseInt(this.keyframes[0]);
@@ -181,18 +182,20 @@ var Timeline = (function (_Messenger) {
       var self = this;
       if (id < 0 || id >= self.keyframes.length || id == self.currentKeyframe || self.playing || self.playInterval) {
         return false;
-      }var speed = 1;
+      }var lastFrame = self.currentKeyframe;
+      self.currentKeyframe = id;
+
+      var speed = 1;
       if (self.mode === 'video') {
-        var idDiff = Math.abs(self.currentKeyframe - id);
-        var timeDiff = Math.abs(self.keyframes[self.currentKeyframe] - self.keyframes[id]);
+        var idDiff = Math.abs(lastFrame - id);
+        var timeDiff = Math.abs(self.keyframes[lastFrame] - self.keyframes[id]);
         speed = idDiff > 1 ? 1 / timeDiff : undefined;
         self.log('playing to keyframe #' + id + ', time ' + self.keyframes[id] + 's');
       } else {
-        speed = Math.abs(self.keyframes[self.currentKeyframe] - self.keyframes[id]) / self.fps;
+        speed = Math.abs(self.keyframes[lastFrame] - self.keyframes[id]) / self.fps;
         self.log('playing to keyframe #' + id + ', frame #' + self.keyframes[id]);
       }
-      self.keyframes[id] < self.keyframes[self.currentKeyframe] ? self.play(self.keyframes[id], 0, speed) : self.play(self.keyframes[id], 1, speed);
-      self.currentKeyframe = id;
+      self.keyframes[id] < self.keyframes[lastFrame] ? self.play(self.keyframes[id], 0, speed) : self.play(self.keyframes[id], 1, speed);
       return true;
     }
   }, {
@@ -252,6 +255,16 @@ var Timeline = (function (_Messenger) {
               if ((direction == 1 && self.currentFrame > self.keyframes[self.currentKeyframe - 1] || direction == -1 && self.currentFrame <= self.keyframes[self.currentKeyframe + 1]) && allowReset) resetInterval(1, false);
 
               if (direction == 1 && self.currentFrame > parseInt(val) - 1 || direction == -1 && self.currentFrame < parseInt(val) + 1) {
+                if (direction == 1 && self.animation) {
+                  if (self.animation[self.currentKeyframe] && typeof self.animation[self.currentKeyframe] === 'object') {
+                    for (var i in self.animation[self.currentKeyframe]) {
+                      if (typeof self.animation[self.currentKeyframe][i].end === 'function') {
+                        self.animation[self.currentKeyframe][i].end.call();
+                      }
+                    }
+                  }
+                }
+
                 self.currentFrame = parseInt(val);
                 $('#timeline .timeline-frame-' + self.currentFrame).css({ zIndex: '2', display: 'block' });
                 $('#timeline .timeline-frame').not('#timeline .timeline-frame-' + self.currentFrame).css({ zIndex: '1', display: 'none' });
@@ -266,7 +279,6 @@ var Timeline = (function (_Messenger) {
               //display current frame
               $('#timeline .timeline-frame-' + self.currentFrame).not('.old').css({ zIndex: '2', display: 'block' });
 
-              console.log(lastFrame, self.currentFrame);
               if (delta == 0) return;
               if (direction == 1) {
                 //buffer surrounding frames
@@ -282,10 +294,19 @@ var Timeline = (function (_Messenger) {
             }, self.deltaTime * 1000 / speed);
           };
 
-          if (val) self.currentKeyframe = parseInt(val);
           direction = direction ? 1 : -1;
           var delta = Math.round(speed) > 3 ? 3 * direction : direction; //skip some frames if playing super fast
           resetInterval();
+
+          if (direction == 1 && self.animation) {
+            if (self.animation[self.currentKeyframe] && typeof self.animation[self.currentKeyframe] === 'object') {
+              for (var j in self.animation[self.currentKeyframe]) {
+                if (typeof self.animation[self.currentKeyframe][j].start === 'function') {
+                  self.animation[self.currentKeyframe][j].start.call();
+                }
+              }
+            }
+          }
         })();
       }
     }

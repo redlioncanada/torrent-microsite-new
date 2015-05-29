@@ -8,6 +8,41 @@ if (!isMobile) {
     var timeline = new Timeline({ //handles animation of video/sequence
         fps: 24,
         keyframes: ['00000', '00060', '00096', '00108', '00120', '00168', '00201', '00250', '00267', '00302', '00327', '00365', '00395', '00420', '00449'],
+        animation: {
+            3: [{
+                start: function start() {
+                    $('.cover-item-4 .desktop ul li img').each(function (id) {
+                        $(this).css('opacity', 0);
+                    });
+                },
+                end: function end() {
+                    $('.cover-item-4 .desktop ul li img').each(function (id) {
+                        var self = this;
+                        $(this).css('opacity', 1);
+                        var dX = $(this).offset().left;
+                        var dY = $(this).offset().top;
+                        $(this).css('opacity', 0);
+
+                        var width = $(this).width();
+                        var oX = $(window).width() / 2 - width / 2;
+                        var marginTop = $('#timeline').height() * (parseInt($('.timeline-frame').css('margin-top')) / 100);
+                        var oY = $('.timeline-frame').offset().top + $('.timeline-frame').height() * 0.5 - $(this).height() / 2;
+                        var newElement = $(this).clone().css({ opacity: 0, position: 'absolute', zIndex: 10001 });
+                        var delay = 100;
+
+                        $('body').append(newElement);
+                        $(newElement).css({ left: oX, top: oY, width: width }).delay(id * delay).animate({
+                            left: dX,
+                            top: dY,
+                            opacity: 1
+                        }, 300, function () {
+                            $(newElement).remove();
+                            $(self).css('opacity', 1);
+                        });
+                    });
+                }
+            }]
+        },
         border: true,
         mode: 'sequence'
     });
@@ -94,7 +129,8 @@ $(document).ready(function () {
     $('#view-photo .slick').slick({
         prevArrow: '<img class=\'slick-prev\' src=\'/images/torrent/arrow.png\'></img>',
         nextArrow: '<img class=\'slick-next\' src=\'/images/torrent/arrow.png\'></img>',
-        lazyLoad: 'progressive'
+        lazyLoad: 'progressive',
+        adaptiveHeight: true
     }).on('init', function (s) {
         placeCloseButton(s, '#view-photo');
     }).on('setPosition', function (s) {
