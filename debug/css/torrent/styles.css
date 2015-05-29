@@ -402,6 +402,12 @@ body {
   top: 5000px;
   left: 70px;
 }
+#main-container .color-picker canvas {
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
 #main-container .color-picker ul {
   width: 30px;
 }

@@ -49,8 +49,12 @@ if (!isMobile) {
     });
 }
 var scroller = new CoverScroller({ duration: 1 }, timeline); //handles scrolling of page
+var circleLoader = new circleLoader();
 
 $(document).ready(function(){
+    //start loading stuff
+    circleLoader.init($('.color-picker .grey'));
+    circleLoader.draw(50);
 
     //set header position
     if (isPhone) {
@@ -201,6 +205,7 @@ $(document).ready(function(){
     $('.color-picker li').click(function (e) {
         var source = $(e.currentTarget).attr('data-source');
         if (!timeline.ready || timeline.animating || $(e.currentTarget).hasClass('unloaded')) return;
+        scroller.color = $(e.currentTarget).attr('data-color');
         timeline.color = $(e.currentTarget).attr('data-color');
         //$(e.currentTarget).append('<img class="progress" src="./images/torrent/ajax-loader.gif"/>');
         timeline.changeSource(source);
