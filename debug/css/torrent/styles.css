@@ -3,6 +3,8 @@ body {
   background-color: black !important;
   font-size: 13pt;
   min-width: 320px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 #main-container {
   font-family: 'Avenir-Medium', 'Helvetica', Arial, sans-serif;
