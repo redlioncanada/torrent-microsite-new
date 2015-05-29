@@ -1,5 +1,28 @@
 @outerPadding: 70px;
 body {overflow: hidden; background-color: black !important; font-size: 13pt; min-width: 320px; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;}
+.arrow-animation {
+  height: 100px;
+  position: absolute;
+  width: 300px;
+  z-index: 10001;
+  left: 52vw;
+  top: 69vh;
+  .down {
+    transform: rotate(180deg);
+    -webkit-transform: rotate(180deg);
+    -moz-transform: rotate(180deg);
+    -o-transform: rotate(180deg);
+    -ms-transform: rotate(180deg);
+    left: 30px;
+  }
+  .arrow3 {
+    left: 60px;
+  }
+  img {
+    height: 100%;
+    position: absolute;
+  }
+}
 #main-container {
   @font-face {
     font-family: 'Avenir-Heavy';
@@ -28,12 +51,17 @@ body {overflow: hidden; background-color: black !important; font-size: 13pt; min
   color: white;
   font-size: 12pt;
 
+sup {
+  font-size: 0.4em;
+  top: 0.7em;
+  position: relative;
+  vertical-align: top !important;
+}
 p sup {
-  font-size: 0.6em;
+  top: 1.1em;
 }
 span sup {
   color: #c80803 !important;
-  font-size: 0.6em;
 }
 h1,h2,h3,h4,h5 {
   font-family: 'Avenir-Heavy', 'Helvetica', Arial, sans-serif;
@@ -331,7 +359,7 @@ a img {
   width: 100%;
   height: 100%;
   position: absolute;
-  top: 102px;
+  top: 116px;
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
@@ -348,7 +376,6 @@ a img {
   height: inherit;
   overflow: hidden;
   z-index: 1000;
-  min-height: 520px;
 }
 .cover > div {
   height: 100%;
@@ -436,8 +463,8 @@ a img {
     left: 12px;
     background-color: white;
     z-index: 1;
-    text-align: right;
-    padding-right: 10px;
+    text-align: left;
+    padding: 0 10px 0 17px;
     line-height: 25px;
     font-size: 11pt;
     opacity: 0;
@@ -483,6 +510,10 @@ a img {
     max-width: 35vw;
     margin-top: 28vh;
     float: right;
+
+    > img {
+      margin-top: 20px; 
+    }
   }
   > div {
     position: absolute;
@@ -505,10 +536,13 @@ a img {
     float: right;
   }
   ul {
-    margin: 0 0 22px 20px;
+    margin: 0 0 31px 20px;
   }
   ul, li {
     list-style: initial;
+  }
+  img:first-child {
+    margin-left: 22px;
   }
   img {
     max-width: 40px;
@@ -550,6 +584,8 @@ a img {
   }
 }
 .cover-item-5 {
+  .col-xs-4 {top: 4%;}
+  .col-xs-4 p {max-width: 238px;}
   .col-xs-3 {
     top: 58%;
     p {
@@ -577,11 +613,12 @@ a img {
   }
 }
 .cover-item-8 {
-  .col-xs-3 p {max-width: 320px;}
+  .col-xs-3 {top:4%;}
+  .col-xs-3 p {max-width: 227px;}
 }
 .cover-item-6 {
   .col-xs-4 {
-    top: 5%;
+    top: 7%;
   }
 }
 .cover-item-9 {

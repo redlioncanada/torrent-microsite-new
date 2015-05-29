@@ -324,7 +324,6 @@ var Timeline = (function (_Messenger) {
           }
           if ((direction == 0 || direction == -1) && self.animation) {
             if (self.animation[self.currentKeyframe + 1] && typeof self.animation[self.currentKeyframe + 1] === 'object') {
-              console.log('found object');
               for (var j in self.animation[self.currentKeyframe + 1]) {
                 if (typeof self.animation[self.currentKeyframe + 1][j].startUp === 'function') {
                   self.animation[self.currentKeyframe + 1][j].startUp.call();
@@ -332,7 +331,6 @@ var Timeline = (function (_Messenger) {
               }
             }
           }
-          console.log(self.currentKeyframe);
         })();
       }
     }
