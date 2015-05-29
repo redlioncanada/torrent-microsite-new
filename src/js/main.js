@@ -5,7 +5,7 @@ var youtubePlayers = {};
 if (!isMobile) {
     var timeline = new Timeline({ //handles animation of video/sequence
         fps: 24,
-        keyframes: ['00000', '00060', '00096', '00108', '00120', '00168', '00201', '00250', '00267', '00302', '00327', '00365', '00395', '00420', '00449'],
+        keyframes: ['00030','00045','00055','00071','00084','00103','00138','00153','00168','00224','00238','00267','00281','00295','00309'],
         animation: {
             3: [
                 {
@@ -65,12 +65,12 @@ $(document).ready(function(){
         $('.cover-wrapper').mousewheel(function(event) {
             if (event.deltaY > 0) {
                 scroller.scroll(1);
-                if (scroller.curCover == 11) timeline.playTo(timeline.currentKeyframe + 1);
+                if (scroller.curCover == 11) timeline.next();
             } else if (event.deltaY < 0) {
                 scroller.scroll(0);
                 if (scroller.curCover == 11) {
                     if (timeline.currentKeyframe > 12) {
-                        timeline.playTo(timeline.currentKeyframe - 1);
+                        timeline.prev();
                     } else {
                         scroller.scroll(0);
                     }
@@ -109,12 +109,12 @@ $(document).ready(function(){
         });
 
         $('#spin-right').click(function () {
-            timeline.playTo(timeline.currentKeyframe + 1);
+            timeline.next();
         });
 
         $('#spin-left').click(function () {
             if (timeline.currentKeyframe > 12) {
-                timeline.playTo(timeline.currentKeyframe - 1);
+                timeline.prev();
             } else {
                 scroller.scroll(0);
             }
@@ -200,12 +200,14 @@ $(document).ready(function(){
     //on color click, change the timeline's sequence
     $('.color-picker li').click(function (e) {
         var source = $(e.currentTarget).attr('data-source');
-        scroller.showLoader();
+        if (!timeline.ready || timeline.animating || $(e.currentTarget).hasClass('unloaded')) return;
+        timeline.color = $(e.currentTarget).attr('data-color');
+        //$(e.currentTarget).append('<img class="progress" src="./images/torrent/ajax-loader.gif"/>');
         timeline.changeSource(source);
 
         timeline.on('loaded', function() {
             timeline.off('loaded');
-            scroller.hideLoader();
+            $(e.currentTarget).find('.progress').remove();
         })
     });
 

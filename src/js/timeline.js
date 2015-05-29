@@ -12,6 +12,7 @@ class Timeline extends Messenger {
     }
 
     this.border = opts.border;
+    this.color = 'red';
     this.playing = false;
     this.playInterval = undefined;
     this.animation = opts.animation;
@@ -139,11 +140,11 @@ class Timeline extends Messenger {
   }
 
   next() {
-    this.playTo(self.currentKeyframe+1);
+    this.playTo(this.currentKeyframe+1);
   }
 
   prev() {
-    this.playTo(self.currentKeyframe-1);
+    this.playTo(this.currentKeyframe-1);
   }
 
   playTo(id) {
@@ -170,6 +171,7 @@ class Timeline extends Messenger {
     var self = this;
     if (self.playing || self.playInterval) return;
     self.playing = true;
+    self.animating = true;
     self.emit('play');
 
     let primary = undefined, secondary = undefined;
@@ -201,6 +203,7 @@ class Timeline extends Messenger {
           clearInterval(self.playInterval);
           self.playInterval = false;
           self.playing = false;
+          self.animating = false;
           primary.pause();
           secondary.currentTime(Math.abs(ct-self.duration));
           self.emit('pause');
@@ -247,6 +250,7 @@ class Timeline extends Messenger {
             clearInterval(self.playInterval); 
             self.playInterval = false;
             self.playing = false;
+            self.animating = false;
             self.emit('pause');
             return;
           }
@@ -359,9 +363,10 @@ class Timeline extends Messenger {
   _cache() {
     //TODO if source is changed while caching, cancel the current cache job
     let self = this;
+    self.ready = false;
 
-    $('#timeline').append(`<img/>`);
-    $('#timeline img').attr('src', self._constructURL()).addClass('timeline-frame timeline-frame-'+self.currentFrame);
+    $('#timeline').append(`<img style="display:none;" />`);
+    $('#timeline img').attr('src', self._constructURL()).addClass('timeline-frame timeline-frame-'+self.currentFrame).fadeIn();
 
     //cache the most relevant frames first
     for (let i = 0; i <= Math.round(self.keyframes.length); i++) {
@@ -411,6 +416,7 @@ class Timeline extends Messenger {
 
       if (loadedTrack.length >= self.keyframes.length-1) {
         self.emit('loaded');
+        self.ready = true;
         self.log('load complete ('+loadedTotal+' loaded, '+errorTotal+' errors)',2);
       }
     }

@@ -67,6 +67,7 @@ class CoverScroller extends Messenger {
     }
 
     showLoader() {
+        this.coverState = {};
         $('#loader').fadeIn();
         this.emit('loading');
     }
