@@ -417,6 +417,13 @@ body {
 #main-container .color-picker .white div:first-child {
   background-color: white;
 }
+#main-container .color-picker .unloaded div:first-child {
+  height: 20px;
+  width: 20px;
+  margin: -2.5px 0 0 2.5px;
+  border: 1px solid #333;
+  opacity: 0.6;
+}
 #main-container .color-picker .red div:nth-child(2) {
   color: #c80803;
   width: 165px;
@@ -442,10 +449,12 @@ body {
 }
 #main-container .color-picker li {
   margin-top: 28px;
-  cursor: pointer;
   font-size: 7pt;
 }
-#main-container .color-picker li:hover div:nth-child(2) {
+#main-container .color-picker .loaded {
+  cursor: pointer;
+}
+#main-container .color-picker .loaded:hover div:nth-child(2) {
   opacity: 1;
   transition-delay: 0s;
 }

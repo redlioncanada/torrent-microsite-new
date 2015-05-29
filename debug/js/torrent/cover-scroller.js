@@ -87,6 +87,7 @@ var CoverScroller = (function (_Messenger) {
     }, {
         key: 'showLoader',
         value: function showLoader() {
+            this.coverState = {};
             $('#loader').fadeIn();
             this.emit('loading');
         }

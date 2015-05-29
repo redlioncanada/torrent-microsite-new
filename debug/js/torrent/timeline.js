@@ -30,6 +30,7 @@ var Timeline = (function (_Messenger) {
     }
 
     this.border = opts.border;
+    this.color = 'red';
     this.playing = false;
     this.playInterval = undefined;
     this.animation = opts.animation;
@@ -169,12 +170,12 @@ var Timeline = (function (_Messenger) {
   }, {
     key: 'next',
     value: function next() {
-      this.playTo(self.currentKeyframe + 1);
+      this.playTo(this.currentKeyframe + 1);
     }
   }, {
     key: 'prev',
     value: function prev() {
-      this.playTo(self.currentKeyframe - 1);
+      this.playTo(this.currentKeyframe - 1);
     }
   }, {
     key: 'playTo',
@@ -205,6 +206,7 @@ var Timeline = (function (_Messenger) {
       if (self.playing || self.playInterval) {
         return;
       }self.playing = true;
+      self.animating = true;
       self.emit('play');
 
       var primary = undefined,
@@ -237,6 +239,7 @@ var Timeline = (function (_Messenger) {
             clearInterval(self.playInterval);
             self.playInterval = false;
             self.playing = false;
+            self.animating = false;
             primary.pause();
             secondary.currentTime(Math.abs(ct - self.duration));
             self.emit('pause');
@@ -272,6 +275,7 @@ var Timeline = (function (_Messenger) {
                 clearInterval(self.playInterval);
                 self.playInterval = false;
                 self.playing = false;
+                self.animating = false;
                 self.emit('pause');
                 return;
               }
@@ -405,9 +409,10 @@ var Timeline = (function (_Messenger) {
     value: function _cache() {
       //TODO if source is changed while caching, cancel the current cache job
       var self = this;
+      self.ready = false;
 
-      $('#timeline').append('<img/>');
-      $('#timeline img').attr('src', self._constructURL()).addClass('timeline-frame timeline-frame-' + self.currentFrame);
+      $('#timeline').append('<img style="display:none;" />');
+      $('#timeline img').attr('src', self._constructURL()).addClass('timeline-frame timeline-frame-' + self.currentFrame).fadeIn();
 
       //cache the most relevant frames first
       for (var i = 0; i <= Math.round(self.keyframes.length); i++) {
@@ -465,6 +470,7 @@ var Timeline = (function (_Messenger) {
 
         if (loadedTrack.length >= self.keyframes.length - 1) {
           self.emit('loaded');
+          self.ready = true;
           self.log('load complete (' + loadedTotal + ' loaded, ' + errorTotal + ' errors)', 2);
         }
       }
