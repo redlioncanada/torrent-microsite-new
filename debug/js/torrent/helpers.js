@@ -94,9 +94,10 @@ var circleLoader = (function () {
       this.options = {
         percent: 0,
         size: $(el).width(),
-        lineWidth: 2,
+        lineWidth: 1,
         rotate: 0
       };
+      this.didInit = false;
       this.options.color = '#efefef';
       this.target = el;
       this.canvas = document.createElement('canvas');
@@ -108,14 +109,18 @@ var circleLoader = (function () {
 
       var ctx = this.canvas.getContext('2d');
       this.canvas.width = this.canvas.height = this.options.size;
-      $(el).append(this.canvas).css('margin', '-2.5px 0px 0px 2.5px');
+      $(el).append(this.canvas);
+      $(this.canvas).css('margin', '1px 0px 0px 3px');
       this.circle = ctx;
+      this.didInit = true;
       this.redraw();
     }
   }, {
     key: 'redraw',
     value: function redraw() {
-      $(this.canvas).css('top', parseInt($(this.target).position().top) + parseInt($(this.target).css('margin-top')));
+      if (!this.canvas || !this.target || !this.circle || !this.didInit) {
+        return;
+      }$(this.canvas).css('top', parseInt($(this.target).position().top) + parseInt($(this.target).css('margin-top')));
       var width = $(this.target).find('div').eq(0).width();
       this.canvas.width = this.canvas.height = this.options.size = width;
       this.circle.translate(this.options.size / 2, this.options.size / 2); // change center
@@ -126,15 +131,23 @@ var circleLoader = (function () {
   }, {
     key: 'draw',
     value: function draw(percent) {
-      this.circle.clearRect(0, 0, this.circle.width, this.circle.height);
+      if (!this.didInit || !this.circle) {
+        return;
+      }this.circle.clearRect(0, 0, this.circle.width, this.circle.height);
       this.percent = percent;
-      percent = Math.min(Math.max(0, percent < 1 && percent != 0 ? percent : percent / 100 || 1), 1);
+      percent = Math.min(Math.max(0, percent < 1 ? percent : percent / 100 || 1), 1);
       this.circle.beginPath();
       this.circle.arc(0, 0, this.radius, 0, Math.PI * 2 * percent, false);
       this.circle.strokeStyle = this.options.color;
-      this.circle.lineCap = 'round'; // butt, round or square
+      this.circle.lineCap = 'square'; // butt, round or square
       this.circle.lineWidth = this.options.lineWidth;
       this.circle.stroke();
+    }
+  }, {
+    key: 'remove',
+    value: function remove() {
+      $('canvas').remove();
+      this.didInit = false;
     }
   }]);
 

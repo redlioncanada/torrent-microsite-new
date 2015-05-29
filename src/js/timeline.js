@@ -13,6 +13,8 @@ class Timeline extends Messenger {
 
     this.border = opts.border;
     this.color = 'red';
+    this.cached = [];
+    this.cacheColor = 'red';
     this.playing = false;
     this.playInterval = undefined;
     this.animation = opts.animation;
@@ -217,12 +219,23 @@ class Timeline extends Messenger {
       if (direction == 1 && self.animation) {
         if (self.animation[self.currentKeyframe] && typeof self.animation[self.currentKeyframe] === 'object') {
           for (let j in self.animation[self.currentKeyframe]) {
-            if (typeof self.animation[self.currentKeyframe][j]['start'] === 'function') {
-              self.animation[self.currentKeyframe][j]['start'].call();
+            if (typeof self.animation[self.currentKeyframe][j]['startDown'] === 'function') {
+              self.animation[self.currentKeyframe][j]['startDown'].call();
             }
           }
         }
       }
+      if ((direction == 0 || direction == -1) && self.animation) {
+        if (self.animation[self.currentKeyframe+1] && typeof self.animation[self.currentKeyframe+1] === 'object') {
+          console.log('found object');
+          for (let j in self.animation[self.currentKeyframe+1]) {
+            if (typeof self.animation[self.currentKeyframe+1][j]['startUp'] === 'function') {
+              self.animation[self.currentKeyframe+1][j]['startUp'].call();
+            }
+          }
+        }
+      }
+      console.log(self.currentKeyframe);
 
       function resetInterval(allowReset=true) {
         clearInterval(self.playInterval);
@@ -236,8 +249,17 @@ class Timeline extends Messenger {
             if (direction == 1 && self.animation) {
               if (self.animation[self.currentKeyframe] && typeof self.animation[self.currentKeyframe] === 'object') {
                 for (let i in self.animation[self.currentKeyframe]) {
-                  if (typeof self.animation[self.currentKeyframe][i]['end'] === 'function') {
-                    self.animation[self.currentKeyframe][i]['end'].call();
+                  if (typeof self.animation[self.currentKeyframe][i]['endDown'] === 'function') {
+                    self.animation[self.currentKeyframe][i]['endDown'].call();
+                  }
+                }
+              }
+            }
+            if ((direction == -1 || direction == 0) && self.animation) {
+              if (self.animation[self.currentKeyframe+1] && typeof self.animation[self.currentKeyframe+1] === 'object') {
+                for (let i in self.animation[self.currentKeyframe+1]) {
+                  if (typeof self.animation[self.currentKeyframe+1][i]['endUp'] === 'function') {
+                    self.animation[self.currentKeyframe+1][i]['endUp'].call();
                   }
                 }
               }
@@ -283,15 +305,14 @@ class Timeline extends Messenger {
       $('#timeline').attr('data-src',url);
       self._setURL();
       url = self._constructURL();
-      self.animating = true;
-      self.loaded = false;
 
+      $('#timeline .timeline-frame-'+self.currentFrame).fadeOut("fast", function() {
+        self._cache();
+      });
       $('#timeline img').fadeOut("fast", function() {
         self.animating = false; 
         self.emit('changeSource'); 
-        $('#timeline img').remove();
       });
-      self._cache();
     }
   }
 
@@ -343,6 +364,15 @@ class Timeline extends Messenger {
     return this._fps;
   }
 
+  set color(color) {
+    this._setURL
+    this._color = color;
+  }
+
+  get color() {
+    return this._color;
+  }
+
   _setURL() {
     let self = this;
     self.src = $('#timeline').attr('data-src');
@@ -352,21 +382,55 @@ class Timeline extends Messenger {
     self.prefix = self.src.split(self.suffix)[0];
   }
 
-  _constructURL(id=undefined) {
-    let self = this;
-    var suffix;
-    if (id) suffix = Array(self.suffix.length-id.toString().length+1).join("0") + id.toString();
-    else suffix = Array(self.suffix.length-self.currentFrame.toString().length+1).join("0") + self.currentFrame.toString();
-    return self.prefix + suffix + '.' + self.filetype;
+  _getURL(url) {
+    let src=url;
+    let suffix = src.match(/[0-9]{1,}/g);
+    suffix = suffix[suffix.length-1];
+    return {
+      src: url,
+      filetype: src.split('.').pop(),
+      suffix: suffix,
+      prefix: src.split(suffix)[0]
+    }
   }
 
-  _cache() {
+  _constructURL(id=undefined,opts=undefined) {
+    let self = this;
+    var suffix;
+    if (opts) {
+      if (id) suffix = Array(opts.suffix.length-id.toString().length+1).join("0") + id.toString();
+      else suffix = Array(opts.suffix.length-opts.currentFrame.toString().length+1).join("0") + opts.currentFrame.toString();
+      return opts.prefix + suffix + '.' + opts.filetype;
+    } else {
+      if (id) suffix = Array(self.suffix.length-id.toString().length+1).join("0") + id.toString();
+      else suffix = Array(self.suffix.length-self.currentFrame.toString().length+1).join("0") + self.currentFrame.toString();
+      return self.prefix + suffix + '.' + self.filetype;
+    }
+  }
+
+  _cache(hard=true,url) {
     //TODO if source is changed while caching, cancel the current cache job
     let self = this;
-    self.ready = false;
 
-    $('#timeline').append(`<img style="display:none;" />`);
-    $('#timeline img').attr('src', self._constructURL()).addClass('timeline-frame timeline-frame-'+self.currentFrame).fadeIn();
+    if (hard) {
+      let cf = self.currentFrame;
+      let suf = self._constructURL();
+      $('#timeline-frame-'+cf).attr('src',suf);
+    }
+
+    if ((hard && self.cached.indexOf(self.color) > -1) || (!hard && self.cached.indexOf(self.cacheColor) > -1)) {
+      for (var i = 0; i<= self.keyframes[self.keyframes.length-1]; i++) {
+        let suffix = self._constructURL(i);
+        $('#timeline .timeline-frame-'+i).attr('src',suffix);
+      }
+      setTimeout(function(){$('#timeline .timeline-frame-'+self.currentFrame).fadeIn('fast');},600);
+      return;
+    }
+
+    self.ready = false;
+    self.totalFrames = parseInt(self.keyframes[self.keyframes.length-1]);
+    self.loadedFrames = 0;
+    self.percentLoaded = 0;
 
     //cache the most relevant frames first
     for (let i = 0; i <= Math.round(self.keyframes.length); i++) {
@@ -376,7 +440,6 @@ class Timeline extends Messenger {
 
     function cacheFrameSet(id, fn) {
       if (!frameIsValid(id)) return;
-      
       let start = parseInt(self.keyframes[id]), end = parseInt(self.keyframes[id+1]);
       let total = end-start;
       let loaded = 0;
@@ -384,18 +447,37 @@ class Timeline extends Messenger {
 
       for (let i = start; i < end; i++) {
         if (i == 0) {total -= 1; continue;}
-        let suffix = self._constructURL(i);
+        let suffix = undefined;
+        if (url) {
+          let opts = self._getURL(url);
+          suffix = self._constructURL(i,opts);
+        } else {
+          suffix = self._constructURL(i);
+        }
 
         $.loadImage(suffix)
           .done(function(image) {
-            $(image).addClass('timeline-frame timeline-frame-'+i).css({'display':'none','zIndex':'1'});
-            $('#timeline').append(image);
+            self.loadedFrames++;
+            if (hard && self.cached.length == 0) {
+              $(image).addClass('timeline-frame timeline-frame-'+i).css({'display':'none','zIndex':'1'});
+              $('#timeline').append(image);
+            } else if (hard && self.cached.length > 0) {
+              $('#timeline .timeline-frame-'+i).attr('src',$(image).attr('src'));
+              if (i == self.currentFrame) $('#timeline .timeline-frame-'+i).attr({'opacity':0,'display':'block'}).animate({'opacity':1},400);
+            }
+
+            let newLoadPercent = Math.round((self.loadedFrames / self.totalFrames)*100);
+            if (self.percentLoaded != newLoadPercent) self.emit('loadedPercent'+self.percentLoaded);
+            self.percentLoaded = newLoadPercent;
+
             if (++loaded + error >= total) {
               if (typeof fn === 'function') fn(id,loaded,error);
             }
           })
           .fail(function(image) {
             self.log('failed to cache '+suffix,1);
+            self.loadedFrames++;
+            self.percentLoaded = self.loadedFrames / self.totalFrames;
             if (++error + loaded >= total) {
               if (typeof fn === 'function') fn(id,loaded,error);
             }
@@ -411,18 +493,21 @@ class Timeline extends Messenger {
       else loadedTrack.push(id);
       loadedTotal += loaded;
       errorTotal += error;
+
       self.log('finished loading frame set '+id+' ('+loaded+' loaded, '+error+' errors)',2);
       self.emit('loaded'+id);
 
       if (loadedTrack.length >= self.keyframes.length-1) {
-        self.emit('loaded');
+        self.cached.push(self.cacheColor);
+        $('.color-picker .'+self.cacheColor).removeClass('unloaded').addClass('loaded');
         self.ready = true;
         self.log('load complete ('+loadedTotal+' loaded, '+errorTotal+' errors)',2);
+        self.emit('loaded');
       }
     }
 
     function frameIsValid(id) {
-      if (id < 0 || id >= self.keyframes.length-1) return false;
+      if (id < 0 || id >= self.keyframes.length) return false;
       return true;
     }
   }

@@ -5,16 +5,64 @@ var youtubePlayers = {};
 if (!isMobile) {
     var timeline = new Timeline({ //handles animation of video/sequence
         fps: 24,
-        keyframes: ['00030','00045','00055','00071','00084','00103','00138','00153','00168','00224','00238','00267','00281','00295','00309'],
+        keyframes: ['00000','00030','00055','00071','00084','00103','00138','00153','00168','00224','00238','00267','00281','00295','00309'],
         animation: {
+            1: [
+                {
+                    'startDown': function() {
+                        let dW = $('.blender-1').width();
+                        let dX = parseInt($('.cover-item-1 .desktop .col-xs-3').eq(0).width())-dW-parseInt($('.blender-1').css('margin-right'));
+                        let dY = parseInt($('.blender-1').offset().top) - parseInt($('.blender-1').css('margin-top')) + parseInt($('.blender-1').css('margin-bottom'));
+                        let pW = $('#timeline').width();
+                        let pH = $('#timeline').height();
+                        let xOffset = (pW - $(window).width()) / 2;
+                        let yOffset = (pH - $(window).height()) / 2;
+                        let oW = pW * 0.1944921875;
+                        let oX = (pW * 0.334890625) - xOffset;
+                        let oY = (pH * 0.21188888888889) - yOffset + 60;
+
+                        let blender = $('.blender-1').clone().css({'left':dX,'top':dY,'width':dW,'position':'absolute','zIndex':10001}).removeClass('blender-1').addClass('blender-2').appendTo('body');
+                        $('.blender-1').hide();
+                        $('#timeline').hide();
+                        $('.blender-2').animate({'left':oX,'top':oY,'width':oW},600);
+                    },
+                    'endDown': function() {
+                        $('#timeline').show();
+                        $('.blender-2').remove();
+                        $('.blender-1').show();
+                    },
+                    'startUp': function() {
+                        let dW = $('.blender-1').width();
+                        let pW = $('#timeline').width();
+                        let pH = $('#timeline').height();
+                        let xOffset = (pW - $(window).width()) / 2;
+                        let yOffset = (pH - $(window).height()) / 2;
+                        let oW = pW * 0.1944921875;
+                        let oX = (pW * 0.334890625) - xOffset;
+                        let oY = (pH * 0.21188888888889) - yOffset + 60;
+                        let dX = parseInt($('.cover-item-1 .desktop .col-xs-3').eq(0).width())-dW-parseInt($('.blender-1').css('margin-right'));
+                        let dY = parseInt($('.blender-1').offset().top) - parseInt($('.blender-1').css('margin-top')) + parseInt($('.blender-1').css('margin-bottom')) + $('.cover').height();
+                        
+                        let blender = $('.blender-1').clone().css({'left':oX,'top':oY,'width':oW,'position':'absolute','zIndex':10001}).removeClass('blender-1').addClass('blender-2').appendTo('body');
+                        $('.blender-1').hide();
+                        $('#timeline').hide();
+                        $('.blender-2').animate({'left':dX,'top':dY,'width':dW},600);
+                    },
+                    'endUp': function() {
+                        $('#timeline').hide();
+                        $('.blender-2').remove();
+                        $('.blender-1').show();
+                    }
+                }
+            ],
             3: [
                 {
-                    'start': function() {
+                    'startDown': function() {
                         $('.cover-item-4 .desktop ul li img').each(function(id) {
                             $(this).css('opacity',0);
                         });
                     },
-                    'end': function() {
+                    'endDown': function() {
                         $('.cover-item-4 .desktop ul li img').each(function(id) {
                             let self = this;
                             $(this).css('opacity',1);
@@ -52,16 +100,38 @@ var scroller = new CoverScroller({ duration: 1 }, timeline); //handles scrolling
 var circleLoader = new circleLoader();
 
 $(document).ready(function(){
-    //start loading stuff
-    circleLoader.init($('.color-picker .grey'));
-    circleLoader.draw(50);
-
     //set header position
     if (isPhone) {
         $('.cover-wrapper').css('top', '50px');
     }
 
     if (!isMobile) {
+        //load all the things
+        var colors = ['black','graphite','grey'];
+
+        for (var i = 0; i <= 100; i++) {
+            let j = i;
+            timeline.on('loadedPercent'+i, function() {
+                circleLoader.draw(j);
+            })
+        }
+        timeline.on('loaded', function() {
+            if (timeline.cached.indexOf(colors[0]) > -1) colors.shift();
+            if (colors.length == 0) {
+                circleLoader.remove();
+                for (var i = 0; i <= 100; i++) {
+                    timeline.off('loadedPercent'+i);
+                }
+                timeline.off('loaded');
+            }
+
+            let cacheNum = timeline.cached.length-1;
+            circleLoader.init($('.color-picker .'+colors[0]));
+            timeline.cacheColor = colors[0];
+            let url = './images/torrent/sequence/'+colors[0]+'/'+colors[0].toUpperCase()+'_TORRENT_EDIT_00000.jpg';
+            timeline._cache(false,url);
+        });
+
         //don't show scrollbar on desktop
         $('.cover-wrapper').css('overflow', 'hidden');
 
@@ -82,6 +152,11 @@ $(document).ready(function(){
             }
         });
 
+        //change the blender on the first panel when the color changes
+        timeline.on('changeSource', function() {
+            $('.blender-1').attr('src',$('.blender-1').attr('data-path')+this.color+'.png');
+        });
+
         timeline.redraw();
         $('#timeline img').animate({'marginTop':'-3%'});
     
@@ -96,7 +171,7 @@ $(document).ready(function(){
                 if (this.curCover == 0) $('#timeline *').animate({'marginTop':'-3%'});
                 else if (this.curCover == 3) $('#timeline *').animate({'marginTop':'7%'});
                 else if (this.curCover == 4) $('#timeline *').animate({'marginTop':'4%'});
-                else if (this.curCover == 11) $('#timeline *').animate({'marginTop':'-5%'});
+                else if (this.curCover == 11) $('#timeline *').animate({'marginTop':'-7%'});
                 else $('#timeline *').animate({'marginTop':'0'});
 
                 //play the video
@@ -204,16 +279,11 @@ $(document).ready(function(){
     //on color click, change the timeline's sequence
     $('.color-picker li').click(function (e) {
         var source = $(e.currentTarget).attr('data-source');
-        if (!timeline.ready || timeline.animating || $(e.currentTarget).hasClass('unloaded')) return;
-        scroller.color = $(e.currentTarget).attr('data-color');
-        timeline.color = $(e.currentTarget).attr('data-color');
-        //$(e.currentTarget).append('<img class="progress" src="./images/torrent/ajax-loader.gif"/>');
+        let color = $(e.currentTarget).attr('data-color');
+        if (timeline.animating || $(e.currentTarget).hasClass('unloaded')) return;
+        scroller.color = color;
+        timeline.color = color;
         timeline.changeSource(source);
-
-        timeline.on('loaded', function() {
-            timeline.off('loaded');
-            $(e.currentTarget).find('.progress').remove();
-        })
     });
 
     //on youtube poster click, embed the video and play it

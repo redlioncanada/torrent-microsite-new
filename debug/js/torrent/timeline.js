@@ -31,6 +31,8 @@ var Timeline = (function (_Messenger) {
 
     this.border = opts.border;
     this.color = 'red';
+    this.cached = [];
+    this.cacheColor = 'red';
     this.playing = false;
     this.playInterval = undefined;
     this.animation = opts.animation;
@@ -261,8 +263,17 @@ var Timeline = (function (_Messenger) {
                 if (direction == 1 && self.animation) {
                   if (self.animation[self.currentKeyframe] && typeof self.animation[self.currentKeyframe] === 'object') {
                     for (var i in self.animation[self.currentKeyframe]) {
-                      if (typeof self.animation[self.currentKeyframe][i].end === 'function') {
-                        self.animation[self.currentKeyframe][i].end.call();
+                      if (typeof self.animation[self.currentKeyframe][i].endDown === 'function') {
+                        self.animation[self.currentKeyframe][i].endDown.call();
+                      }
+                    }
+                  }
+                }
+                if ((direction == -1 || direction == 0) && self.animation) {
+                  if (self.animation[self.currentKeyframe + 1] && typeof self.animation[self.currentKeyframe + 1] === 'object') {
+                    for (var i in self.animation[self.currentKeyframe + 1]) {
+                      if (typeof self.animation[self.currentKeyframe + 1][i].endUp === 'function') {
+                        self.animation[self.currentKeyframe + 1][i].endUp.call();
                       }
                     }
                   }
@@ -305,12 +316,23 @@ var Timeline = (function (_Messenger) {
           if (direction == 1 && self.animation) {
             if (self.animation[self.currentKeyframe] && typeof self.animation[self.currentKeyframe] === 'object') {
               for (var j in self.animation[self.currentKeyframe]) {
-                if (typeof self.animation[self.currentKeyframe][j].start === 'function') {
-                  self.animation[self.currentKeyframe][j].start.call();
+                if (typeof self.animation[self.currentKeyframe][j].startDown === 'function') {
+                  self.animation[self.currentKeyframe][j].startDown.call();
                 }
               }
             }
           }
+          if ((direction == 0 || direction == -1) && self.animation) {
+            if (self.animation[self.currentKeyframe + 1] && typeof self.animation[self.currentKeyframe + 1] === 'object') {
+              console.log('found object');
+              for (var j in self.animation[self.currentKeyframe + 1]) {
+                if (typeof self.animation[self.currentKeyframe + 1][j].startUp === 'function') {
+                  self.animation[self.currentKeyframe + 1][j].startUp.call();
+                }
+              }
+            }
+          }
+          console.log(self.currentKeyframe);
         })();
       }
     }
@@ -322,15 +344,14 @@ var Timeline = (function (_Messenger) {
         $('#timeline').attr('data-src', url);
         self._setURL();
         url = self._constructURL();
-        self.animating = true;
-        self.loaded = false;
 
+        $('#timeline .timeline-frame-' + self.currentFrame).fadeOut('fast', function () {
+          self._cache();
+        });
         $('#timeline img').fadeOut('fast', function () {
           self.animating = false;
           self.emit('changeSource');
-          $('#timeline img').remove();
         });
-        self._cache();
       }
     }
   }, {
@@ -385,6 +406,15 @@ var Timeline = (function (_Messenger) {
       return this._fps;
     }
   }, {
+    key: 'color',
+    set: function (color) {
+      this._setURL;
+      this._color = color;
+    },
+    get: function () {
+      return this._color;
+    }
+  }, {
     key: '_setURL',
     value: function _setURL() {
       var self = this;
@@ -395,29 +425,68 @@ var Timeline = (function (_Messenger) {
       self.prefix = self.src.split(self.suffix)[0];
     }
   }, {
+    key: '_getURL',
+    value: function _getURL(url) {
+      var src = url;
+      var suffix = src.match(/[0-9]{1,}/g);
+      suffix = suffix[suffix.length - 1];
+      return {
+        src: url,
+        filetype: src.split('.').pop(),
+        suffix: suffix,
+        prefix: src.split(suffix)[0]
+      };
+    }
+  }, {
     key: '_constructURL',
     value: function _constructURL() {
       var id = arguments[0] === undefined ? undefined : arguments[0];
+      var opts = arguments[1] === undefined ? undefined : arguments[1];
 
       var self = this;
       var suffix;
-      if (id) suffix = Array(self.suffix.length - id.toString().length + 1).join('0') + id.toString();else suffix = Array(self.suffix.length - self.currentFrame.toString().length + 1).join('0') + self.currentFrame.toString();
-      return self.prefix + suffix + '.' + self.filetype;
+      if (opts) {
+        if (id) suffix = Array(opts.suffix.length - id.toString().length + 1).join('0') + id.toString();else suffix = Array(opts.suffix.length - opts.currentFrame.toString().length + 1).join('0') + opts.currentFrame.toString();
+        return opts.prefix + suffix + '.' + opts.filetype;
+      } else {
+        if (id) suffix = Array(self.suffix.length - id.toString().length + 1).join('0') + id.toString();else suffix = Array(self.suffix.length - self.currentFrame.toString().length + 1).join('0') + self.currentFrame.toString();
+        return self.prefix + suffix + '.' + self.filetype;
+      }
     }
   }, {
     key: '_cache',
-    value: function _cache() {
+    value: function _cache(_x7, url) {
+      var hard = arguments[0] === undefined ? true : arguments[0];
+
       //TODO if source is changed while caching, cancel the current cache job
       var self = this;
-      self.ready = false;
 
-      $('#timeline').append('<img style="display:none;" />');
-      $('#timeline img').attr('src', self._constructURL()).addClass('timeline-frame timeline-frame-' + self.currentFrame).fadeIn();
+      if (hard) {
+        var cf = self.currentFrame;
+        var suf = self._constructURL();
+        $('#timeline-frame-' + cf).attr('src', suf);
+      }
+
+      if (hard && self.cached.indexOf(self.color) > -1 || !hard && self.cached.indexOf(self.cacheColor) > -1) {
+        for (var i = 0; i <= self.keyframes[self.keyframes.length - 1]; i++) {
+          var suffix = self._constructURL(i);
+          $('#timeline .timeline-frame-' + i).attr('src', suffix);
+        }
+        setTimeout(function () {
+          $('#timeline .timeline-frame-' + self.currentFrame).fadeIn('fast');
+        }, 600);
+        return;
+      }
+
+      self.ready = false;
+      self.totalFrames = parseInt(self.keyframes[self.keyframes.length - 1]);
+      self.loadedFrames = 0;
+      self.percentLoaded = 0;
 
       //cache the most relevant frames first
-      for (var i = 0; i <= Math.round(self.keyframes.length); i++) {
-        cacheFrameSet(self.currentKeyframe + i, loadedCallback);
-        if (i !== 0) cacheFrameSet(self.currentKeyframe - i, loadedCallback);
+      for (var _i = 0; _i <= Math.round(self.keyframes.length); _i++) {
+        cacheFrameSet(self.currentKeyframe + _i, loadedCallback);
+        if (_i !== 0) cacheFrameSet(self.currentKeyframe - _i, loadedCallback);
       }
 
       function cacheFrameSet(id, fn) {
@@ -429,28 +498,47 @@ var Timeline = (function (_Messenger) {
         var loaded = 0;
         var error = 0;
 
-        var _loop = function (i) {
-          if (i == 0) {
+        var _loop = function (_i2) {
+          if (_i2 == 0) {
             total -= 1;return 'continue';
           }
-          var suffix = self._constructURL(i);
+          var suffix = undefined;
+          if (url) {
+            var opts = self._getURL(url);
+            suffix = self._constructURL(_i2, opts);
+          } else {
+            suffix = self._constructURL(_i2);
+          }
 
           $.loadImage(suffix).done(function (image) {
-            $(image).addClass('timeline-frame timeline-frame-' + i).css({ display: 'none', zIndex: '1' });
-            $('#timeline').append(image);
+            self.loadedFrames++;
+            if (hard && self.cached.length == 0) {
+              $(image).addClass('timeline-frame timeline-frame-' + _i2).css({ display: 'none', zIndex: '1' });
+              $('#timeline').append(image);
+            } else if (hard && self.cached.length > 0) {
+              $('#timeline .timeline-frame-' + _i2).attr('src', $(image).attr('src'));
+              if (_i2 == self.currentFrame) $('#timeline .timeline-frame-' + _i2).attr({ opacity: 0, display: 'block' }).animate({ opacity: 1 }, 400);
+            }
+
+            var newLoadPercent = Math.round(self.loadedFrames / self.totalFrames * 100);
+            if (self.percentLoaded != newLoadPercent) self.emit('loadedPercent' + self.percentLoaded);
+            self.percentLoaded = newLoadPercent;
+
             if (++loaded + error >= total) {
               if (typeof fn === 'function') fn(id, loaded, error);
             }
           }).fail(function (image) {
             self.log('failed to cache ' + suffix, 1);
+            self.loadedFrames++;
+            self.percentLoaded = self.loadedFrames / self.totalFrames;
             if (++error + loaded >= total) {
               if (typeof fn === 'function') fn(id, loaded, error);
             }
           });
         };
 
-        for (var i = start; i < end; i++) {
-          var _ret2 = _loop(i);
+        for (var _i2 = start; _i2 < end; _i2++) {
+          var _ret2 = _loop(_i2);
 
           if (_ret2 === 'continue') continue;
         }
@@ -465,18 +553,21 @@ var Timeline = (function (_Messenger) {
         } else loadedTrack.push(id);
         loadedTotal += loaded;
         errorTotal += error;
+
         self.log('finished loading frame set ' + id + ' (' + loaded + ' loaded, ' + error + ' errors)', 2);
         self.emit('loaded' + id);
 
         if (loadedTrack.length >= self.keyframes.length - 1) {
-          self.emit('loaded');
+          self.cached.push(self.cacheColor);
+          $('.color-picker .' + self.cacheColor).removeClass('unloaded').addClass('loaded');
           self.ready = true;
           self.log('load complete (' + loadedTotal + ' loaded, ' + errorTotal + ' errors)', 2);
+          self.emit('loaded');
         }
       }
 
       function frameIsValid(id) {
-        if (id < 0 || id >= self.keyframes.length - 1) {
+        if (id < 0 || id >= self.keyframes.length) {
           return false;
         }return true;
       }
