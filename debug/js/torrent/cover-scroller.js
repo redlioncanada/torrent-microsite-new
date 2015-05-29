@@ -22,6 +22,7 @@ var CoverScroller = (function (_Messenger) {
         this.curCover = 0;
         this.animating = false;
         this.coverState = {};
+        this.color = 'red';
         if (timeline) this.timeline = timeline;
 
         var _loop = function () {

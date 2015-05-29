@@ -12,6 +12,7 @@ class Timeline extends Messenger {
     }
 
     this.border = opts.border;
+    this.color = 'red';
     this.playing = false;
     this.playInterval = undefined;
     this.animation = opts.animation;
