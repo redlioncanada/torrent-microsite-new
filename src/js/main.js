@@ -94,7 +94,7 @@ if (!isMobile) {
             7: [
                 {
                     'endDown': function() {
-                        let arrow = $(`<div class="arrow-animation"><img class="arrow1 up" src="./images/torrent/arrows1.png"/><img class="arrow2 down" src="./images/torrent/arrows1.png"/><img class="arrow3 up" src="./images/torrent/arrows1.png"/></div>`);
+                        let arrow = $(`<div style="opacity:0;" class="arrow-animation"><img class="arrow1 up" src="./images/torrent/arrows1.png"/><img class="arrow2 down" src="./images/torrent/arrows1.png"/><img class="arrow3 up" src="./images/torrent/arrows1.png"/></div>`);
                         $('body').append(arrow);
                         $(arrow).animate({'opacity':1},400);
 
