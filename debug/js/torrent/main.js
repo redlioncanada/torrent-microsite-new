@@ -189,6 +189,9 @@ $(document).ready(function () {
 
     //on view recipes button click, show recipe
     $('.open-recipe').click(function () {
+        $('.recipe-wrapper').css('display', 'none');
+        var currentColor = isMobile ? 'red' : timeline.color;
+        $('.recipe-wrapper.' + currentColor).removeAttr('style');
         $('#show-recipe').css('display', 'none').css('left', 'initial').fadeIn();
     });
 
