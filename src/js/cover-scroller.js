@@ -10,6 +10,7 @@ class CoverScroller extends Messenger {
         this.curCover = 0;
         this.animating = false;
         this.coverState = {};
+        this.color = 'red';
         if (timeline) this.timeline = timeline;
 
         for (var i=0; i<=this.numElements-1; i++) {
