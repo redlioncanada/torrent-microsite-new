@@ -541,7 +541,7 @@ $(document).ready(function(){
         let width = $(element+' .slick-track div').eq(id+1).find('img').width();
         let pwidth = $(element+' .slick').width();
         let offsetLeft = slick.currentTarget.offsetLeft;
-        let newLeft = offsetLeft + ((pwidth - width)/2);
+        let newLeft = offsetLeft + ((pwidth - width)/2) + width;
         $(element+' .close-x').css({'left': newLeft, 'top': slick.currentTarget.offsetTop}).fadeIn('fast');
     }
 
@@ -581,6 +581,13 @@ $(document).ready(function(){
         $('#play-video').css('display', 'none').css('left', 'initial').fadeIn();
     });
 
+    //on next/prev video click, pause the current video
+    $('#play-video .slick-prev, #play-video .slick-next').click(function() {
+        for (var i in youtubePlayers) {
+            youtubePlayers[i].stopVideo();
+        }
+    });
+
     //on view recipes button click, show recipe
     $('.open-recipe').click(function() {
         $('.recipe-wrapper').css('display', 'none');
@@ -612,7 +619,7 @@ $(document).ready(function(){
             } else {
                 let width = $(this).width();
                 let height = $(this).height();
-                $(this).append(`<iframe id="${id}" style="position: absolute;" src="http://www.youtube.com/embed/${id}?autoplay=1&controls=0&enablejsapi=1" height="${height}" width="${width} type="text/html" frameborder="0"./>`);
+                $(this).append(`<iframe id="${id}" style="position: absolute;" src="https://www.youtube.com/embed/${id}?autoplay=1&controls=0&enablejsapi=1" height="${height}" width="${width} type="text/html" frameborder="0"./>`);
 
                 setTimeout(function() {
                     $(v).find('img').fadeOut();
