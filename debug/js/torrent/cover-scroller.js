@@ -23,14 +23,14 @@ var CoverScroller = (function (_Messenger) {
         this.animating = false;
         this.coverState = {};
         this.color = 'red';
-        if (timeline) this.timeline = timeline;
+        timeline ? this.timeline = timeline : undefined;
 
         var _loop = function () {
             _self.coverState[i] = false;
             var index = i;
 
             //track when a frameset loads
-            if (timeline) {
+            if (_self.timeline) {
                 _self.timeline.on('loaded' + index, function () {
                     _self.coverState[index] = true;
                 });
@@ -46,11 +46,13 @@ var CoverScroller = (function (_Messenger) {
             if (_self.coverState[index]) _self.scrollTo(index);else {
                 //if a frameset is still loading, activate the loading overlay and wait until it's done
                 _self.showLoader();
-                _self.timeline.on('loaded' + index, function () {
-                    _self.timeline.off('loaded' + index);
-                    _self.hideLoader();
-                    _self.scrollTo(index);
-                });
+                if (_self.timeline) {
+                    _self.timeline.on('loaded' + index, function () {
+                        _self.timeline.off('loaded' + index);
+                        _self.hideLoader();
+                        _self.scrollTo(index);
+                    });
+                }
             }
         });
 
@@ -68,7 +70,8 @@ var CoverScroller = (function (_Messenger) {
 
             $('.cover-wrapper,.cover').css({
                 width: width,
-                height: height
+                height: height,
+                'min-height': height
             });
 
             this.elHeight = height;
@@ -86,7 +89,6 @@ var CoverScroller = (function (_Messenger) {
 
             $.each($('.color-picker li'), function (i, v) {
                 if (i == 0) return;
-                console.log($(this));
                 var t = $(this).find('div').eq(0).position().top;
                 $(this).find('div').eq(1).css('top', t);
                 //$('.color-picker li div').eq(1).css('top',t);

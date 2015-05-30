@@ -93,7 +93,7 @@ class circleLoader {
   }
 
   redraw() {
-    if (!this.canvas || !this.target || !this.circle || !this.didInit) return;
+    if (!this.canvas || !this.target || !this.circle || !this.didInit || !this.target || !this.target.position() || !this.target.position().top) return;
     $(this.canvas).css('top', parseInt($(this.target).position().top) + parseInt($(this.target).css('margin-top')));
     let width = $(this.target).find('div').eq(0).width();
     this.canvas.width = this.canvas.height = this.options.size = width;

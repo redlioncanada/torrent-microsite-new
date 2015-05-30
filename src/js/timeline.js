@@ -25,6 +25,8 @@ class Timeline extends Messenger {
     this.ready = false;
     this.forwardReady = false;
     this.backwardReady = false;
+    this.disabled = false;
+    this.enabled = true;
 
     let self = this;
     if (opts.mode == 'sequence') {
@@ -171,7 +173,7 @@ class Timeline extends Messenger {
 
   play(val,direction,speed) {
     var self = this;
-    if (self.playing || self.playInterval) return;
+    if (self.playing || self.playInterval || self.disabled) return;
     self.playing = true;
     self.animating = true;
     self.emit('play');
@@ -216,24 +218,26 @@ class Timeline extends Messenger {
       let delta = Math.round(speed) > 3 ? 3*direction : direction; //skip some frames if playing super fast 
       resetInterval();
 
-      if (direction == 1 && self.animation) {
-        if (self.animation[self.currentKeyframe] && typeof self.animation[self.currentKeyframe] === 'object') {
-          for (let j in self.animation[self.currentKeyframe]) {
-            if (typeof self.animation[self.currentKeyframe][j]['startDown'] === 'function') {
-              self.animation[self.currentKeyframe][j]['startDown'].call();
+
+        if (direction == 1 && self.animation) {
+          if (self.animation[self.currentKeyframe] && typeof self.animation[self.currentKeyframe] === 'object') {
+            for (let j in self.animation[self.currentKeyframe]) {
+              if (typeof self.animation[self.currentKeyframe][j]['startDown'] === 'function') {
+                self.animation[self.currentKeyframe][j]['startDown'].call();
+              }
             }
           }
         }
-      }
-      if ((direction == 0 || direction == -1) && self.animation) {
-        if (self.animation[self.currentKeyframe+1] && typeof self.animation[self.currentKeyframe+1] === 'object') {
-          for (let j in self.animation[self.currentKeyframe+1]) {
-            if (typeof self.animation[self.currentKeyframe+1][j]['startUp'] === 'function') {
-              self.animation[self.currentKeyframe+1][j]['startUp'].call();
+        if ((direction == 0 || direction == -1) && self.animation) {
+          if (self.animation[self.currentKeyframe+1] && typeof self.animation[self.currentKeyframe+1] === 'object') {
+            for (let j in self.animation[self.currentKeyframe+1]) {
+              if (typeof self.animation[self.currentKeyframe+1][j]['startUp'] === 'function') {
+                self.animation[self.currentKeyframe+1][j]['startUp'].call();
+              }
             }
           }
         }
-      }
+      
 
       function resetInterval(allowReset=true) {
         clearInterval(self.playInterval);
@@ -241,32 +245,35 @@ class Timeline extends Messenger {
           let lastFrame = self.currentFrame;
           self.currentFrame += delta; 
 
-          if ((direction == 1 && self.currentFrame > self.keyframes[self.currentKeyframe-1] || direction == -1 && self.currentFrame <= self.keyframes[self.currentKeyframe+1]) && allowReset) resetInterval(1,false);
 
-          if ((direction == 1 && self.currentFrame > parseInt(val)-1) || (direction == -1 && self.currentFrame < parseInt(val)+1)) {
-            if (direction == 1 && self.animation) {
-              if (self.animation[self.currentKeyframe] && typeof self.animation[self.currentKeyframe] === 'object') {
-                for (let i in self.animation[self.currentKeyframe]) {
-                  if (typeof self.animation[self.currentKeyframe][i]['endDown'] === 'function') {
-                    self.animation[self.currentKeyframe][i]['endDown'].call();
+            if ((direction == 1 && self.currentFrame > self.keyframes[self.currentKeyframe-1] || direction == -1 && self.currentFrame <= self.keyframes[self.currentKeyframe+1]) && allowReset) resetInterval(1,false);
+
+            if ((direction == 1 && self.currentFrame > parseInt(val)-1) || (direction == -1 && self.currentFrame < parseInt(val)+1)) {
+              if (direction == 1 && self.animation) {
+                if (self.animation[self.currentKeyframe] && typeof self.animation[self.currentKeyframe] === 'object') {
+                  for (let i in self.animation[self.currentKeyframe]) {
+                    if (typeof self.animation[self.currentKeyframe][i]['endDown'] === 'function') {
+                      self.animation[self.currentKeyframe][i]['endDown'].call();
+                    }
                   }
                 }
               }
-            }
-            if ((direction == -1 || direction == 0) && self.animation) {
-              if (self.animation[self.currentKeyframe+1] && typeof self.animation[self.currentKeyframe+1] === 'object') {
-                for (let i in self.animation[self.currentKeyframe+1]) {
-                  if (typeof self.animation[self.currentKeyframe+1][i]['endUp'] === 'function') {
-                    self.animation[self.currentKeyframe+1][i]['endUp'].call();
+              if ((direction == -1 || direction == 0) && self.animation) {
+                if (self.animation[self.currentKeyframe+1] && typeof self.animation[self.currentKeyframe+1] === 'object') {
+                  for (let i in self.animation[self.currentKeyframe+1]) {
+                    if (typeof self.animation[self.currentKeyframe+1][i]['endUp'] === 'function') {
+                      self.animation[self.currentKeyframe+1][i]['endUp'].call();
+                    }
                   }
                 }
               }
-            }
+            
 
             self.currentFrame = parseInt(val);
-            $('#timeline .timeline-frame-'+self.currentFrame).css({'zIndex':'2','display':'block'});
-            $('#timeline .timeline-frame').not('#timeline .timeline-frame-'+self.currentFrame).css({'zIndex':'1','display':'none'});
-            $('#timeline .timeline-frame').removeClass('old');
+              $('#timeline .timeline-frame-'+self.currentFrame).css({'zIndex':'2','display':'block'});
+              $('#timeline .timeline-frame').not('#timeline .timeline-frame-'+self.currentFrame).css({'zIndex':'1','display':'none'});
+              $('#timeline .timeline-frame').removeClass('old');
+            
             clearInterval(self.playInterval); 
             self.playInterval = false;
             self.playing = false;
@@ -293,6 +300,19 @@ class Timeline extends Messenger {
         }, self.deltaTime*1000/speed);
       }
     }
+  }
+
+  disable() {
+    this.disabled = true;
+    this.enabled = false;
+    $('#timeline').hide();
+    $('.timeline-animation').remove();
+  }
+
+  enable() {
+    this.disabled = false;
+    this.enabled = true;
+    $('#timeline').show();
   }
 
   changeSource(url) {
@@ -421,7 +441,7 @@ class Timeline extends Messenger {
         let suffix = self._constructURL(i);
         $('#timeline .timeline-frame-'+i).attr('src',suffix);
       }
-      setTimeout(function(){$('#timeline .timeline-frame-'+self.currentFrame).fadeIn('fast');},600);
+      setTimeout(function(){$('#timeline .timeline-frame-'+self.currentFrame).fadeIn('fast');self.emit('currentFrameLoaded');},600);
       return;
     }
 
@@ -461,7 +481,9 @@ class Timeline extends Messenger {
               $('#timeline').append(image);
             } else if (hard && self.cached.length > 0) {
               $('#timeline .timeline-frame-'+i).attr('src',$(image).attr('src'));
-              if (i == self.currentFrame) $('#timeline .timeline-frame-'+i).attr({'opacity':0,'display':'block'}).animate({'opacity':1},400);
+              if (i == self.currentFrame) $('#timeline .timeline-frame-'+i).attr({'opacity':0,'display':'block'}).animate({'opacity':1},400, function() {
+                self.emit('currentFrameLoaded');
+              });
             }
 
             let newLoadPercent = Math.round((self.loadedFrames / self.totalFrames)*100);

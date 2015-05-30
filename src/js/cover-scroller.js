@@ -11,14 +11,14 @@ class CoverScroller extends Messenger {
         this.animating = false;
         this.coverState = {};
         this.color = 'red';
-        if (timeline) this.timeline = timeline;
+        timeline ? this.timeline = timeline : undefined;
 
         for (var i=0; i<=this.numElements-1; i++) {
             _self.coverState[i] = false;
             let index = i;
 
             //track when a frameset loads
-            if (timeline) {
+            if (_self.timeline) {
                 _self.timeline.on('loaded'+index, function() {
                     _self.coverState[index] = true;
                 });
@@ -31,11 +31,13 @@ class CoverScroller extends Messenger {
             else {
                 //if a frameset is still loading, activate the loading overlay and wait until it's done
                 _self.showLoader();
-                _self.timeline.on('loaded'+index, function() {
-                    _self.timeline.off('loaded'+index);
-                    _self.hideLoader();
-                    _self.scrollTo(index);
-                });
+                if (_self.timeline) {
+                    _self.timeline.on('loaded'+index, function() {
+                        _self.timeline.off('loaded'+index);
+                        _self.hideLoader();
+                        _self.scrollTo(index);
+                    });
+                }
             }
         });
 
@@ -48,8 +50,9 @@ class CoverScroller extends Messenger {
         let width = $(window).width();
 
         $('.cover-wrapper,.cover').css({
-            width: width,
-            height: height
+            'width': width,
+            'height': height,
+            'min-height': height
         });
 
         this.elHeight = height;
@@ -67,7 +70,6 @@ class CoverScroller extends Messenger {
 
         $.each($('.color-picker li'), function(i,v) {
             if (i == 0) return;
-            console.log($(this));
             let t = $(this).find('div').eq(0).position().top;
             $(this).find('div').eq(1).css('top',t);
             //$('.color-picker li div').eq(1).css('top',t);

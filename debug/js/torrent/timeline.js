@@ -43,6 +43,8 @@ var Timeline = (function (_Messenger) {
     this.ready = false;
     this.forwardReady = false;
     this.backwardReady = false;
+    this.disabled = false;
+    this.enabled = true;
 
     var self = this;
     if (opts.mode == 'sequence') {
@@ -205,7 +207,7 @@ var Timeline = (function (_Messenger) {
     key: 'play',
     value: function play(val, direction, speed) {
       var self = this;
-      if (self.playing || self.playInterval) {
+      if (self.playing || self.playInterval || self.disabled) {
         return;
       }self.playing = true;
       self.animating = true;
@@ -283,6 +285,7 @@ var Timeline = (function (_Messenger) {
                 $('#timeline .timeline-frame-' + self.currentFrame).css({ zIndex: '2', display: 'block' });
                 $('#timeline .timeline-frame').not('#timeline .timeline-frame-' + self.currentFrame).css({ zIndex: '1', display: 'none' });
                 $('#timeline .timeline-frame').removeClass('old');
+
                 clearInterval(self.playInterval);
                 self.playInterval = false;
                 self.playing = false;
@@ -333,6 +336,21 @@ var Timeline = (function (_Messenger) {
           }
         })();
       }
+    }
+  }, {
+    key: 'disable',
+    value: function disable() {
+      this.disabled = true;
+      this.enabled = false;
+      $('#timeline').hide();
+      $('.timeline-animation').remove();
+    }
+  }, {
+    key: 'enable',
+    value: function enable() {
+      this.disabled = false;
+      this.enabled = true;
+      $('#timeline').show();
     }
   }, {
     key: 'changeSource',
@@ -471,7 +489,7 @@ var Timeline = (function (_Messenger) {
           $('#timeline .timeline-frame-' + i).attr('src', suffix);
         }
         setTimeout(function () {
-          $('#timeline .timeline-frame-' + self.currentFrame).fadeIn('fast');
+          $('#timeline .timeline-frame-' + self.currentFrame).fadeIn('fast');self.emit('currentFrameLoaded');
         }, 600);
         return;
       }
@@ -515,7 +533,9 @@ var Timeline = (function (_Messenger) {
               $('#timeline').append(image);
             } else if (hard && self.cached.length > 0) {
               $('#timeline .timeline-frame-' + _i2).attr('src', $(image).attr('src'));
-              if (_i2 == self.currentFrame) $('#timeline .timeline-frame-' + _i2).attr({ opacity: 0, display: 'block' }).animate({ opacity: 1 }, 400);
+              if (_i2 == self.currentFrame) $('#timeline .timeline-frame-' + _i2).attr({ opacity: 0, display: 'block' }).animate({ opacity: 1 }, 400, function () {
+                self.emit('currentFrameLoaded');
+              });
             }
 
             var newLoadPercent = Math.round(self.loadedFrames / self.totalFrames * 100);
