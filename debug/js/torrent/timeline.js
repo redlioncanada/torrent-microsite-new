@@ -45,6 +45,7 @@ var Timeline = (function (_Messenger) {
     this.backwardReady = false;
     this.disabled = false;
     this.enabled = true;
+    this.scrollDirection = 1;
 
     var self = this;
     if (opts.mode == 'sequence') {
@@ -336,6 +337,11 @@ var Timeline = (function (_Messenger) {
           }
         })();
       }
+    }
+  }, {
+    key: 'scrollDirection',
+    value: function scrollDirection(d) {
+      this.scrollDirection = d;
     }
   }, {
     key: 'disable',

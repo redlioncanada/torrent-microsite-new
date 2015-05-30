@@ -97,40 +97,69 @@ if (!isMobile) {
             7: [{
                 startDown: function startDown() {},
                 endDown: function endDown() {
-                    var arrow = $('<div style="opacity:0;" class="arrow-animation timeline-animation"><img class="arrow1 up" src="./images/torrent/arrows1.png"./><img class="arrow2 down" src="./images/torrent/arrows1.png"./><img class="arrow3 up" src="./images/torrent/arrows1.png"./></div>');
+                    var arrow = $('<div style="opacity:0;" class="arrow-animation timeline-animation"></div>');
                     $('body').append(arrow);
                     $(arrow).animate({ opacity: 1 }, 400);
 
-                    var up = $('.arrow-animation .arrow1');
-                    var down = $('.arrow-animation .arrow2');
-                    var up2 = $('.arrow-animation .arrow3');
+                    var resetPos = 4000;
+                    var posIncrement = 90;
+                    var posMod = posIncrement;
+                    var startDelay = 400;
+                    var arrowsPerColumn = 3;
+
+                    var up = '<img class="arrow1 up" src="./images/torrent/arrows1.png"./>';
+                    var down = '<img class="arrow2 down" src="./images/torrent/arrows1.png"./>';
+                    var up2 = '<img class="arrow3 up" src="./images/torrent/arrows1.png"./>';
+
+                    var iteration = 0;
+                    var iterations = 2;
+
                     function loop(el) {
                         var mod = arguments[1] === undefined ? 1 : arguments[1];
-                        var speed = arguments[2] === undefined ? 1700 : arguments[2];
-                        var iteration = arguments[3] === undefined ? 1 : arguments[3];
 
                         $(el).fadeIn('fast');
                         $(el).css({ top: 50 * mod * -1 });
                         var sign = mod == 1 ? '+' : '-';
                         $(el).animate({
-                            top: sign + '=80' }, speed, 'linear', function () {
+                            top: sign + '=' + posIncrement }, 700, 'linear', function () {
                             if ($('.arrow-animation').length) {
                                 $(el).fadeOut('fast', function () {
-                                    if (speed != 1700) {
-                                        speed = 1700;
+
+                                    //reset this if we've gone far enough
+                                    var top = $(el).css('top');
+                                    if (top < resetPos && mod || top > resetPos && !mod) {
+                                        $(el).fadeOut(1, function () {
+                                            $(el).css('top', 0);
+                                            loop(el, mod);
+                                        });
+                                    } else {
+                                        loop(el, mod);
                                     }
-                                    if (iteration >= 2) {
-                                        speed = 700;
-                                        iteration = 0;
-                                    }
-                                    loop(el, mod, speed, ++iteration);
                                 });
                             }
                         });
                     }
-                    loop(down);
-                    loop(up, 0);
-                    loop(up2, 0);
+
+                    function queSet(i) {
+                        start(down, i);
+                        start(up, i, 0);
+                        start(up2, i, 0);
+                    }
+
+                    function start(el, i) {
+                        var mod = arguments[2] === undefined ? 1 : arguments[2];
+
+                        $('.arrow-animation').append(el);
+                        el = $('.arrow-animation img').last();
+                        $(el).addClass('arrow-column-' + i);
+                        loop(el, mod);
+                    }
+
+                    for (var i = 0; i <= arrowsPerColumn - 1; i++) {
+                        setTimeout(function () {
+                            queSet(i);
+                        }, i * startDelay);
+                    }
                 },
                 startUp: function startUp() {
                     $('.arrow-animation').fadeOut('fast', function () {
@@ -146,40 +175,69 @@ if (!isMobile) {
                     });
                 },
                 endUp: function endUp() {
-                    var arrow = $('<div style="opacity:0;" class="arrow-animation timeline-animation"><img class="arrow1 up" src="./images/torrent/arrows1.png"./><img class="arrow2 down" src="./images/torrent/arrows1.png"./><img class="arrow3 up" src="./images/torrent/arrows1.png"./></div>');
+                    var arrow = $('<div style="opacity:0;" class="arrow-animation timeline-animation"></div>');
                     $('body').append(arrow);
                     $(arrow).animate({ opacity: 1 }, 400);
 
-                    var up = $('.arrow-animation .arrow1');
-                    var down = $('.arrow-animation .arrow2');
-                    var up2 = $('.arrow-animation .arrow3');
+                    var resetPos = 4000;
+                    var posIncrement = 90;
+                    var fastPosIncrement = 130;
+                    var posMod = posIncrement;
+                    var startDelay = 400;
+                    var arrowsPerColumn = 3;
+
+                    var up = '<img class="arrow1 up" src="./images/torrent/arrows1.png"./>';
+                    var down = '<img class="arrow2 down" src="./images/torrent/arrows1.png"./>';
+                    var up2 = '<img class="arrow3 up" src="./images/torrent/arrows1.png"./>';
+
+                    var iteration = 0;
+                    var iterations = 2;
+                    var speedInterval = setTimeout(function () {
+                        if (++iteration >= iterations) iteration = 0, posMod = fastPosIncrement;else posMod = posIncrement;
+                    }, 1000);
+
                     function loop(el) {
                         var mod = arguments[1] === undefined ? 1 : arguments[1];
-                        var speed = arguments[2] === undefined ? 1700 : arguments[2];
-                        var iteration = arguments[3] === undefined ? 1 : arguments[3];
 
                         $(el).fadeIn('fast');
-                        $(el).css({ top: 50 * mod * -1 });
                         var sign = mod == 1 ? '+' : '-';
                         $(el).animate({
-                            top: sign + '=80' }, speed, 'linear', function () {
+                            top: sign + '=' + posIncrement }, 700, 'linear', function () {
                             if ($('.arrow-animation').length) {
                                 $(el).fadeOut('fast', function () {
-                                    if (speed != 1700) {
-                                        speed = 1700;
+
+                                    //reset this if we've gone far enough
+                                    var top = $(el).css('top');
+                                    if (top < resetPos && mod || top > resetPos && !mod) {
+                                        $(el).fadeOut(1, function () {
+                                            $(el).css('top', 0);
+                                            loop(el, mod);
+                                        });
+                                    } else {
+                                        loop(el, mod);
                                     }
-                                    if (iteration >= 2) {
-                                        speed = 700;
-                                        iteration = 0;
-                                    }
-                                    loop(el, mod, speed, ++iteration);
                                 });
                             }
                         });
                     }
-                    loop(down);
-                    loop(up, 0);
-                    loop(up2, 0);
+
+                    function queSet() {
+                        start(down);
+                        start(up, 0);
+                        start(up2, 0);
+                    }
+
+                    function start(el) {
+                        var mod = arguments[1] === undefined ? 1 : arguments[1];
+
+                        $('.arrow-animation').append(el);
+                        el = $('.arrow-animation img').last();
+                        loop(el, mod);
+                    }
+
+                    for (var i = 0; i <= arrowsPerColumn - 1; i++) {
+                        setTimeout(queSet, i * startDelay);
+                    }
                 }
             }],
             9: [{

@@ -7,7 +7,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 .arrow-animation {
-  height: 100px;
+  height: 35px;
   position: absolute;
   width: 300px;
   z-index: 6049;
@@ -20,10 +20,31 @@ body {
   -moz-transform: rotate(180deg);
   -o-transform: rotate(180deg);
   -ms-transform: rotate(180deg);
-  left: 30px;
+  left: 15px;
 }
 .arrow-animation .arrow3 {
-  left: 60px;
+  left: 30px;
+}
+.arrow-animation .arrow1.arrow-column-1,
+.arrow-animation .arrow.arrow-column-3 {
+  top: 30px;
+}
+.arrow-animation .arrow1.arrow-column-2 {
+  top: -30px;
+}
+.arrow-animation .arrow2.arrow-column-1,
+.arrow-animation .arrow.arrow-column-3 {
+  top: 0px;
+}
+.arrow-animation .arrow2.arrow-column-2 {
+  top: 0px;
+}
+.arrow-animation .arrow3.arrow-column-1,
+.arrow-animation .arrow.arrow-column-3 {
+  top: 30px;
+}
+.arrow-animation .arrow3.arrow-column-2 {
+  top: -30px;
 }
 .arrow-animation img {
   height: 100%;
@@ -255,6 +276,9 @@ body {
 }
 #main-container #scroll-explore {
   width: 100%;
+}
+#main-container .view-photos:lang(fr) {
+  margin-top: -10px;
 }
 #main-container .view-photos,
 #main-container .play-video,

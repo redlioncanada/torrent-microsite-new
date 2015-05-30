@@ -27,6 +27,7 @@ class Timeline extends Messenger {
     this.backwardReady = false;
     this.disabled = false;
     this.enabled = true;
+    this.scrollDirection = 1;
 
     let self = this;
     if (opts.mode == 'sequence') {
@@ -300,6 +301,10 @@ class Timeline extends Messenger {
         }, self.deltaTime*1000/speed);
       }
     }
+  }
+
+  scrollDirection(d) {
+    this.scrollDirection = d;
   }
 
   disable() {

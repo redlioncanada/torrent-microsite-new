@@ -134,37 +134,65 @@ if (!isMobile) {
                         });*/
                     },
                     'endDown': function() {
-                        let arrow = $(`<div style="opacity:0;" class="arrow-animation timeline-animation"><img class="arrow1 up" src="./images/torrent/arrows1.png"./><img class="arrow2 down" src="./images/torrent/arrows1.png"./><img class="arrow3 up" src="./images/torrent/arrows1.png"./></div>`);
+                        let arrow = $(`<div style="opacity:0;" class="arrow-animation timeline-animation"></div>`);
                         $('body').append(arrow);
                         $(arrow).animate({'opacity':1},400);
 
-                        let up = $('.arrow-animation .arrow1');
-                        let down = $('.arrow-animation .arrow2');
-                        let up2 = $('.arrow-animation .arrow3');
-                        function loop(el,mod=1,speed=1700,iteration=1) {
+                        let resetPos = 4000;
+                        let posIncrement = 90;
+                        let posMod = posIncrement;
+                        let startDelay = 400;
+                        let arrowsPerColumn = 3;
+
+                        let up = '<img class="arrow1 up" src="./images/torrent/arrows1.png"./>';
+                        let down = '<img class="arrow2 down" src="./images/torrent/arrows1.png"./>';
+                        let up2 = '<img class="arrow3 up" src="./images/torrent/arrows1.png"./>';
+
+                        let iteration = 0;
+                        let iterations = 2;
+                        
+
+                        function loop(el,mod=1) {
                             $(el).fadeIn('fast');
                             $(el).css({top:50*mod*-1});
                             let sign = mod == 1 ? '+' : '-';
                             $(el).animate ({
-                                top: sign+'=80',
-                            }, speed, 'linear', function() {
+                                top: sign+'='+posIncrement,
+                            }, 700, 'linear', function() {
                                 if ($('.arrow-animation').length) {
                                     $(el).fadeOut('fast', function() {
-                                        if (speed != 1700) {
-                                            speed = 1700;
+
+                                        //reset this if we've gone far enough
+                                        let top = $(el).css('top');
+                                        if ((top < resetPos && mod) || (top > resetPos && !mod)) {
+                                            $(el).fadeOut(1, function() {
+                                                $(el).css('top',0);
+                                                loop(el,mod);
+                                            });
+                                        } else {
+                                            loop(el,mod);
                                         }
-                                        if (iteration>=2) {
-                                            speed = 700;
-                                            iteration = 0;
-                                        }
-                                        loop(el,mod,speed,++iteration);
                                     });
                                 }
                             });
                         }
-                        loop(down);
-                        loop(up,0);
-                        loop(up2,0);
+
+                        function queSet(i) {
+                            start(down,i);
+                            start(up,i,0);
+                            start(up2,i,0);
+                        }
+
+                        function start(el,i,mod=1) {
+                            $('.arrow-animation').append(el);
+                            el = $('.arrow-animation img').last();
+                            $(el).addClass('arrow-column-'+i);
+                            loop(el,mod);
+                        }
+
+                        for(var i = 0; i <= arrowsPerColumn-1; i++) {
+                            setTimeout(function(){queSet(i);},i*startDelay);
+                        }
                     },
                     'startUp': function() {
                         $('.arrow-animation').fadeOut('fast',function() {
@@ -205,37 +233,67 @@ if (!isMobile) {
                         });
                     },
                     'endUp': function() {
-                        let arrow = $(`<div style="opacity:0;" class="arrow-animation timeline-animation"><img class="arrow1 up" src="./images/torrent/arrows1.png"./><img class="arrow2 down" src="./images/torrent/arrows1.png"./><img class="arrow3 up" src="./images/torrent/arrows1.png"./></div>`);
+                        let arrow = $(`<div style="opacity:0;" class="arrow-animation timeline-animation"></div>`);
                         $('body').append(arrow);
                         $(arrow).animate({'opacity':1},400);
 
-                        let up = $('.arrow-animation .arrow1');
-                        let down = $('.arrow-animation .arrow2');
-                        let up2 = $('.arrow-animation .arrow3');
-                        function loop(el,mod=1,speed=1700,iteration=1) {
+                        let resetPos = 4000;
+                        let posIncrement = 90;
+                        let fastPosIncrement = 130;
+                        let posMod = posIncrement;
+                        let startDelay = 400;
+                        let arrowsPerColumn = 3;
+
+                        let up = '<img class="arrow1 up" src="./images/torrent/arrows1.png"./>';
+                        let down = '<img class="arrow2 down" src="./images/torrent/arrows1.png"./>';
+                        let up2 = '<img class="arrow3 up" src="./images/torrent/arrows1.png"./>';
+
+                        let iteration = 0;
+                        let iterations = 2;
+                        let speedInterval = setTimeout(function() {
+                            if (++iteration >= iterations) iteration = 0, posMod = fastPosIncrement;
+                            else posMod = posIncrement;
+                        },1000);
+
+                        function loop(el,mod=1) {
                             $(el).fadeIn('fast');
-                            $(el).css({top:50*mod*-1});
                             let sign = mod == 1 ? '+' : '-';
                             $(el).animate ({
-                                top: sign+'=80',
-                            }, speed, 'linear', function() {
+                                top: sign+'='+posIncrement,
+                            }, 700, 'linear', function() {
                                 if ($('.arrow-animation').length) {
                                     $(el).fadeOut('fast', function() {
-                                        if (speed != 1700) {
-                                            speed = 1700;
+
+                                        //reset this if we've gone far enough
+                                        let top = $(el).css('top');
+                                        if ((top < resetPos && mod) || (top > resetPos && !mod)) {
+                                            $(el).fadeOut(1, function() {
+                                                $(el).css('top',0);
+                                                loop(el,mod);
+                                            });
+                                        } else {
+                                            loop(el,mod);
                                         }
-                                        if (iteration>=2) {
-                                            speed = 700;
-                                            iteration = 0;
-                                        }
-                                        loop(el,mod,speed,++iteration);
                                     });
                                 }
                             });
                         }
-                        loop(down);
-                        loop(up,0);
-                        loop(up2,0);
+
+                        function queSet() {
+                            start(down);
+                            start(up,0);
+                            start(up2,0);
+                        }
+
+                        function start(el,mod=1) {
+                            $('.arrow-animation').append(el);
+                            el = $('.arrow-animation img').last();
+                            loop(el,mod);
+                        }
+
+                        for(var i = 0; i <= arrowsPerColumn-1; i++) {
+                            setTimeout(queSet,i*startDelay);
+                        }
                     }
                 }
             ],
