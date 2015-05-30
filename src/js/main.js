@@ -239,7 +239,6 @@ if (!isMobile) {
 
                         let resetPos = 4000;
                         let posIncrement = 90;
-                        let fastPosIncrement = 130;
                         let posMod = posIncrement;
                         let startDelay = 400;
                         let arrowsPerColumn = 3;
@@ -250,13 +249,11 @@ if (!isMobile) {
 
                         let iteration = 0;
                         let iterations = 2;
-                        let speedInterval = setTimeout(function() {
-                            if (++iteration >= iterations) iteration = 0, posMod = fastPosIncrement;
-                            else posMod = posIncrement;
-                        },1000);
+                        
 
                         function loop(el,mod=1) {
                             $(el).fadeIn('fast');
+                            $(el).css({top:50*mod*-1});
                             let sign = mod == 1 ? '+' : '-';
                             $(el).animate ({
                                 top: sign+'='+posIncrement,
@@ -279,20 +276,21 @@ if (!isMobile) {
                             });
                         }
 
-                        function queSet() {
-                            start(down);
-                            start(up,0);
-                            start(up2,0);
+                        function queSet(i) {
+                            start(down,i);
+                            start(up,i,0);
+                            start(up2,i,0);
                         }
 
-                        function start(el,mod=1) {
+                        function start(el,i,mod=1) {
                             $('.arrow-animation').append(el);
                             el = $('.arrow-animation img').last();
+                            $(el).addClass('arrow-column-'+i);
                             loop(el,mod);
                         }
 
                         for(var i = 0; i <= arrowsPerColumn-1; i++) {
-                            setTimeout(queSet,i*startDelay);
+                            setTimeout(function(){queSet(i);},i*startDelay);
                         }
                     }
                 }

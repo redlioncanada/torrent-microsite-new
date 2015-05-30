@@ -181,7 +181,6 @@ if (!isMobile) {
 
                     var resetPos = 4000;
                     var posIncrement = 90;
-                    var fastPosIncrement = 130;
                     var posMod = posIncrement;
                     var startDelay = 400;
                     var arrowsPerColumn = 3;
@@ -192,14 +191,12 @@ if (!isMobile) {
 
                     var iteration = 0;
                     var iterations = 2;
-                    var speedInterval = setTimeout(function () {
-                        if (++iteration >= iterations) iteration = 0, posMod = fastPosIncrement;else posMod = posIncrement;
-                    }, 1000);
 
                     function loop(el) {
                         var mod = arguments[1] === undefined ? 1 : arguments[1];
 
                         $(el).fadeIn('fast');
+                        $(el).css({ top: 50 * mod * -1 });
                         var sign = mod == 1 ? '+' : '-';
                         $(el).animate({
                             top: sign + '=' + posIncrement }, 700, 'linear', function () {
@@ -221,22 +218,25 @@ if (!isMobile) {
                         });
                     }
 
-                    function queSet() {
-                        start(down);
-                        start(up, 0);
-                        start(up2, 0);
+                    function queSet(i) {
+                        start(down, i);
+                        start(up, i, 0);
+                        start(up2, i, 0);
                     }
 
-                    function start(el) {
-                        var mod = arguments[1] === undefined ? 1 : arguments[1];
+                    function start(el, i) {
+                        var mod = arguments[2] === undefined ? 1 : arguments[2];
 
                         $('.arrow-animation').append(el);
                         el = $('.arrow-animation img').last();
+                        $(el).addClass('arrow-column-' + i);
                         loop(el, mod);
                     }
 
                     for (var i = 0; i <= arrowsPerColumn - 1; i++) {
-                        setTimeout(queSet, i * startDelay);
+                        setTimeout(function () {
+                            queSet(i);
+                        }, i * startDelay);
                     }
                 }
             }],
