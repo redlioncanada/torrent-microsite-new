@@ -90,22 +90,18 @@ if (!isMobile) {
                     });
                 }
             }],
-            6: [{
-                startUp: function startUp() {},
-                endDown: function endDown() {}
-            }],
             7: [{
-                startDown: function startDown() {},
                 endDown: function endDown() {
                     var arrow = $('<div style="opacity:0;" class="arrow-animation timeline-animation"></div>');
                     $('body').append(arrow);
                     $(arrow).animate({ opacity: 1 }, 400);
 
-                    var resetPos = 4000;
-                    var posIncrement = 90;
+                    var resetPos = 1000;
+                    var posIncrement = 250;
                     var posMod = posIncrement;
-                    var startDelay = 400;
+                    var startDelay = 300;
                     var arrowsPerColumn = 3;
+                    var resetTop = 70;
 
                     var up = '<img class="arrow1 up" src="./images/torrent/arrows1.png"./>';
                     var down = '<img class="arrow2 down" src="./images/torrent/arrows1.png"./>';
@@ -127,9 +123,9 @@ if (!isMobile) {
 
                                     //reset this if we've gone far enough
                                     var top = $(el).css('top');
-                                    if (top < resetPos && mod || top > resetPos && !mod) {
+                                    if (top < -resetPos && mod || top > resetPos && !mod) {
                                         $(el).fadeOut(1, function () {
-                                            $(el).css('top', 0);
+                                            $(el).css('top', mod ? -resetTop : resetTop);
                                             loop(el, mod);
                                         });
                                     } else {
@@ -160,30 +156,20 @@ if (!isMobile) {
                             queSet(i);
                         }, i * startDelay);
                     }
-                },
-                startUp: function startUp() {
-                    $('.arrow-animation').fadeOut('fast', function () {
-                        $('.arrow-animation').remove();
-                    });
-                },
-                endUp: function endUp() {}
+                }
             }],
             8: [{
-                startDown: function startDown() {
-                    $('.arrow-animation').fadeOut('fast', function () {
-                        $('.arrow-animation').remove();
-                    });
-                },
                 endUp: function endUp() {
                     var arrow = $('<div style="opacity:0;" class="arrow-animation timeline-animation"></div>');
                     $('body').append(arrow);
                     $(arrow).animate({ opacity: 1 }, 400);
 
-                    var resetPos = 4000;
-                    var posIncrement = 90;
+                    var resetPos = 1000;
+                    var posIncrement = 250;
                     var posMod = posIncrement;
-                    var startDelay = 400;
+                    var startDelay = 300;
                     var arrowsPerColumn = 3;
+                    var resetTop = 70;
 
                     var up = '<img class="arrow1 up" src="./images/torrent/arrows1.png"./>';
                     var down = '<img class="arrow2 down" src="./images/torrent/arrows1.png"./>';
@@ -205,9 +191,9 @@ if (!isMobile) {
 
                                     //reset this if we've gone far enough
                                     var top = $(el).css('top');
-                                    if (top < resetPos && mod || top > resetPos && !mod) {
+                                    if (top < -resetPos && mod || top > resetPos && !mod) {
                                         $(el).fadeOut(1, function () {
-                                            $(el).css('top', 0);
+                                            $(el).css('top', mod ? -resetTop : resetTop);
                                             loop(el, mod);
                                         });
                                     } else {
@@ -241,11 +227,6 @@ if (!isMobile) {
                 }
             }],
             9: [{
-                startUp: function startUp() {
-                    $('.liquid-animation').fadeOut('fast', function () {
-                        $('.liquid-animation').remove();
-                    });
-                },
                 endDown: function endDown() {
                     var color = timeline.color;
                     var liquid = $('<div style="opacity:0;"" class="liquid-animation timeline-animation"><img class="liquid" src="./images/torrent/mini-animations/' + color + '-juice.png"./></div>');
@@ -302,11 +283,6 @@ if (!isMobile) {
 
                         $(liquid).css({ left: oX, top: oY, width: oW }).animate({ opacity: 1 }, 400);
                     }
-                },
-                startDown: function startDown() {
-                    $('.liquid-animation').fadeOut('fast', function () {
-                        $('.liquid-animation').remove();
-                    });
                 }
             }]
         },
@@ -363,7 +339,7 @@ $(document).ready(function () {
             var cacheNum = timeline.cached.length - 1;
             circleLoader.init($('.color-picker .' + colors[0]));
             timeline.cacheColor = colors[0];
-            var url = '/images/torrent/sequence/' + colors[0] + '/' + colors[0].toUpperCase() + '_TORRENT_EDIT_00000.jpg';
+            var url = './images/torrent/sequence/' + colors[0] + '/' + colors[0].toUpperCase() + '_TORRENT_EDIT_00000.jpg';
             timeline._cache(false, url);
 
             //reposition color-picker elements
@@ -380,12 +356,12 @@ $(document).ready(function () {
 
         //scroll the page on mousewheel scroll
         $('.cover-wrapper').mousewheel(function (event) {
-            if (event.deltaY > 0) {
+            if (event.deltaY < 0) {
                 scroller.scroll(1);
                 if (scroller.curCover == 11) {
                     if (timeline.currentKeyframe == timeline.keyframes.length - 1) timeline.playTo(11);else timeline.next();
                 }
-            } else if (event.deltaY < 0) {
+            } else if (event.deltaY > 0) {
                 scroller.scroll(0);
                 if (scroller.curCover == 11) {
                     if (timeline.currentKeyframe > 12) {
@@ -400,7 +376,7 @@ $(document).ready(function () {
         timeline.on('changeSource', function () {
             //change the blender on the first panel when the color changes
             var path = '/' + $('.blender-1').attr('id').replace(/-/g, '/') + '/';
-            $('.blender-1').attr('src', path + this.color + '.png');
+            $('.blender-1').attr('src', '.' + path + this.color + '.png');
 
             //toggle recipe button if the current color doesn't have one
             if ($('#show-recipe .' + timeline.color).length == 0) {
@@ -428,6 +404,9 @@ $(document).ready(function () {
                     timeline.playTo(this.curCover);
                 }
             }
+
+            //remove animations
+            timeline.clearAnimation();
         });
 
         scroller.on('scrollEnd', function () {
@@ -436,11 +415,13 @@ $(document).ready(function () {
             }
         });
 
+        //play timeline on scroller at the bottom
         $('#spin-right').click(function () {
             timeline.next();
             if (timeline.currentKeyframe == timeline.keyframes.length - 1) timeline.playTo(11);
         });
 
+        //play timeline on scroller at the bottom
         $('#spin-left').click(function () {
             if (timeline.currentKeyframe > 12) {
                 timeline.prev();
@@ -480,7 +461,7 @@ $(document).ready(function () {
         var pwidth = $(element + ' .slick').width();
         var offsetLeft = slick.currentTarget.offsetLeft;
         var newLeft = offsetLeft + (pwidth - width) / 2 + width;
-        $(element + ' .close-x').css({ left: newLeft, top: slick.currentTarget.offsetTop }).fadeIn('fast');
+        $(element + ' .close-x').css({ left: newLeft, top: parseInt(slick.currentTarget.offsetTop) - 23 }).fadeIn('fast');
     }
 
     //init video slick gallery
@@ -511,12 +492,12 @@ $(document).ready(function () {
 
     //on view photos button click, show photo gallery
     $('.view-photos').click(function () {
-        $('#view-photo').css('display', 'none').css('left', 'initial').fadeIn();
+        $('#view-photo').css('display', 'none').css('left', '0').fadeIn();
     });
 
     //on view videos button click, show video gallery
     $('.play-video').click(function () {
-        $('#play-video').css('display', 'none').css('left', 'initial').fadeIn();
+        $('#play-video').css('display', 'none').css('left', '0').fadeIn();
     });
 
     //on next/prev video click, pause the current video
@@ -531,7 +512,7 @@ $(document).ready(function () {
         $('.recipe-wrapper').css('display', 'none');
         var currentColor = isMobile ? 'red' : scroller.color;
         $('.recipe-wrapper.' + currentColor).removeAttr('style');
-        $('#show-recipe').css('display', 'none').css('left', 'initial').fadeIn();
+        $('#show-recipe').css('display', 'none').css('left', '0').fadeIn();
     });
 
     //on color click, change the timeline's sequence
@@ -549,25 +530,31 @@ $(document).ready(function () {
         var _this = this;
 
         if (YT) {
-            (function () {
+            var _ret2 = (function () {
                 var id = $(_this).attr('data-id');
                 var v = _this;
 
-                if (youtubePlayers.id) {
+                if ($(v).find('iframe').length) return {
+                        v: undefined
+                    };
+
+                if (youtubePlayers[id]) {
                     $(v).find('img').fadeOut('fast', function () {
-                        youtubePlayers.id.playVideo();
+                        youtubePlayers[id].playVideo();
                     });
                 } else {
                     var width = $(_this).width();
                     var height = $(_this).height();
-                    $(_this).append('<iframe id="' + id + '" style="position: absolute;" src="https://www.youtube.com/embed/' + id + '?autoplay=1&controls=0&enablejsapi=1" height="' + height + '" width="' + width + ' type="text/html" frameborder="0"./>');
+                    $(_this).append('<iframe id="' + id + '" style="position: absolute;" src="https://www.youtube.com/embed/' + id + '?autoplay=1&enablejsapi=1" height="' + height + '" width="' + width + ' type="text/html" frameborder="0"/>');
 
                     setTimeout(function () {
                         $(v).find('img').fadeOut();
-                        youtubePlayers.id = new YT.Player(id);
+                        youtubePlayers[id] = new YT.Player(id);
                     }, 1000);
                 }
             })();
+
+            if (typeof _ret2 === 'object') return _ret2.v;
         } else {
             console.log('youtube failed to load');
         }
@@ -593,53 +580,3 @@ $(document).ready(function () {
         }
     }
 });
-
-/*$('.blades-animation').fadeOut('fast', function() {
-    $('.blades-animation').remove();
-});*/
-
-/*let blades = $(`<div style="opacity:0;"" class="blades-animation"><img class="blades" src="./images/torrent/mini-animations/blade.png"./><img class="blades-background" src="./images/torrent/mini-animations/blade-background.png"./></div>`);
-$('body').append(blades);
- setPos();
-$(window).on('resize',setPos);
-function setPos() {
-    let blades = $('.blades-animation');
-    if (!blades.length) {
-        $(window).off('resize',setPos);
-        return;
-    }
-    
-    let pW = $('#timeline').width();
-    let pH = $('#timeline').height();
-    let xOffset = (pW - $(window).width()) / 2;
-    let yOffset = (pH - $(window).height()) / 2;
-    let oW = pW * 0.1255546875;
-    let oX = (pW * 0.4721640625) - xOffset;
-    let oY = (pH * 0.66754166666667) - yOffset + 60;
-     $(blades).css({'left':oX,'top':oY,'width':oW}).animate({'opacity':1},400);
-}*/
-
-/*$('.blades-animation').fadeOut('fast', function() {
-    $('.blades-animation').remove();
-});*/
-
-/*let blades = $(`<div style="opacity:0;"" class="blades-animation"><img class="blades" src="./images/torrent/mini-animations/blade.png"./><img class="blades-background" src="./images/torrent/mini-animations/blade-background.png"./></div>`);
-$('body').append(blades);
- setPos();
-$(window).on('resize',setPos);
-function setPos() {
-    let blades = $('.blades-animation');
-    if (!blades.length) {
-        $(window).off('resize',setPos);
-        return;
-    }
-    
-    let pW = $('#timeline').width();
-    let pH = $('#timeline').height();
-    let xOffset = (pW - $(window).width()) / 2;
-    let yOffset = (pH - $(window).height()) / 2;
-    let oW = pW * 0.1255546875;
-    let oX = (pW * 0.4721640625) - xOffset;
-    let oY = (pH * 0.66754166666667) - yOffset + 60;
-     $(blades).css({'left':oX,'top':oY,'width':oW}).animate({'opacity':1},400);
-}*/

@@ -7,7 +7,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 .arrow-animation {
-  height: 35px;
+  height: 90px;
   position: absolute;
   width: 300px;
   z-index: 6049;
@@ -20,31 +20,31 @@ body {
   -moz-transform: rotate(180deg);
   -o-transform: rotate(180deg);
   -ms-transform: rotate(180deg);
-  left: 15px;
+  left: 35px;
 }
 .arrow-animation .arrow3 {
-  left: 30px;
+  left: 70px;
 }
 .arrow-animation .arrow1.arrow-column-1,
 .arrow-animation .arrow.arrow-column-3 {
-  top: 30px;
+  top: 300px;
 }
 .arrow-animation .arrow1.arrow-column-2 {
-  top: -30px;
+  top: -300px;
 }
 .arrow-animation .arrow2.arrow-column-1,
 .arrow-animation .arrow.arrow-column-3 {
-  top: 0px;
+  top: 300px;
 }
 .arrow-animation .arrow2.arrow-column-2 {
   top: 0px;
 }
 .arrow-animation .arrow3.arrow-column-1,
 .arrow-animation .arrow.arrow-column-3 {
-  top: 30px;
+  top: 300px;
 }
 .arrow-animation .arrow3.arrow-column-2 {
-  top: -30px;
+  top: -300px;
 }
 .arrow-animation img {
   height: 100%;
@@ -58,10 +58,12 @@ body {
 .blades-animation .blades-background,
 .liquid-animation .blades-background {
   width: 100%;
+  height: auto;
 }
 .blades-animation .blades,
 .liquid-animation .blades {
   width: 100%;
+  height: auto;
   -webkit-animation: rotation 0.13s linear infinite;
   -moz-animation: rotation 0.13s linear infinite;
   -ms-animation: rotation 0.13s linear infinite;
@@ -69,6 +71,7 @@ body {
 .blades-animation .liquid,
 .liquid-animation .liquid {
   width: 100%;
+  height: auto;
   -webkit-animation: rotation 0.3s linear infinite;
   -moz-animation: rotation 0.3s linear infinite;
   -ms-animation: rotation 0.3s linear infinite;
@@ -96,7 +99,6 @@ body {
   overflow: hidden;
   width: 100%;
   height: 100%;
-  min-height: 100%;
   background-color: black !important;
   color: white;
   font-size: 12pt;
@@ -157,6 +159,12 @@ body {
   border: 0;
   margin: 0;
   padding: 0;
+  text-shadow: 4px 0px 5px rgba(0, 0, 0, 0.5);
+  -moz-hyphens: none;
+  -ms-hyphens: none;
+  -webkit-hyphens: none;
+  hyphens: none;
+  word-wrap: normal;
 }
 #main-container h1,
 #main-container h2,
@@ -198,6 +206,12 @@ body {
   vertical-align: baseline;
   margin: 0;
   padding: 0;
+  text-shadow: 4px 0px 5px rgba(0, 0, 0, 0.5);
+  -moz-hyphens: none;
+  -ms-hyphens: none;
+  -webkit-hyphens: none;
+  hyphens: none;
+  word-wrap: normal;
 }
 #main-container article,
 #main-container aside,
@@ -256,10 +270,12 @@ body {
   pointer-events: none;
   width: 100%;
   height: 100%;
+  min-height: 100%;
   overflow: hidden;
 }
 #main-container #timeline > img {
   width: 100%;
+  height: auto;
   position: absolute;
   z-index: 2;
 }
@@ -367,9 +383,9 @@ body {
   }
 }
 #main-container .recipe-wrapper .close-x {
-  position: absolute;
-  margin: 0 0 0 26px;
+  position: relative;
   max-width: 10%;
+  float: right;
 }
 #main-container .recipe-wrapper .close-x img {
   max-width: 100%;
@@ -665,7 +681,7 @@ body {
   position: absolute;
   width: 100%;
   bottom: 3%;
-  height: initial !important;
+  height: auto;
 }
 #main-container .cover-item-1 .blender-1 {
   height: 200px;
@@ -730,6 +746,7 @@ body {
 }
 #main-container .cover-item-4 li > div:first-child img {
   width: 55px;
+  float: right;
 }
 #main-container .cover-item-4 li > div:last-child {
   float: right;
@@ -757,7 +774,7 @@ body {
   top: 58%;
 }
 #main-container .cover-item-6 p {
-  max-width: 318px;
+  max-width: 330px;
 }
 #main-container .cover-item-7 .col-xs-3 {
   top: 3%;
@@ -904,7 +921,9 @@ body {
   position: absolute;
   z-index: 4000;
   width: 100%;
+  min-width: 100%;
   height: 100%;
+  min-height: 100%;
   background-color: #000;
 }
 #main-container #loader img {
@@ -922,6 +941,7 @@ body {
 }
 #main-container .background {
   width: 100%;
+  height: auto;
 }
 #main-container .animate-all {
   -webkit-transition: all 0.5s;
@@ -1010,6 +1030,7 @@ body {
   background-color: black;
   opacity: 0.7;
   width: 100%;
+  min-width: 100%;
   position: absolute;
   z-index: 2;
 }
@@ -1025,14 +1046,17 @@ body {
   #main-container div.cover-item-4 {
     height: 470px !important;
   }
-  #main-container div.cover-item-4 .col-xs-8 ul {
-    padding-top: 57px !important;
-  }
   #main-container div.cover-item-11 .mobile > img {
     left: -3vw !important;
   }
 }
 @media (max-width: 480px) {
+  #main-container div.cover-item-1 h1 {
+    font-size: 14pt;
+  }
+  #main-container div.cover-item-1 h3 {
+    font-size: 17pt;
+  }
   #main-container div.cover-item-2 {
     height: 720px !important;
   }
@@ -1041,6 +1065,9 @@ body {
   }
   #main-container div.cover-item-4 {
     height: 395px !important;
+  }
+  #main-container div.cover-item-4 .col-xs-8 ul {
+    padding-top: 108px !important;
   }
   #main-container div.cover-item-5 {
     height: 500px !important;
@@ -1083,7 +1110,7 @@ body {
     height: 520px!important;
   }
   #main-container div.cover-item-11 .mobile > img {
-    left: 5vw!important;
+    left: 3vw!important;
     top: 35%!important;
   }
   #main-container div.cover-item-12 {
@@ -1180,7 +1207,7 @@ body {
   }
   #main-container .cover-item-8 .mobile > img {
     width: 80%;
-    top: -3vh;
+    top: -1vh;
     left: 9vw;
   }
   #main-container .cover-item-9 .mobile .col-xs-8 {
@@ -1219,7 +1246,7 @@ body {
     font-size: 6pt;
   }
 }
-@media (max-width: 768px), only screen and (max-device-width: 1536px) and (-webkit-min-device-pixel-ratio: 2) {
+@media (max-width: 768px), only screen and (min-device-width: 768px) and (max-device-width: 1024px) {
   #main-container .cover {
     height: 800px;
   }
@@ -1236,6 +1263,7 @@ body {
   #main-container #view-photo .slick-prev img,
   #main-container #view-photo .slick-next img {
     width: 100%;
+    min-width: 100%;
   }
   #main-container #play-video .slick-prev,
   #main-container #play-video .slick-next {
@@ -1490,6 +1518,7 @@ body {
   }
   #main-container .cover-item-10 .mobile > img {
     width: 100%;
+    height: auto;
   }
   #main-container .cover-item-10 .col-xs-8 {
     top: 30%;

@@ -397,6 +397,16 @@ var Timeline = (function (_Messenger) {
       console.log('' + prefix + ' ' + type + ': ' + msg);
     }
   }, {
+    key: 'clearAnimation',
+    value: function clearAnimation() {
+      $('.arrow-animation').fadeOut('fast', function () {
+        $('.arrow-animation').remove();
+      });
+      $('.liquid-animation').fadeOut('fast', function () {
+        $('.liquid-animation').remove();
+      });
+    }
+  }, {
     key: 'forwardVideo',
     set: function (v) {
       this._forwardVideo = v;

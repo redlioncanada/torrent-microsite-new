@@ -356,6 +356,15 @@ class Timeline extends Messenger {
     console.log(`${prefix} ${type}: ${msg}`);
   }
 
+  clearAnimation() {
+    $('.arrow-animation').fadeOut('fast',function() {
+        $('.arrow-animation').remove();
+    });
+    $('.liquid-animation').fadeOut('fast',function() {
+        $('.liquid-animation').remove();
+    });
+  }
+
   set forwardVideo(v) {
     this._forwardVideo = v;
     if (this._backwardVideo) this.init();
