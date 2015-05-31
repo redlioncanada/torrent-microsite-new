@@ -307,6 +307,9 @@ body {
   left: -47px;
   top: 49%;
 }
+#main-container #show-recipe {
+  overflow: scroll;
+}
 #main-container #play-video .close-x,
 #main-container #view-photo .close-x {
   color: white;
@@ -343,7 +346,7 @@ body {
 }
 #main-container .recipe-wrapper .close-x {
   position: absolute;
-  margin: 0 0 0 26px;
+  right: 3%;
   max-width: 10%;
 }
 #main-container .recipe-wrapper .close-x img {
