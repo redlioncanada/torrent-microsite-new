@@ -27,6 +27,7 @@ class Timeline extends Messenger {
     this.backwardReady = false;
     this.disabled = false;
     this.enabled = true;
+    this.scrollDirection = 1;
 
     let self = this;
     if (opts.mode == 'sequence') {
@@ -302,6 +303,10 @@ class Timeline extends Messenger {
     }
   }
 
+  scrollDirection(d) {
+    this.scrollDirection = d;
+  }
+
   disable() {
     this.disabled = true;
     this.enabled = false;
@@ -349,6 +354,15 @@ class Timeline extends Messenger {
     }
 
     console.log(`${prefix} ${type}: ${msg}`);
+  }
+
+  clearAnimation() {
+    $('.arrow-animation').fadeOut('fast',function() {
+        $('.arrow-animation').remove();
+    });
+    $('.liquid-animation').fadeOut('fast',function() {
+        $('.liquid-animation').remove();
+    });
   }
 
   set forwardVideo(v) {

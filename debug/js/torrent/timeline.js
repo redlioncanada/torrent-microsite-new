@@ -45,6 +45,7 @@ var Timeline = (function (_Messenger) {
     this.backwardReady = false;
     this.disabled = false;
     this.enabled = true;
+    this.scrollDirection = 1;
 
     var self = this;
     if (opts.mode == 'sequence') {
@@ -338,6 +339,11 @@ var Timeline = (function (_Messenger) {
       }
     }
   }, {
+    key: 'scrollDirection',
+    value: function scrollDirection(d) {
+      this.scrollDirection = d;
+    }
+  }, {
     key: 'disable',
     value: function disable() {
       this.disabled = true;
@@ -389,6 +395,16 @@ var Timeline = (function (_Messenger) {
       }
 
       console.log('' + prefix + ' ' + type + ': ' + msg);
+    }
+  }, {
+    key: 'clearAnimation',
+    value: function clearAnimation() {
+      $('.arrow-animation').fadeOut('fast', function () {
+        $('.arrow-animation').remove();
+      });
+      $('.liquid-animation').fadeOut('fast', function () {
+        $('.liquid-animation').remove();
+      });
     }
   }, {
     key: 'forwardVideo',

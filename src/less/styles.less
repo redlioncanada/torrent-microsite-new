@@ -1,23 +1,30 @@
 @outerPadding: 70px;
-body {overflow: hidden; background-color: black !important; font-size: 13pt; min-width: 320px; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;}
+body {overflow: hidden; background-color: black !important; font-size: 13pt; min-width: 320px; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
 .arrow-animation {
-  height: 100px;
+  height: 90px;
   position: absolute;
   width: 300px;
   z-index: 6049;
   left: 52vw;
   top: 69vh;
   .down {
-    transform: rotate(180deg);
+    transform: rotate(180deg);  
     -webkit-transform: rotate(180deg);
     -moz-transform: rotate(180deg);
     -o-transform: rotate(180deg);
     -ms-transform: rotate(180deg);
-    left: 30px;
+    left: 35px;
   }
   .arrow3 {
-    left: 60px;
+    left: 70px;
   }
+  .arrow1.arrow-column-1,.arrow.arrow-column-3 {top: 300px;}
+  .arrow1.arrow-column-2 {top: -300px;}
+  .arrow2.arrow-column-1,.arrow.arrow-column-3 {top: 300px;}
+  .arrow2.arrow-column-2 {top: 0px;}
+  .arrow3.arrow-column-1,.arrow.arrow-column-3 {top: 300px;}
+  .arrow3.arrow-column-2 {top: -300px;}
+
   img {
     height: 100%;
     position: absolute;
@@ -29,15 +36,18 @@ body {overflow: hidden; background-color: black !important; font-size: 13pt; min
 
     .blades-background {
       width: 100%;
+      height: auto;
     }
     .blades {
         width: 100%;
+        height: auto;
         -webkit-animation: rotation 0.13s linear infinite;
         -moz-animation: rotation 0.13s linear infinite;
         -ms-animation: rotation 0.13s linear infinite;
     }
     .liquid {
         width: 100%;
+        height: auto;
         -webkit-animation: rotation 0.3s linear infinite;
         -moz-animation: rotation 0.3s linear infinite;
         -ms-animation: rotation 0.3s linear infinite;
@@ -66,7 +76,6 @@ body {overflow: hidden; background-color: black !important; font-size: 13pt; min
   overflow: hidden;
   width: 100%;
   height: 100%;
-  min-height: 100%;
   background-color: black !important;
   color: white;
   font-size: 12pt;
@@ -96,12 +105,24 @@ div, span, object, iframe, img, table, caption, thead, tbody, tfoot, tr, tr, td,
   border: 0;
   margin: 0;
   padding: 0;
+  text-shadow: 4px 0px 5px rgba(0, 0, 0, 0.5);
+  -moz-hyphens: none;
+  -ms-hyphens: none;
+  -webkit-hyphens: none;
+  hyphens: none;
+  word-wrap: normal;
 }
 h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, address, cit, code, del, dfn, em, ins, q, samp, small, strong, sub, sup, b, i, hr, dl, dt, dd, ol, ul, li, fieldset, legend, label {
   border: 0;
   vertical-align: baseline;
   margin: 0;
   padding: 0;
+  text-shadow: 4px 0px 5px rgba(0, 0, 0, 0.5);
+  -moz-hyphens: none;
+  -ms-hyphens: none;
+  -webkit-hyphens: none;
+  hyphens: none;
+  word-wrap: normal;
 }
 article, aside, canvas, figure, figure img, figcaption, hgroup, footer, header, nav, section, audio, video {
   display: block;
@@ -145,10 +166,12 @@ a img {
   pointer-events: none;
   width: 100%;
   height: 100%;
+  min-height: 100%;
   overflow: hidden;
 
   > img {
     width: 100%;
+    height: auto;
     position: absolute;
     z-index: 2
   }
@@ -162,10 +185,14 @@ a img {
   width: 100%;
   height: 100%;
   background-color: black;
-  opacity: 0.3;
+  opacity: 0.7;
 }
 #scroll-explore {
   width: 100%;
+  max-width: 220px;
+}
+.view-photos:lang(fr) {
+  margin-top: -10px;
 }
 .view-photos,.play-video,#play-video img,.show-recipe {
   cursor: pointer;
@@ -240,9 +267,9 @@ a img {
   }
   
   .close-x {
-	  position: absolute;
-	  right: 3%;
+	  position: relative;
 	  max-width: 10%;
+    float: right;
 	  
 	  img {
 		  max-width: 100%
@@ -538,7 +565,7 @@ a img {
     position: absolute;
     width: 100%;
     bottom: 3%;
-    height: initial !important;
+    height: auto;
   }
   .blender-1 {
       height: 200px;
@@ -610,6 +637,7 @@ a img {
 
     img {
       width: 55px;
+      float: right;
     }
   }
   li > div:last-child {
@@ -639,7 +667,7 @@ a img {
     top: 58%;
   }
   p {
-    max-width: 318px;
+    max-width: 330px;
   }
 }
 .cover-item-7 {
@@ -798,7 +826,9 @@ img.slick-prev, img.slick-next {
   position: absolute;
   z-index: 4000;
   width: 100%;
+  min-width: 100%;
   height: 100%;
+  min-height: 100%;
   background-color: #000;
 
   img {
@@ -817,6 +847,7 @@ img.slick-prev, img.slick-next {
 }
 .background {
   width: 100%;
+  height: auto;
 }
 .animate-all {
   -webkit-transition: all 0.5s;
@@ -900,6 +931,7 @@ p > span, h1 > span, h2 > span, h3 > span, h4 > span {
   background-color: black;
   opacity: 0.7;
   width: 100%;
+  min-width: 100%;
   position: absolute;
   z-index: 2;
 }
@@ -914,12 +946,15 @@ p > span, h1 > span, h2 > span, h3 > span, h4 > span {
 @media(max-width:375px) {
   div.cover-item-4 {
     height: 470px !important;
-    .col-xs-8 ul {padding-top: 57px !important;}
   }
   div.cover-item-11 .mobile > img {left: -3vw !important;}
 }
 //iphone 6
 @media(max-width:480px) {
+  div.cover-item-1 {
+    h1 {font-size: 14pt;}
+    h3 {font-size: 17pt;}
+  }
   div.cover-item-2 {
     height: 720px !important;
   }
@@ -928,6 +963,7 @@ p > span, h1 > span, h2 > span, h3 > span, h4 > span {
   }
   div.cover-item-4 {
     height: 395px !important;
+    .col-xs-8 ul {padding-top: 108px !important;}
   }
   div.cover-item-5 {
     height: 500px !important;
@@ -962,7 +998,7 @@ p > span, h1 > span, h2 > span, h3 > span, h4 > span {
   }
   div.cover-item-11 {
     .mobile >img {
-      left: 5vw!important;
+      left: 3vw!important;
       top: 35%!important;
     }
   }
@@ -1059,7 +1095,7 @@ p > span, h1 > span, h2 > span, h3 > span, h4 > span {
       .col-xs-8 {top: 20%;}
       .mobile > img {
         width: 80%;
-        top: -3vh;
+        top: -1vh;
         left: 9vw;
       }
     }
@@ -1096,8 +1132,8 @@ p > span, h1 > span, h2 > span, h3 > span, h4 > span {
 }
 //ipad
 @media(max-width:768px), only screen 
-  and (max-device-width: 1536px) 
-  and (-webkit-min-device-pixel-ratio: 2) {
+and (min-device-width : 768px) 
+and (max-device-width : 1024px)  {
 
   .cover {
     height: 800px;
@@ -1110,7 +1146,7 @@ p > span, h1 > span, h2 > span, h3 > span, h4 > span {
   }
   #view-photo .slick-prev, #view-photo .slick-next {
     top: 29% !important;
-    img {width: 100%;}
+    img {width: 100%; min-width: 100%;}
   }
   #play-video .slick-prev, #play-video .slick-next {
     top: 41% !important;
@@ -1383,6 +1419,7 @@ p > span, h1 > span, h2 > span, h3 > span, h4 > span {
   .cover-item-10 {
     .mobile > img {
       width: 100%;
+      height: auto;
     }
     .col-xs-8 {
       top: 30%;
