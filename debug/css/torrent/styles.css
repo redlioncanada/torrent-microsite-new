@@ -1280,7 +1280,7 @@ body {
     left: 38px;
   }
   #main-container #slick-colors .slick-slide img {
-    width: 60%;
+    height: 215px;
   }
   #main-container #view-photo .slick,
   #main-container #play-video .slick {
