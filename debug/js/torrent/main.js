@@ -461,7 +461,7 @@ $(document).ready(function () {
         var pwidth = $(element + ' .slick').width();
         var offsetLeft = slick.currentTarget.offsetLeft;
         var newLeft = offsetLeft + (pwidth - width) / 2 + width;
-        $(element + ' .close-x').css({ left: newLeft, top: parseInt(slick.currentTarget.offsetTop) - 23 }).fadeIn('fast');
+        $(element + ' .close-x').css({ left: newLeft, top: parseInt(slick.currentTarget.offsetTop) - 28 }).fadeIn('fast');
     }
 
     //init video slick gallery

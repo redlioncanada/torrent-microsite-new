@@ -351,6 +351,13 @@ body {
 #main-container #show-recipe {
   overflow: scroll;
 }
+#main-container .recipe-icon {
+  z-index: 2;
+  position: relative;
+  float: left;
+  width: 78px;
+  padding-left: 7px;
+}
 #main-container #play-video .close-x,
 #main-container #view-photo .close-x {
   color: white;
