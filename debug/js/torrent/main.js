@@ -103,9 +103,9 @@ if (!isMobile) {
                     var arrowsPerColumn = 3;
                     var resetTop = 70;
 
-                    var up = '<img class="arrow1 up" src="./images/torrent/arrows1.png"./>';
-                    var down = '<img class="arrow2 down" src="./images/torrent/arrows1.png"./>';
-                    var up2 = '<img class="arrow3 up" src="./images/torrent/arrows1.png"./>';
+                    var up = '<img class="arrow1 up" src="/images/torrent/arrows1.png"/>';
+                    var down = '<img class="arrow2 down" src="/images/torrent/arrows1.png"/>';
+                    var up2 = '<img class="arrow3 up" src="/images/torrent/arrows1.png"/>';
 
                     var iteration = 0;
                     var iterations = 2;
@@ -171,9 +171,9 @@ if (!isMobile) {
                     var arrowsPerColumn = 3;
                     var resetTop = 70;
 
-                    var up = '<img class="arrow1 up" src="./images/torrent/arrows1.png"./>';
-                    var down = '<img class="arrow2 down" src="./images/torrent/arrows1.png"./>';
-                    var up2 = '<img class="arrow3 up" src="./images/torrent/arrows1.png"./>';
+                    var up = '<img class="arrow1 up" src="/images/torrent/arrows1.png"/>';
+                    var down = '<img class="arrow2 down" src="/images/torrent/arrows1.png"/>';
+                    var up2 = '<img class="arrow3 up" src="/images/torrent/arrows1.png"/>';
 
                     var iteration = 0;
                     var iterations = 2;
@@ -229,7 +229,7 @@ if (!isMobile) {
             9: [{
                 endDown: function endDown() {
                     var color = timeline.color;
-                    var liquid = $('<div style="opacity:0;"" class="liquid-animation timeline-animation"><img class="liquid" src="./images/torrent/mini-animations/' + color + '-juice.png"./></div>');
+                    var liquid = $('<div style="opacity:0;"" class="liquid-animation timeline-animation"><img class="liquid" src="/images/torrent/mini-animations/' + color + '-juice.png"/></div>');
                     $('body').append(liquid);
 
                     timeline.on('changeSource', function () {
@@ -261,7 +261,7 @@ if (!isMobile) {
             10: [{
                 endUp: function endUp() {
                     var color = timeline.color;
-                    var liquid = $('<div style="opacity:0;"" class="liquid-animation timeline-animation"><img class="liquid" src="./images/torrent/mini-animations/' + color + '-juice.png"./></div>');
+                    var liquid = $('<div style="opacity:0;"" class="liquid-animation timeline-animation"><img class="liquid" src="/images/torrent/mini-animations/' + color + '-juice.png"/></div>');
                     $('body').append(liquid);
 
                     setPos();
@@ -339,7 +339,7 @@ $(document).ready(function () {
             var cacheNum = timeline.cached.length - 1;
             circleLoader.init($('.color-picker .' + colors[0]));
             timeline.cacheColor = colors[0];
-            var url = './images/torrent/sequence/' + colors[0] + '/' + colors[0].toUpperCase() + '_TORRENT_EDIT_00000.jpg';
+            var url = '/images/torrent/sequence/' + colors[0] + '/' + colors[0].toUpperCase() + '_TORRENT_EDIT_00000.jpg';
             timeline._cache(false, url);
 
             //reposition color-picker elements
@@ -433,15 +433,15 @@ $(document).ready(function () {
 
     //init mobile gallery
     $('#slick-colors .slick').slick({
-        prevArrow: '<img class=\'slick-prev\' src=\'./images/torrent/arrow.png\'></img>',
-        nextArrow: '<img class=\'slick-next\' src=\'./images/torrent/arrow.png\'></img>',
+        prevArrow: '<img class=\'slick-prev\' src=\'/images/torrent/arrow.png\'></img>',
+        nextArrow: '<img class=\'slick-next\' src=\'/images/torrent/arrow.png\'></img>',
         lazyLoad: 'progressive'
     });
 
     //init photo slick gallery
     $('#view-photo .slick').slick({
-        prevArrow: '<img class=\'slick-prev\' src=\'./images/torrent/arrow.png\'></img>',
-        nextArrow: '<img class=\'slick-next\' src=\'./images/torrent/arrow.png\'></img>',
+        prevArrow: '<img class=\'slick-prev\' src=\'/images/torrent/arrow.png\'></img>',
+        nextArrow: '<img class=\'slick-next\' src=\'/images/torrent/arrow.png\'></img>',
         lazyLoad: 'progressive',
         adaptiveHeight: true
     }).on('init', function (s) {
@@ -466,8 +466,8 @@ $(document).ready(function () {
 
     //init video slick gallery
     $('#play-video .slick').slick({
-        prevArrow: '<img class=\'slick-prev\' src=\'./images/torrent/arrow.png\'></img>',
-        nextArrow: '<img class=\'slick-next\' src=\'./images/torrent/arrow.png\'></img>',
+        prevArrow: '<img class=\'slick-prev\' src=\'/images/torrent/arrow.png\'></img>',
+        nextArrow: '<img class=\'slick-next\' src=\'/images/torrent/arrow.png\'></img>',
         lazyLoad: 'progressive'
     }).on('init', function (s) {
         placeCloseButton(s, '#play-video');
