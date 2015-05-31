@@ -20,10 +20,13 @@ body {
   -moz-transform: rotate(180deg);
   -o-transform: rotate(180deg);
   -ms-transform: rotate(180deg);
-  left: 35px;
+  left: 6%;
 }
 .arrow-animation .arrow3 {
-  left: 70px;
+  left: 33%;
+}
+.arrow-animation .arrow1 {
+  left: -20%;
 }
 .arrow-animation .arrow1.arrow-column-1,
 .arrow-animation .arrow.arrow-column-3 {
