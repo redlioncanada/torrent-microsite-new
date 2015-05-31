@@ -316,6 +316,15 @@ body {
   z-index: 6050;
   overflow: hidden;
 }
+#main-container #view-photo .recipe-icon,
+#main-container #play-video .recipe-icon,
+#main-container #show-recipe .recipe-icon {
+  z-index: 2;
+  position: relative;
+  float: left;
+  width: 78px;
+  padding-left: 7px;
+}
 #main-container #view-photo .slick,
 #main-container #play-video .slick,
 #main-container #show-recipe .slick {
@@ -350,13 +359,6 @@ body {
 }
 #main-container #show-recipe {
   overflow: scroll;
-}
-#main-container .recipe-icon {
-  z-index: 2;
-  position: relative;
-  float: left;
-  width: 78px;
-  padding-left: 7px;
 }
 #main-container #play-video .close-x,
 #main-container #view-photo .close-x {
@@ -1062,7 +1064,7 @@ body {
 }
 @media (max-width: 480px) {
   #main-container div.cover-item-1 h1 {
-    font-size: 14pt;
+    font-size: 13pt;
   }
   #main-container div.cover-item-1 h3 {
     font-size: 17pt;
@@ -1120,7 +1122,7 @@ body {
     height: 520px!important;
   }
   #main-container div.cover-item-11 .mobile > img {
-    left: 3vw!important;
+    left: 0.7vw!important;
     top: 35%!important;
   }
   #main-container div.cover-item-12 {
@@ -1167,7 +1169,7 @@ body {
     top: 96% !important;
   }
   #main-container .cover-item-4 .mobile .col-xs-8 {
-    top: 68%;
+    top: 61%;
   }
   #main-container .cover-item-4 .mobile ul {
     font-size: 9pt;
