@@ -734,6 +734,7 @@ body {
 #main-container .cover-item-3 ul,
 #main-container .cover-item-3 li {
   list-style: initial;
+  float: none;
 }
 #main-container .cover-item-3 img:first-child {
   margin-left: 22px;

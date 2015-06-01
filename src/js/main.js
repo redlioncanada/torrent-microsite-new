@@ -376,7 +376,7 @@ $(document).ready(function(){
         timeline.on('changeSource', function() {
             //change the blender on the first panel when the color changes
             let path = '/'+$('.blender-1').attr('id').replace(/-/g, '/')+'/';
-            $('.blender-1').attr('src','.'+path+this.color+'.png');
+            $('.blender-1').attr('src',path+this.color+'.png');
 
             //toggle recipe button if the current color doesn't have one
             if ($('#show-recipe .'+timeline.color).length == 0) {
