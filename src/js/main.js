@@ -459,6 +459,7 @@ $(document).ready(function(){
     });
 
     function placeCloseButton(slick,element) {
+        if (isPhone) return;
         let slick1 = slick.target.slick;
         let id = slick1.currentSlide;
         let width = $(element+' .slick-track div').eq(id+1).find('img').width();

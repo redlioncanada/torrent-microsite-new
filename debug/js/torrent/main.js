@@ -455,7 +455,9 @@ $(document).ready(function () {
     });
 
     function placeCloseButton(slick, element) {
-        var slick1 = slick.target.slick;
+        if (isMobile) {
+            return;
+        }var slick1 = slick.target.slick;
         var id = slick1.currentSlide;
         var width = $(element + ' .slick-track div').eq(id + 1).find('img').width();
         var pwidth = $(element + ' .slick').width();

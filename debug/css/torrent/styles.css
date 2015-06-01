@@ -1063,14 +1063,23 @@ body {
   }
 }
 @media (max-width: 480px) {
+  #main-container .close-x {
+    display: none;
+  }
+  #main-container .cover-item h3 {
+    font-size: 17pt !important;
+  }
   #main-container div.cover-item-1 h1 {
     font-size: 13pt;
   }
   #main-container div.cover-item-1 h3 {
-    font-size: 17pt;
+    font-size: 13pt;
   }
   #main-container div.cover-item-2 {
     height: 720px !important;
+  }
+  #main-container div.cover-item-2 h2 {
+    font-size: 19pt !important;
   }
   #main-container div.cover-item-3 {
     height: 550px !important;
@@ -1090,10 +1099,19 @@ body {
   #main-container div.cover-item-6 {
     height: 280px!important;
   }
+  #main-container div.cover-item-6 .col-xs-10 {
+    top: 22%;
+  }
   #main-container div.cover-item-6 .mobile > img {
     width: 60%!important;
     height: initial !important;
     top: 50% !important;
+  }
+  #main-container div.cover-item-6 p {
+    font-size: 11pt !important;
+  }
+  #main-container div.cover-item-6 h3 {
+    font-size: 18pt !important;
   }
   #main-container div.cover-item-7 {
     margin-top: 32px;
@@ -1109,6 +1127,9 @@ body {
   #main-container div.cover-item-8 > img {
     top: 13vh!important;
   }
+  #main-container div.cover-item-8 p {
+    font-size: 11pt !important;
+  }
   #main-container div.cover-item-9 {
     height: 400px!important;
   }
@@ -1118,8 +1139,14 @@ body {
   #main-container div.cover-item-9 .col-xs-8 {
     top: 3%!important;
   }
+  #main-container div.cover-item-9 p {
+    font-size: 11pt !important;
+  }
   #main-container div.cover-item-10 {
     height: 520px!important;
+  }
+  #main-container div.cover-item-10 h3 {
+    font-size: 18pt;
   }
   #main-container div.cover-item-11 .mobile > img {
     left: 0.7vw!important;
@@ -1130,6 +1157,9 @@ body {
   }
   #main-container div.cover-item-12 .col-xs-10 {
     top: 42%!important;
+  }
+  #main-container div.cover-item-12 h1 {
+    font-size: 20pt !important;
   }
 }
 @media (max-width: 767px) {

@@ -959,12 +959,17 @@ p > span, h1 > span, h2 > span, h3 > span, h4 > span {
 }
 //iphone 6
 @media(max-width:480px) {
+  .close-x {display:none;}
+  .cover-item h3 {
+    font-size: 17pt !important;
+  }
   div.cover-item-1 {
     h1 {font-size: 13pt;}
-    h3 {font-size: 17pt;}
+    h3 {font-size: 13pt;}
   }
   div.cover-item-2 {
     height: 720px !important;
+    h2 {font-size: 19pt !important;}
   }
   div.cover-item-3 {
     height: 550px !important;
@@ -978,8 +983,11 @@ p > span, h1 > span, h2 > span, h3 > span, h4 > span {
     .mobile > img {top: 12% !important;}
   }
   div.cover-item-6 {
+    .col-xs-10 {top: 22%;}
     height: 280px!important;
     .mobile>img {width:60%!important; height:initial !important; top:50% !important;}
+    p {font-size: 11pt !important;}
+    h3 {font-size: 18pt !important;}
   }
   div.cover-item-7 {
     margin-top: 32px;
@@ -992,6 +1000,7 @@ p > span, h1 > span, h2 > span, h3 > span, h4 > span {
     margin-top: 32px;
     height: 550px !important;
     >img {top:13vh!important;}
+    p {font-size: 11pt !important;}
   }
   div.cover-item-9 {
     height: 400px!important;
@@ -999,10 +1008,11 @@ p > span, h1 > span, h2 > span, h3 > span, h4 > span {
     .col-xs-8 {
       top: 3%!important;
     }
+    p {font-size: 11pt !important;}
   }
   div.cover-item-10 {
     height: 520px!important;
-
+    h3 {font-size: 18pt;}
   }
   div.cover-item-11 {
     .mobile >img {
@@ -1015,6 +1025,7 @@ p > span, h1 > span, h2 > span, h3 > span, h4 > span {
     .col-xs-10 {
       top: 42%!important;
     }
+    h1 {font-size: 20pt !important;}
   }
 }
 // < ipad
