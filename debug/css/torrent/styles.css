@@ -294,9 +294,6 @@ body {
   width: 100%;
   max-width: 220px;
 }
-#main-container .view-photos:lang(fr) {
-  margin-top: -10px;
-}
 #main-container .view-photos,
 #main-container .play-video,
 #main-container #play-video img,
@@ -571,6 +568,9 @@ body {
   top: 5000px;
   left: 70px;
 }
+#main-container .color-picker div {
+  text-shadow: none;
+}
 #main-container .color-picker canvas {
   display: block;
   position: absolute;
@@ -581,16 +581,20 @@ body {
   width: 30px;
 }
 #main-container .color-picker .red div:first-child {
-  background-color: #c80803;
+  background-image: url(color-overlays.png);
+  background-position: -4px -2px;
 }
 #main-container .color-picker .black div:first-child {
-  background-color: black;
+  background-image: url(color-overlays.png);
+  background-position: -4px 170px;
 }
 #main-container .color-picker .graphite div:first-child {
-  background-color: grey;
+  background-image: url(color-overlays.png);
+  background-position: -4px 100px;
 }
 #main-container .color-picker .grey div:first-child {
-  background-color: white;
+  background-image: url(color-overlays.png);
+  background-position: -4px 31px;
 }
 #main-container .color-picker .unloaded div:first-child {
   height: 20px;
@@ -601,7 +605,7 @@ body {
 }
 #main-container .color-picker .red div:nth-child(2) {
   color: #c80803;
-  width: 165px;
+  width: 180px;
   top: 79px;
 }
 #main-container .color-picker .red:lang(fr) div:nth-child(2) {
@@ -609,7 +613,7 @@ body {
 }
 #main-container .color-picker .black div:nth-child(2) {
   color: black;
-  width: 165px;
+  width: 180px;
   top: 132px;
 }
 #main-container .color-picker .black:lang(fr) div:nth-child(2) {
@@ -617,7 +621,7 @@ body {
 }
 #main-container .color-picker .graphite div:nth-child(2) {
   color: grey;
-  width: 165px;
+  width: 180px;
   top: 185px;
 }
 #main-container .color-picker .graphite:lang(fr) div:nth-child(2) {
@@ -625,7 +629,7 @@ body {
 }
 #main-container .color-picker .grey div:nth-child(2) {
   color: black;
-  width: 165px;
+  width: 180px;
   top: 238px;
 }
 #main-container .color-picker .grey:lang(fr) div:nth-child(2) {
@@ -675,19 +679,53 @@ body {
   width: 0px;
   right: 70px;
 }
-#main-container .cover-picker .selected div {
+#main-container .cover-picker .nav-up,
+#main-container .cover-picker .nav-down {
+  width: 22px;
+  margin-left: -5px;
+  cursor: pointer;
+}
+#main-container .cover-picker .nav-up {
+  margin-bottom: -13px;
+}
+#main-container .cover-picker .nav-down {
+  -ms-transform: rotate(180deg);
+  /* IE 9 */
+  -webkit-transform: rotate(180deg);
+  /* Chrome, Safari, Opera */
+  transform: rotate(180deg);
+}
+#main-container .cover-picker .selected div:first-child {
   background-color: white;
 }
 #main-container .cover-picker li {
   margin-top: 10px;
   cursor: pointer;
 }
-#main-container .cover-picker li div {
-  height: 7px;
-  width: 7px;
+#main-container .cover-picker li div:first-child {
+  height: 12px;
+  width: 12px;
   border: 1px solid #FFF;
   background-color: black;
   border-radius: 50%;
+  z-index: 2;
+  position: relative;
+}
+#main-container .cover-picker .title {
+  display: none;
+  position: absolute;
+  right: -7px;
+  width: 156px;
+  margin-top: -12px;
+  height: 12px;
+  font-size: 8pt;
+  line-height: 13px;
+  text-align: right;
+  color: black !important;
+  background-color: white;
+  transition: opacity 0.3s linear;
+  padding-right: 10px;
+  z-index: 1;
 }
 #main-container .cover-item-1 > div {
   position: absolute;
@@ -733,14 +771,11 @@ body {
   list-style: initial;
 }
 #main-container .cover-item-3 img:first-child {
-  margin-left: 22px;
+  margin-left: 60px;
 }
 #main-container .cover-item-3 img {
-  max-width: 40px;
+  max-width: 60px;
   margin-right: 10px;
-}
-#main-container .cover-item-3 .play-video {
-  max-width: 28px;
 }
 #main-container .cover-item-4 ul {
   padding-top: 22px;
@@ -814,7 +849,7 @@ body {
   top: 2%;
 }
 #main-container .cover-item-10 img {
-  width: 40px;
+  width: 60px;
   margin-top: 18px;
 }
 #main-container .cover-item-11 .col-xs-3 {
@@ -1187,10 +1222,7 @@ body {
     font-size: 10pt !important;
   }
   #main-container .cover-item-3 img.view-photos {
-    width: 40px;
-  }
-  #main-container .cover-item-3 img.play-video {
-    width: 28px;
+    margin-left: 60px;
   }
   #main-container .cover-item-4 {
     height: 550px !important;
@@ -1680,7 +1712,7 @@ body {
     top: 50%;
   }
   #main-container .cover-item-4 li > div:last-child p {
-    font-size: 0.7em !important;
+    font-size: 0.8em !important;
   }
 }
 @media (max-width: 1100px) {
