@@ -18,6 +18,9 @@ body {font-size: 10px !important;}
 #main-container {width: 100%;}
 #footer-container {display: none;}
 --></style>
+<script>
+var dataLayer = [];
+</script>
 <link rel="stylesheet" href="./css/torrent/styles.css">
 <link rel="stylesheet" href="./css/torrent/videojs.css">
 <link rel="stylesheet" href="./css/torrent/bootstrap.css">
@@ -35,35 +38,36 @@ body {font-size: 10px !important;}
 		<div class="close-x"><img src="./images/torrent/modalclosebtn.png"/></div>
 		<div class="close-overlay"></div>
 		<div class="slick">
-			<div data-id="PSHN2EY8yDY" class="youtube-embed"><img src="./images/torrent/poster1.jpg"/></div>
-			<div data-id="bYfe4CwTiZc" class="youtube-embed"><img src="./images/torrent/poster2.jpg"/></div>
-			<div data-id="wNhP8yXvx6k" class="youtube-embed"><img src="./images/torrent/poster3.jpg"/></div>
-			<div data-id="NZqdJ9Zt-aA" class="youtube-embed"><img src="./images/torrent/poster4.jpg"/></div>
-			<div data-id="aD-m9YUtO8U" class="youtube-embed"><img src="./images/torrent/poster5.jpg"/></div>
+			<div data-id="PSHN2EY8yDY" class="youtube-embed"><div><h3>Introducing the KitchenAid Torrent<sup>&trade;</sup> Blender</h3><img src="./images/torrent/poster1.jpg"/></div></div>
+			<div data-id="bYfe4CwTiZc" class="youtube-embed"><div><h3>KitchenAid Torrent<sup>&trade;</sup> Add Ingredients While Blending</h3><img src="./images/torrent/poster2.jpg"/></div></div>
+			<div data-id="wNhP8yXvx6k" class="youtube-embed"><div><h3>KitchenAid Torrent<sup>&trade;</sup> The perfect program for every recipe. </h3><img src="./images/torrent/poster3.jpg"/></div></div>
+			<div data-id="aD-m9YUtO8U" class="youtube-embed"><div><h3>KitchenAid Torrent<sup>&trade;</sup> Blend More Work Less</h3><img src="./images/torrent/poster5.jpg"/></div></div>
+			<div data-id="NZqdJ9Zt-aA" class="youtube-embed"><div><h3>KitchenAid Torrent<sup>&trade;</sup> Industry First Magnetic Drive Blender</h3><img src="./images/torrent/poster4.jpg"/></div></div>
 		</div>
 	</div>
 	<div id="view-photo">
 		<div class="close-x"><img src="./images/torrent/modalclosebtn.png"/></div>
 		<div class="close-overlay"></div>
 		<div class="slick">
-			<div><img src="./images/torrent/1.jpg"/></div>
-			<div><img src="./images/torrent/2.jpg"/></div>
-			<div><img src="./images/torrent/3.jpg"/></div>
-			<div><img src="./images/torrent/4.jpg"/></div>
-			<div><img src="./images/torrent/5.jpg"/></div>
-			<div><img src="./images/torrent/6.jpg"/></div>
-			<div><img src="./images/torrent/7.jpg"/></div>
-			<div><img src="./images/torrent/8.jpg"/></div>
-			<div><img src="./images/torrent/9.jpg"/></div>
+			<div><img id="StandAloneTorrentBlenderPearlSilver" src="./images/torrent/1.jpg"/></div>
+			<div><img id="PearlSilverBlenderBerriesSmoothie" src="./images/torrent/2.jpg"/></div>
+			<div><img id="CandyAppleRedBlenderPestoSpread" src="./images/torrent/3.jpg"/></div>
+			<div><img id="CandyAppleRedBlenderSpinachSmoothie" src="./images/torrent/4.jpg"/></div>
+			<div><img id="PearlSilverBlenderBlendedBerries" src="./images/torrent/5.jpg"/></div>
+			<div><img id="PearlSilverBlenderGreenSalsa" src="./images/torrent/6.jpg"/></div>
+			<div><img id="PearlSilverBlenderBlendedPartyTreats" src="./images/torrent/7.jpg"/></div>
+			<div><img id="PearlSilverBlenderGreenSmoothiePair" src="./images/torrent/8.jpg"/></div>
+			<div><img id="CandyAppleRedQuiche" src="./images/torrent/9.jpg"/></div>
 		</div>
 	</div>
 	<div id="show-recipe">
 		<div class="close-overlay"></div>
-		<div>
+		<div class="slick">
+			<div>
 			<div class="recipe-wrapper red">
-				<div class="recipe-background"></div>
+				<div class="recipe-background" onclick="dataLayer.push({'category':'recipeOverlay','action':'clickedRedRecipeTab','label':'closeOverlay'});"></div>
 				<img class="recipe-icon" src="./images/torrent/glass-icon.png"/>
-				<div class="close-x animate-all"><img src="./images/torrent/modalclosebtn.png"></div>
+				<div class="close-x animate-all" onclick="dataLayer.push({'category':'recipeOverlay','action':'clickedRedRecipeTab','label':'closeOverlay'});"><img src="./images/torrent/modalclosebtn.png"></div>
 				<div class="recipe-content en">
 					<h3>BERRY SOY-CREAM BLEND</h3>
 					<div class="left">
@@ -87,12 +91,14 @@ body {font-size: 10px !important;}
 						</div>
 					</div>
 				</div>
-				<div class="download-recipes animate-all en"><a href="./images/torrent/pdf/torrent-recipes-smoothies-en.pdf" target="_blank"><div>DOWNLOAD RECIPES</div></a></div>
+				<div class="download-recipes animate-all en"><a href="./images/torrent/pdf/torrent-recipes-smoothies-en.pdf" onclick="dataLayer.push({'category':'recipeOverlay','action':'clickedRedRecipeTab','label':'downloadRecipesPDF'});" target="_blank"><div>DOWNLOAD RECIPES</div></a></div>
 			</div>
+			</div>
+			<div>
 			<div class="recipe-wrapper grey">
-				<div class="recipe-background"></div>
+				<div class="recipe-background" onclick="dataLayer.push({'category':'recipeOverlay','action':'clickedGreyRecipeTab','label':'closeOverlay'});"></div>
 				<img class="recipe-icon" src="./images/torrent/shake-icon.png"/>
-				<div class="close-x animate-all"><img src="./images/torrent/modalclosebtn.png"></div>
+				<div class="close-x animate-all" onclick="dataLayer.push({'category':'recipeOverlay','action':'clickedGreyRecipeTab','label':'closeOverlay'});"><img src="./images/torrent/modalclosebtn.png"></div>
 				<div class="recipe-content en">
 					<h3>PEACHES AND GREEN SMOOTHIE</h3>
 					<div class="left">
@@ -116,13 +122,14 @@ body {font-size: 10px !important;}
 						</div>
 					</div>
 				</div>
-				<div class="download-recipes animate-all en"><a href="./images/torrent/pdf/torrent-recipes-smoothies-en.pdf" target="_blank"><div>DOWNLOAD RECIPES</div></a></div>
+				<div class="download-recipes animate-all en"><a href="./images/torrent/pdf/torrent-recipes-smoothies-en.pdf" onclick="dataLayer.push({'category':'recipeOverlay','action':'clickedGreyRecipeTab','label':'downloadRecipesPDF'});" target="_blank"><div>DOWNLOAD RECIPES</div></a></div>
 			</div>
-
+			</div>
+			<div>
 			<div class="recipe-wrapper black">
-				<div class="recipe-background"></div>
+				<div class="recipe-background" onclick="dataLayer.push({'category':'recipeOverlay','action':'clickedBlackRecipeTab','label':'closeOverlay'});"></div>
 				<img class="recipe-icon" src="./images/torrent/bowl-icon.png"/>
-				<div class="close-x animate-all"><img src="./images/torrent/modalclosebtn.png"></div>
+				<div class="close-x animate-all" onclick="dataLayer.push({'category':'recipeOverlay','action':'clickedBlackRecipeTab','label':'closeOverlay'});"><img src="./images/torrent/modalclosebtn.png"></div>
 				<div class="recipe-content en">
 					<h3>DOUBLE PEA SOUP</h3>
 					<div class="left">
@@ -162,12 +169,14 @@ body {font-size: 10px !important;}
 						</div>
 					</div>
 				</div>
-				<div class="download-recipes animate-all en"><a href="./images/torrent/pdf/torrent-recipes-soup-en.pdf" target="_blank"><div>DOWNLOAD RECIPES</div></a></div>
+				<div class="download-recipes animate-all en"><a href="./images/torrent/pdf/torrent-recipes-soup-en.pdf" onclick="dataLayer.push({'category':'recipeOverlay','action':'clickedBlackRecipeTab','label':'downloadRecipesPDF'});" target="_blank"><div>DOWNLOAD RECIPES</div></a></div>
 			</div>
+			</div>
+			<div>
 			<div class="recipe-wrapper graphite">
-				<div class="recipe-background"></div>
+				<div class="recipe-background" onclick="dataLayer.push({'category':'recipeOverlay','action':'clickedGraphiteRecipeTab','label':'closeOverlay'});"></div>
 				<img class="recipe-icon" src="./images/torrent/glass-icon.png"/>
-				<div class="close-x animate-all"><img src="./images/torrent/modalclosebtn.png"></div>
+				<div class="close-x animate-all" onclick="dataLayer.push({'category':'recipeOverlay','action':'clickedGraphiteRecipeTab','label':'closeOverlay'});"><img src="./images/torrent/modalclosebtn.png"></div>
 				<div class="recipe-content en">
 					<h3>CLASSIC MARGARITA</h3>
 					<div class="left">
@@ -195,7 +204,8 @@ body {font-size: 10px !important;}
 						</div>
 					</div>
 				</div>
-				<div class="download-recipes animate-all en"><a href="./images/torrent/pdf/torrent-recipes-cocktails-en.pdf" target="_blank"><div>DOWNLOAD RECIPES</div></a></div>
+				<div class="download-recipes animate-all en"><a href="./images/torrent/pdf/torrent-recipes-cocktails-en.pdf" onclick="dataLayer.push({'category':'recipeOverlay','action':'clickedGraphiteRecipeTab','label':'downloadRecipesPDF'});" target="_blank"><div>DOWNLOAD RECIPES</div></a></div>
+			</div>
 			</div>
 		</div>
 	</div>
@@ -239,7 +249,7 @@ body {font-size: 10px !important;}
 					<h1>YOU CAN WALK AWAY FROM IT.<br/>BUT YOU PROBABLY WON'T.</h1>
 					<h3>Meet the <span>TORRENT<sup>&trade;</sup></span> blender</h3>
 					<p>Introducing a revolutionary blend of high power, high style, and low effort. Simply choose a setting, push a button, and walk away. The Magnetic Drive Torrent<sup>&trade;</sup> blender will take it from there.</p>
-					<img id="scroll-explore" class="centered" style="margin-top: 90px; cursor: pointer;" onclick="!isMobile ? scroller.scrollTo(1) : true;" src="./images/torrent/scroll-explore.png"/>
+					<img id="scroll-explore" class="centered" style="margin-top: 90px; cursor: pointer;" onclick="!isMobile ? scroller.scrollTo(1) : true; dataLayer.push({'category':'homepage','action':'clickedScrollTab','label':'ExperienceTorrentBlender'});" src="./images/torrent/scroll-explore.png"/>
 				</div>
 				<div class="col-xs-3">
 					<img style="width: 160px;" src="./images/torrent/voted.png"/>
@@ -251,7 +261,7 @@ body {font-size: 10px !important;}
 					<h1>YOU CAN WALK AWAY FROM IT.<br/>BUT YOU PROBABLY WON'T.</h1>
 					<h3>Meet the <span>TORRENT<sup>&trade;</sup></span> blender</h3>
 					<p>Introducing a revolutionary blend of high power, high style, and low effort. Simply choose a setting, push a button, and walk away. The Magnetic Drive Torrent<sup>&trade;</sup> blender will take it from there.</p>
-					<img id="scroll-explore" class="centered" style="margin-top: 40px; cursor: pointer;" onclick="!isMobile ? scroller.scrollTo(1) : true;" src="./images/torrent/scroll-explore.png"/>
+					<img id="scroll-explore" class="centered" style="margin-top: 40px; cursor: pointer;" onclick="!isMobile ? scroller.scrollTo(1) : true; dataLayer.push({'category':'homepage','action':'clickedScrollTab','label':'ExperienceTorrentBlender'});" src="./images/torrent/scroll-explore.png"/>
 				</div>
 				<div class="col-xs-1">&nbsp;</div>
 			</div>
@@ -263,7 +273,8 @@ body {font-size: 10px !important;}
 					<div>
 						<h3>MEET THE REVOLUTIONARY<br/>NEW MAGNETIC DRIVE<br/></h3><h2><span>TORRENT<sup>&trade;</sup> BLENDER</span></h2>
 						<p>The Torrent<sup>&trade;</sup> blender has an all die cast metal body powered by a 1.8 Peak HP<sup>*</sup> motor that generates 18,000 RPM. Its innovative preset programs make it easy to create a recipe for any occasion.</p>
-						<img style="max-width: 250px;" src="./images/torrent/7yr-america.png"/>
+						<img style="max-width: 270px;" src="./images/torrent/7yr-america.png"/>
+						<img class="play-video" id="0" onclick="dataLayer.push({'category':'meetTheRevolutionary','action':'clickedViewMedia','label':'playVideos'});" src="./images/torrent/play-video-new.png"/>
 					</div>
 				</div>
 				<div class="col-xs-1">&nbsp;</div>
@@ -275,7 +286,7 @@ body {font-size: 10px !important;}
 					<img src="./images/torrent/blender-front.jpg"/>
 					<h4>MEET THE REVOLUTIONARY<br/>NEW MAGNETIC DRIVE<br/></h3><h2><span>TORRENT<sup>&trade;</sup> BLENDER</span></h4>
 					<p>The Torrent<sup>&trade;</sup> blender has an all die cast metal body powered by a 1.8 Peak HP<sup>*</sup> motor that generates 18,000 RPM. Its innovative preset programs make it easy to create a recipe for any occasion.</p>
-					<img class="yr" style="max-width: 250px;" src="./images/torrent/7yr-america.png"/>
+					<img class="yr" style="max-width: 270px;" src="./images/torrent/7yr-america.png"/>
 					<img class="voted" src="./images/torrent/voted.png"/>
 				</div>
 				<div class="col-xs-1">&nbsp;</div>
@@ -293,8 +304,8 @@ body {font-size: 10px !important;}
 							<li>Press Start.</li>
 							<li>Walk away. The blender will stop on its own.</li>
 						</ul>
-						<img class="view-photos" src="./images/torrent/view-photos-new.png"/>
-						<img class="play-video" src="./images/torrent/play-video-new.png"/>
+						<img class="view-photos" onclick="dataLayer.push({'category':'programDial','action':'clickedViewMedia','label':'viewPhotos'});" src="./images/torrent/view-photos-new.png"/>
+						<img class="play-video" onclick="dataLayer.push({'category':'programDial','action':'clickedViewMedia','label':'playVideos'});" id="2" src="./images/torrent/play-video-new.png"/>
 					</div>
 				</div>
 				<div class="col-xs-1">&nbsp;</div>
@@ -314,8 +325,8 @@ body {font-size: 10px !important;}
 							<li>Walk away. The blender will stop on its own.</li>
 						</ul>
 						<div class="images">
-							<img class="view-photos" src="./images/torrent/view-photos-new.png"/>
-							<img class="play-video" src="./images/torrent/play-video-new.png"/>
+							<img class="view-photos" onclick="dataLayer.push({'category':'programDial','action':'clickedViewMedia','label':'viewPhotos'});" src="./images/torrent/view-photos-new.png"/>
+							<img class="play-video" onclick="dataLayer.push({'category':'programDial','action':'clickedViewMedia','label':'playVideos'});" id="2" src="./images/torrent/play-video-new.png"/>
 						</div>
 					</div>
 				</div>
@@ -434,6 +445,7 @@ body {font-size: 10px !important;}
 						<h3><span>MAGNETIC</span> DRIVE</h3>
 						<h5>1.8 PEAK HP<sup>*</sup>. 18,000 RPMS.</h5>
 						<p>The Magnetic Drive system securely locks the pitcher in place during operation.<br/>Forty&#8209;eight permanent magnets connect the pitcher to the base, transferring power from the motor into the pitcher. Unlike other blenders, the pitcher slides in and out like a coffee maker, so there's no need to move it out from underneath kitchen cabinets, twist the pitcher into place, or hold down the lid during blending.</p>
+						<img class="play-video" id="4" onclick="dataLayer.push({'category':'magneticDrive','action':'clickedViewMedia','label':'playVideos'});" src="./images/torrent/play-video-new.png"/>
 					</div>
 				</div>
 				<div class="col-xs-6">&nbsp;</div>
@@ -447,6 +459,7 @@ body {font-size: 10px !important;}
 						<h3><span>MAGNETIC</span> DRIVE</h3>
 						<h5>1.8 PEAK HP<sup>*</sup>. 18,000 RPMS.</h5>
 						<p>The Magnetic Drive system securely locks the pitcher in place during operation.<br/>Forty&#8209;eight permanent magnets connect the pitcher to the base, transferring power from the motor into the pitcher. Unlike other blenders, the pitcher slides in and out like a coffee maker, so there's no need to move it out from underneath kitchen cabinets, twist the pitcher into place, or hold down the lid during blending.</p>
+						<img class="play-video" id="4" onclick="dataLayer.push({'category':'magneticDrive','action':'clickedViewMedia','label':'playVideos'});" src="./images/torrent/play-video-new.png"/>
 					</div>
 				</div>
 				<div class="col-xs-1">&nbsp;</div>
@@ -541,6 +554,7 @@ body {font-size: 10px !important;}
 					<div>
 						<h3><span>INGREDIENT</span> FEED</h3>
 						<p>The top cap allows you to easily measure and feed ingredients into the jar while you blend. You're free to adjust texture or improvise a recipe on the fly.<br/><br/>The diamond&#8209;shaped jar creates a powerful blending vortex that moves ingredients to the blades, eliminating the need for a tamper.</p>
+						<img class="play-video" id="1" onclick="dataLayer.push({'category':'ingredientFeed','action':'clickedViewMedia','label':'playVideos'});" src="./images/torrent/play-video-new.png"/>
 					</div>
 				</div>
 				<div class="col-xs-1">&nbsp;</div>
@@ -553,6 +567,7 @@ body {font-size: 10px !important;}
 					<div>
 						<h3><span>INGREDIENT</span> FEED</h3>
 						<p>The top cap allows you to easily measure and feed ingredients into the jar while you blend. You're free to adjust texture or improvise a recipe on the fly.<br/><br/>The diamond&#8209;shaped jar creates a powerful blending vortex that moves ingredients to the blades, eliminating the need for a tamper.</p>
+						<img class="play-video" id="1" onclick="dataLayer.push({'category':'ingredientFeed','action':'clickedViewMedia','label':'playVideos'});" src="./images/torrent/play-video-new.png"/>
 					</div>
 				</div>
 				<div class="col-xs-2">&nbsp;</div>
@@ -565,7 +580,8 @@ body {font-size: 10px !important;}
 					<div>
 						<h3><span>ADD INGREDIENTS</span><br/> WHILE BLENDING</h3>
 						<p>Simply lift the dishwasher&#8209;safe ingredient cap on the top to add ice, fresh fruit, and more while you blend. You can even use the measurement marks on the cap to be precise.</p>
-						<img class="open-recipe" src="./images/torrent/recipe_new.png"/>
+						<img class="open-recipe" onclick="dataLayer.push({'category':'addIngredients','action':'clickedViewMedia','label':'viewRecipes'});" src="./images/torrent/recipe_new.png"/>
+						<img class="play-video" onclick="dataLayer.push({'category':'addIngredients','action':'clickedViewMedia','label':'playVideos'});" id="1" src="./images/torrent/play-video-new.png"/>
 					</div>
 				</div>
 				<div class="col-xs-1">&nbsp;</div>
@@ -578,7 +594,8 @@ body {font-size: 10px !important;}
 					<div>
 						<h3><span>ADD INGREDIENTS</span><br/> WHILE BLENDING</h3>
 						<p>Simply lift the dishwasher&#8209;safe ingredient cap on the top to add ice, fresh fruit, and more while you blend. You can even use the measurement marks on the cap to be precise.</p>
-						<img class="open-recipe" src="./images/torrent/recipe_new.png"/>
+						<img class="open-recipe" onclick="dataLayer.push({'category':'addIngredients','action':'clickedViewMedia','label':'viewRecipes'});" src="./images/torrent/recipe_new.png"/>
+						<img class="play-video" onclick="dataLayer.push({'category':'addIngredients','action':'clickedViewMedia','label':'playVideos'});" id="1" src="./images/torrent/play-video-new.png"/>
 					</div>
 				</div>
 				<div class="col-xs-2">&nbsp;</div>
@@ -632,15 +649,15 @@ body {font-size: 10px !important;}
 		<div class="cover cover-item-12">
 			<div class="desktop">
 				<div>
-					<img id="spin-left" class="spin-arrow" src="./images/torrent/arrow.png"/>
-					<img id="spin-right" class="spin-arrow" src="./images/torrent/arrow.png"/>
+					<img id="spin-left" class="spin-arrow" onclick="dataLayer.push({'category':'findAStore','action':'clickedRotateTab','label':'next'});" src="./images/torrent/arrow.png"/>
+					<img id="spin-right" class="spin-arrow" onclick="dataLayer.push({'category':'findAStore','action':'clickedRotateTab','label':'previous'});" src="./images/torrent/arrow.png"/>
 				</div>
 				<div class="col-xs-1">&nbsp;</div>
 				<div class="col-xs-10">
 					<div>
 						<h1>TAKE IT FOR A <span>SPIN</span></h1>
 						<p class="copy">With its magnetic drive system and preset recipe buttons, the <span>Torrent<sup>&trade;</sup></span> blender lets you walk away from it &#8209; but you probably won't.<br/>Take home the Torrent<sup>&trade;</sup> blender today.</p>
-						<a href="http://www.kitchenaid.ca/en_CA/find-a-store/"><div class="findstore animate-all">FIND A STORE</div></a>
+						<a href="http://www.kitchenaid.ca/en_CA/find-a-store/" onclick="dataLayer.push({'category':'findAStore','action':'clickedFindAStoreButton','label':'findAStore'});"><div class="findstore animate-all">FIND A STORE</div></a>
 						<p class="disclaimer"><sup>*</sup>Please see the Use & Care Guide for more details regarding blender use and performance.</p>
 					</div>
 				</div>
@@ -666,7 +683,7 @@ body {font-size: 10px !important;}
 					<div>
 						<h1>TAKE IT FOR A <span>SPIN</span></h1>
 						<p class="copy">With its magnetic drive system and preset recipe buttons, the <span>Torrent<sup>&trade;</sup></span> blender lets you walk away from it &#8209; but you probably won't.<br/>Take home the Torrent<sup>&trade;</sup> blender today.</p>
-						<a href="http://www.kitchenaid.com/find-a-store/"><div class="findstore animate-all">FIND A STORE</div></a>
+						<a href="http://www.kitchenaid.com/find-a-store/" onclick="dataLayer.push({'category':'findAStore','action':'clickedRotateTab','label':'next'});"><div class="findstore animate-all">FIND A STORE</div></a>
 					</div>
 				</div>
 				<div class="col-xs-1">&nbsp;</div>

@@ -191,16 +191,27 @@ a img {
   width: 100%;
   max-width: 220px;
 }
+.play-video,.view-photos,.open-recipe {
+  max-width: 60px;
+}
 .view-photos,.play-video,#play-video img,.show-recipe {
   cursor: pointer;
+}
+#play-video .slick-slide > div {
+  width: auto;
+  max-width: 80%;
+  margin: 0 auto;
+  height: 100%;
 }
 #play-video .slick > div img {
   width: 100%;
 }
+#play-video img.slick-next {right:0 !important;}
+#play-video img.slick-prev {left:0 !important;} 
 #view-photo, #play-video, #show-recipe {
   left: 10000px;
-  width: 100%;
-  height: 100%;
+  width: 102%;
+  height: 102%;
   position: fixed;
   z-index: 6050;
   overflow: hidden;
@@ -241,6 +252,10 @@ a img {
 
 #show-recipe {
 	overflow: scroll;
+
+  .close-x {
+    margin: 6px 22px 0 0;
+  }
 }
 
 #play-video .close-x, #view-photo .close-x {color: white;}
@@ -427,6 +442,7 @@ a img {
   z-index: 1000;
   -webkit-overflow-scrolling: touch;
   overflow: hidden;
+  border-top: 1px solid white;
 }
 .cover-wrapper > div {
   position: absolute;
@@ -558,8 +574,8 @@ a img {
   right: @outerPadding;
 
   .nav-up,.nav-down {
-    width: 22px;
-    margin-left: -5px;
+    width: 15px;
+    margin-left: -2px;
     cursor: pointer;
   }
   .nav-up {
@@ -702,6 +718,7 @@ a img {
       max-width: 318px;
     }
   }
+  img {margin-top: 15px;}
 }
 .cover-item-6 {
   .col-xs-3 {
@@ -735,6 +752,7 @@ a img {
   .col-xs-3 {
     top: 9%;
   }
+  img {margin-top:15px;}
 }
 .cover-item-10 {
   .col-xs-3 {
@@ -743,6 +761,7 @@ a img {
   img {
     width: 60px;
     margin-top: 18px;
+    margin-right: 15px;
   }
 }
 .cover-item-11 {
@@ -768,7 +787,7 @@ a img {
     }
   }
   img {
-    width: 80px;
+    width: 95px;
   }
 }
 .cover-item-12 {
@@ -1012,7 +1031,7 @@ p > span, h1 > span, h2 > span, h3 > span, h4 > span {
     .col-xs-8 ul {padding-top: 108px !important;}
   }
   div.cover-item-5 {
-    height: 500px !important;
+    height: 530px !important;
     .mobile > img {top: 12% !important;}
   }
   div.cover-item-6 {
@@ -1582,7 +1601,7 @@ and (max-device-width : 1024px)  {
       top: 50%;
   }
   .cover-item-4 li >div:last-child p {
-    font-size: 0.8em !important;
+    font-size: 0.9em !important;
   }
 }
 @media(max-width:1100px) {
