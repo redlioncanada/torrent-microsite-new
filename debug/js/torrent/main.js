@@ -500,7 +500,7 @@ $(document).ready(function () {
 
         var source = $(e.currentTarget).attr('data-source');
         var color = $(e.currentTarget).attr('data-color');
-        if (timeline.animating || $(e.currentTarget).hasClass('unloaded')) return;
+        if (timeline.animating && !timeline.looping || $(e.currentTarget).hasClass('unloaded')) return;
         scroller.color = color;
         timeline.color = color;
         timeline.changeSource(source);

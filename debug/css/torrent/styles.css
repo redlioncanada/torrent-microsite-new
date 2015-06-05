@@ -337,7 +337,7 @@ body {
   position: relative;
   float: left;
   width: 65px;
-  top: 208px;
+  top: 170px;
   padding-left: 15px;
 }
 #main-container #view-photo .slick,
@@ -436,7 +436,7 @@ body {
 #main-container .recipe-wrapper .recipe-content {
   position: absolute;
   height: 60%;
-  top: 44%;
+  top: 36%;
   width: 100%;
   z-index: 2;
 }
@@ -532,7 +532,7 @@ body {
   width: 228px;
   height: 40px;
   position: absolute;
-  top: 220px;
+  top: 187px;
   right: 27px;
   z-index: 3;
   margin-left: -100px;
