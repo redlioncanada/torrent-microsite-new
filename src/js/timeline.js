@@ -181,7 +181,6 @@ class Timeline extends Messenger {
   play(val,direction,speed) {
     var self = this;
     if ((self.playing || self.playInterval || self.disabled) && !self.looping) return;
-    if (self.quedPlay) return;
 
     self.playing = true;
     self.animating = true;
@@ -212,8 +211,6 @@ class Timeline extends Messenger {
           primary.currentTime(ct);
         }
         if (ct >= val) {
-          //$('#timeline #poster').fadeOut();
-          //$('#timeline #poster-'+id).fadeIn();
           clearInterval(self.playInterval);
           self.playInterval = false;
           self.playing = false;
@@ -371,7 +368,11 @@ class Timeline extends Messenger {
   }
 
   stopLoop(d=1) {
+    clearInterval(this.playInterval);
     this.stopLoopDirection = d;
+    this.playInterval = false;
+    this.playing = false;
+    this.animating = false;
     this.looping = false;
   }
 

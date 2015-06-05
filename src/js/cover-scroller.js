@@ -73,7 +73,6 @@ class CoverScroller extends Messenger {
             if (i == 0) return;
             let t = $(this).find('div').eq(0).position().top;
             $(this).find('div').eq(1).css('top',t);
-            //$('.color-picker li div').eq(1).css('top',t);
         });
     }
 
@@ -105,17 +104,6 @@ class CoverScroller extends Messenger {
 
         this.direction = id < this.curCover ? 0 : 1;
 
-        if (this.timeline.looping) {
-            this.quedScroll = true;
-            this.timeline.stopLoop(this.direction);
-            this.timeline.on('stoppedLooping', function() {
-                _self.timeline.off('stoppedLooping','scroller');
-                _self.quedScroll = false;
-                _self.scrollTo(id);
-            },'scroller');
-            return;
-        }
-
         if (this.animating || this.curCover == id) return;
         if (id > this.numElements-1) {
             if (this.curCover == this.numElements-1) return;
@@ -129,6 +117,10 @@ class CoverScroller extends Messenger {
         if (isMobile) {
             $('.cover-wrapper').animate({scrollTop: $('.cover-item-'+(id+1)).offset().top});
         } else {
+            if (this.timeline.looping) {
+                this.timeline.stopLoop(this.direction);
+            }
+
             //animate cover
             this.animating = true;
             $(this.target).velocity({top:-this.elHeight*id}, {duration: this.duration, complete: function(){

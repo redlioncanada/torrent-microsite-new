@@ -217,8 +217,6 @@ var Timeline = (function (_Messenger) {
       var self = this;
       if ((self.playing || self.playInterval || self.disabled) && !self.looping) {
         return;
-      }if (self.quedPlay) {
-        return;
       }self.playing = true;
       self.animating = true;
       $('#timeline .timeline-frame').removeClass('old');
@@ -249,8 +247,6 @@ var Timeline = (function (_Messenger) {
             primary.currentTime(ct);
           }
           if (ct >= val) {
-            //$('#timeline #poster').fadeOut();
-            //$('#timeline #poster-'+id).fadeIn();
             clearInterval(self.playInterval);
             self.playInterval = false;
             self.playing = false;
@@ -412,7 +408,11 @@ var Timeline = (function (_Messenger) {
     value: function stopLoop() {
       var d = arguments[0] === undefined ? 1 : arguments[0];
 
+      clearInterval(this.playInterval);
       this.stopLoopDirection = d;
+      this.playInterval = false;
+      this.playing = false;
+      this.animating = false;
       this.looping = false;
     }
   }, {
