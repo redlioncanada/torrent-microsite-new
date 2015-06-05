@@ -19,6 +19,8 @@ class Timeline extends Messenger {
     this.playInterval = undefined;
     this.animation = opts.animation;
     this.keyframes = opts.keyframes;
+    this.tweenframes = opts.tweenframes;
+    this.looptweens = opts.looptweens;
     this.currentKeyframe = this.mode == 'video' ? -1 : 0;
     this.currentFrame = parseInt(this.keyframes[0]);
     this.currentYoffset = window.pageYOffset;
@@ -26,6 +28,9 @@ class Timeline extends Messenger {
     this.forwardReady = false;
     this.backwardReady = false;
     this.disabled = false;
+    this.quedPlay = false;
+    this.looping = false;
+    this.stopLoopDirection = 1;
     this.enabled = true;
     this.scrollDirection = 1;
 
@@ -85,8 +90,9 @@ class Timeline extends Messenger {
     let viewportAspect = width/height;
     let imageAspect = 16/9;
     if (isNaN(imageAspect) || !imageAspect) return false;
-
-    let mod = 1.2;
+    let mod = 1;
+    //if (height < 800) mod = 1;
+    //else mod = 1.2;
 
     $('.black-to-transparent-gradient-top,.black-to-transparent-gradient-bottom,.black-to-transparent-gradient-left,.black-to-transparent-gradient-right').removeClass('timeline-ignore');
     if (viewportAspect > imageAspect) {
@@ -174,9 +180,12 @@ class Timeline extends Messenger {
 
   play(val,direction,speed) {
     var self = this;
-    if (self.playing || self.playInterval || self.disabled) return;
+    if ((self.playing || self.playInterval || self.disabled) && !self.looping) return;
+    if (self.quedPlay) return;
+
     self.playing = true;
     self.animating = true;
+    $('#timeline .timeline-frame').removeClass('old');
     self.emit('play');
 
     let primary = undefined, secondary = undefined;
@@ -249,7 +258,10 @@ class Timeline extends Messenger {
 
             if ((direction == 1 && self.currentFrame > self.keyframes[self.currentKeyframe-1] || direction == -1 && self.currentFrame <= self.keyframes[self.currentKeyframe+1]) && allowReset) resetInterval(1,false);
 
-            if ((direction == 1 && self.currentFrame > parseInt(val)-1) || (direction == -1 && self.currentFrame < parseInt(val)+1)) {
+            let loopFrameIndex = self._hasTweenFrame();
+            let loopFrame = loopFrameIndex == -1 ? false : self.tweenframes[loopFrameIndex];
+
+            if ((direction == 1 && self.currentFrame > parseInt(val)-1) || (direction == -1 && self.currentFrame < parseInt(val)+1) || (direction == -1 && loopFrame && loopFrameIndex > -1 && self.currentFrame <= loopFrame)) {
               if (direction == 1 && self.animation) {
                 if (self.animation[self.currentKeyframe] && typeof self.animation[self.currentKeyframe] === 'object') {
                   for (let i in self.animation[self.currentKeyframe]) {
@@ -270,16 +282,21 @@ class Timeline extends Messenger {
               }
             
 
-            self.currentFrame = parseInt(val);
+            if (Math.abs(self.currentFrame - parseInt(val)) <= 1) self.currentFrame = parseInt(val);
               $('#timeline .timeline-frame-'+self.currentFrame).css({'zIndex':'2','display':'block'});
               $('#timeline .timeline-frame').not('#timeline .timeline-frame-'+self.currentFrame).css({'zIndex':'1','display':'none'});
               $('#timeline .timeline-frame').removeClass('old');
+          
+            if (loopFrameIndex > -1 && !self.looping && !(direction == 0 && !loopFrame)) {
+              self.loop();
+            } else {
+              clearInterval(self.playInterval); 
+              self.playInterval = false;
+              self.playing = false;
+              self.animating = false;
+              self.emit('pause');
+            }
             
-            clearInterval(self.playInterval); 
-            self.playInterval = false;
-            self.playing = false;
-            self.animating = false;
-            self.emit('pause');
             return;
           }
 
@@ -301,6 +318,68 @@ class Timeline extends Messenger {
         }, self.deltaTime*1000/speed);
       }
     }
+  }
+
+  loop() {
+    let self = this;
+    let loopFrameIndex = self._hasTweenFrame();
+    let loopFrame = self.tweenframes[loopFrameIndex];
+    if (!loopFrame || self.looping) return;
+    self.emit('loop');
+    self.looping = true;
+
+    resetInterval();
+
+    let delta = 1;
+    function resetInterval() {
+      clearInterval(self.playInterval);
+      self.playInterval = setInterval(function() {
+        //display current frame
+        $('#timeline .timeline-frame-'+self.currentFrame).not('.old').css({'zIndex':'2','display':'block'});
+        //buffer surrounding frames
+        $('#timeline .timeline-frame-'+(self.currentFrame+delta)).not('.old').css({'zIndex':'1','display':'block'});
+        //discard old frame(s)
+        $('#timeline .timeline-frame-'+(self.currentFrame-delta)).css({'zIndex':'1','display':'none'}).addClass('old');
+        
+        if (self.currentFrame >= loopFrame) {
+          let doesLoop = self.looptweens[loopFrameIndex];
+
+          if ((self.looping || (!self.looping && !self.stopLoopDirection)) && doesLoop) {
+            let baseFrame = parseInt(self.keyframes[self.currentKeyframe]);
+            $('#timeline .timeline-frame-'+baseFrame).css({'zIndex':'2','display':'block'});
+            $('#timeline .timeline-frame-'+self.currentFrame).css({'zIndex':'1','display':'none'});
+            $('#timeline .timeline-frame').not('#timeline .timeline-frame-'+baseFrame).css({'zIndex':'1','display':'none'});
+            $('#timeline .timeline-frame').removeClass('old');
+            self.currentFrame = baseFrame;
+          }
+
+          if (!doesLoop) self.looping = false;
+          if (!self.looping || !doesLoop) {
+            clearInterval(self.playInterval);
+            self.playing = false;
+            self.playInterval = false;
+            self.animating = false;
+            self.emit('stoppedLooping');
+            return;
+          }
+        }
+
+        self.currentFrame += delta;
+
+      }, self.deltaTime*1000);
+    }
+  }
+
+  stopLoop(d=1) {
+    this.stopLoopDirection = d;
+    this.looping = false;
+  }
+
+  _hasTweenFrame(id) {
+    for (var i in this.tweenframes) {
+      if (this.tweenframes[i] > parseInt(this.keyframes[this.currentKeyframe]) && this.tweenframes[i] < parseInt(this.keyframes[this.currentKeyframe+1])) return parseInt(i);
+    }
+    return -1;
   }
 
   scrollDirection(d) {
@@ -357,11 +436,11 @@ class Timeline extends Messenger {
   }
 
   clearAnimation() {
-    $('.arrow-animation').fadeOut('fast',function() {
-        $('.arrow-animation').remove();
-    });
     $('.liquid-animation').fadeOut('fast',function() {
         $('.liquid-animation').remove();
+    });
+    $('.dial-animation').fadeOut('fast',function() {
+        $('.dial-animation').remove();
     });
   }
 

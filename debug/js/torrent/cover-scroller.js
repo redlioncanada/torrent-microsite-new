@@ -21,6 +21,7 @@ var CoverScroller = (function (_Messenger) {
         this.numElements = $(this.target).find('.cover').length;
         this.curCover = 0;
         this.animating = false;
+        this.quedScroll = false;
         this.coverState = {};
         this.color = 'red';
         timeline ? this.timeline = timeline : undefined;
@@ -124,9 +125,25 @@ var CoverScroller = (function (_Messenger) {
     }, {
         key: 'scrollTo',
         value: function scrollTo(id) {
-            if (this.timeline && this.timeline.playing) {
+            if (this.timeline && this.timeline.playing && !this.timeline.looping) {
+                return;
+            }if (this.quedScroll) {
                 return;
             }var _self = this;
+
+            this.direction = id < this.curCover ? 0 : 1;
+
+            if (this.timeline.looping) {
+                this.quedScroll = true;
+                this.timeline.stopLoop(this.direction);
+                this.timeline.on('stoppedLooping', function () {
+                    _self.timeline.off('stoppedLooping', 'scroller');
+                    _self.quedScroll = false;
+                    _self.scrollTo(id);
+                }, 'scroller');
+                return;
+            }
+
             if (this.animating || this.curCover == id) {
                 return;
             }if (id > this.numElements - 1) {
@@ -139,8 +156,6 @@ var CoverScroller = (function (_Messenger) {
                     return;
                 }id = 0;
             }
-
-            this.direction = id < this.curCover ? 0 : 1;
 
             if (isMobile) {
                 $('.cover-wrapper').animate({ scrollTop: $('.cover-item-' + (id + 1)).offset().top });
@@ -171,7 +186,7 @@ var CoverScroller = (function (_Messenger) {
         value: function scroll() {
             var direction = arguments[0] === undefined ? 1 : arguments[0];
 
-            if (this.timeline && this.timeline.playing) {
+            if (this.timeline && this.timeline.playing && !this.timeline.looping) {
                 return;
             }this.scrollTo(direction ? this.curCover + 1 : this.curCover - 1);
         }

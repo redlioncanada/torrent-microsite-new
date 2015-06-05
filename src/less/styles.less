@@ -1,5 +1,5 @@
 @outerPadding: 70px;
-body {overflow: hidden; background-color: black !important; font-size: 13pt; min-width: 320px; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+body {overflow: hidden; background-color: #1b1b1b !important; font-size: 13pt; min-width: 320px; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
 .arrow-animation {
   height: 90px;
   position: absolute;
@@ -76,7 +76,7 @@ body {overflow: hidden; background-color: black !important; font-size: 13pt; min
   overflow: hidden;
   width: 100%;
   height: 100%;
-  background-color: black !important;
+  background-color: #1b1b1b !important;
   color: white;
   font-size: 12pt;
 
@@ -220,8 +220,9 @@ a img {
     z-index: 2;
     position: relative;
     float: left;
-    width: 78px;
-    padding-left: 7px;
+    width: 65px;
+    top: 208px;
+    padding-left: 15px;
   }
 
   .slick {
@@ -272,6 +273,7 @@ a img {
   .close-x:hover {
     color: #c20803;
   }
+
 .recipe-wrapper {
   width: 80%;
   margin: 0 auto;
@@ -312,7 +314,7 @@ a img {
   .recipe-content {
     position: absolute;
     height: 60%;
-    top: 13%;
+    top: 44%;
     width: 100%;
     z-index: 2;
     
@@ -400,11 +402,11 @@ a img {
     background-color: #c20803;
   }
   .download-recipes {
-    width: 200px;
+    width: 228px;
 	height: 40px;
 	position: absolute;
-	bottom: 10%;
-	left: 50%;
+  top: 220px;
+	right: 27px;
 	z-index: 3;
 	margin-left: -100px;
 	background-color: red;
@@ -607,7 +609,7 @@ a img {
     display: none;
     position: absolute;
     right: -7px;
-    width: 156px;
+    width: 183px;
     margin-top: -12px;
     height: 12px;
     font-size: 8pt;
@@ -618,6 +620,9 @@ a img {
     transition: opacity 0.3s linear;
     padding-right: 10px;
     z-index: 1;
+  }
+  .title:lang(fr) {
+    width: 270px;
   }
 }
 .cover-item-1 {
@@ -716,6 +721,7 @@ a img {
     top: 58%;
     p {
       max-width: 318px;
+      margin-top: 10px;
     }
   }
   img {margin-top: 15px;}
@@ -771,6 +777,7 @@ a img {
     > div:first-child {
       margin-bottom: 17px;
     }
+    img {margin-top:-15px;}
   }
   ul {
     margin-top: 5px;
@@ -889,7 +896,7 @@ img.slick-prev, img.slick-next {
   min-width: 100%;
   height: 100%;
   min-height: 100%;
-  background-color: #000;
+  background-color: #1b1b1b;
 
   img {
     position: relative;
@@ -919,13 +926,6 @@ img.slick-prev, img.slick-next {
   text-align: center;
 }
 .black-to-transparent-gradient-top {
-  background: -moz-linear-gradient(top,  rgba(0,0,0,1) 0%, rgba(0,0,0,0) 100%);
-  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(0,0,0,1)), color-stop(100%,rgba(0,0,0,0)));
-  background: -webkit-linear-gradient(top,  rgba(0,0,0,1) 0%,rgba(0,0,0,0) 100%);
-  background: -o-linear-gradient(top,  rgba(0,0,0,1) 0%,rgba(0,0,0,0) 100%);
-  background: -ms-linear-gradient(top,  rgba(0,0,0,1) 0%,rgba(0,0,0,0) 100%);
-  background: linear-gradient(to bottom,  rgba(0,0,0,1) 0%,rgba(0,0,0,0) 100%);
-  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#000000', endColorstr='#00000000',GradientType=0 );
   width: 100%;
   height: 40px;
   position: absolute;
@@ -934,13 +934,6 @@ img.slick-prev, img.slick-next {
   z-index: 5;
 }
 .black-to-transparent-gradient-bottom {
-  background: -moz-linear-gradient(top,  rgba(0,0,0,0) 0%, rgba(0,0,0,1) 100%);
-  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(0,0,0,0)), color-stop(100%,rgba(0,0,0,1)));
-  background: -webkit-linear-gradient(top,  rgba(0,0,0,0) 0%,rgba(0,0,0,1) 100%);
-  background: -o-linear-gradient(top,  rgba(0,0,0,0) 0%,rgba(0,0,0,1) 100%);
-  background: -ms-linear-gradient(top,  rgba(0,0,0,0) 0%,rgba(0,0,0,1) 100%);
-  background: linear-gradient(to bottom,  rgba(0,0,0,0) 0%,rgba(0,0,0,1) 100%);
-  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00000000', endColorstr='#000000',GradientType=0 );
   width: 100%;
   height: 40px;
   position: absolute;
@@ -949,13 +942,6 @@ img.slick-prev, img.slick-next {
   z-index: 5;
 } 
 .black-to-transparent-gradient-right {
-  background: -moz-linear-gradient(left,  rgba(0,0,0,0) 0%, rgba(0,0,0,1) 100%);
-  background: -webkit-gradient(linear, left top, right top, color-stop(0%,rgba(0,0,0,0)), color-stop(100%,rgba(0,0,0,1)));
-  background: -webkit-linear-gradient(left,  rgba(0,0,0,0) 0%,rgba(0,0,0,1) 100%);
-  background: -o-linear-gradient(left,  rgba(0,0,0,0) 0%,rgba(0,0,0,1) 100%);
-  background: -ms-linear-gradient(left,  rgba(0,0,0,0) 0%,rgba(0,0,0,1) 100%);
-  background: linear-gradient(to right,  rgba(0,0,0,0) 0%,rgba(0,0,0,1) 100%);
-  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00000000', endColorstr='#000000',GradientType=1 );
   width: 40px;
   height: 100%;
   position: absolute;
@@ -964,13 +950,6 @@ img.slick-prev, img.slick-next {
   z-index: 5;
 }
 .black-to-transparent-gradient-left {
-  background: -moz-linear-gradient(left,  rgba(0,0,0,1) 0%, rgba(0,0,0,0) 100%);
-  background: -webkit-gradient(linear, left top, right top, color-stop(0%,rgba(0,0,0,1)), color-stop(100%,rgba(0,0,0,0)));
-  background: -webkit-linear-gradient(left,  rgba(0,0,0,1) 0%,rgba(0,0,0,0) 100%);
-  background: -o-linear-gradient(left,  rgba(0,0,0,1) 0%,rgba(0,0,0,0) 100%);
-  background: -ms-linear-gradient(left,  rgba(0,0,0,1) 0%,rgba(0,0,0,0) 100%);
-  background: linear-gradient(to right,  rgba(0,0,0,1) 0%,rgba(0,0,0,0) 100%);
-  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#000000', endColorstr='#00000000',GradientType=1 );
   width: 40px;
   height: 100%;
   position: absolute;
@@ -1587,8 +1566,9 @@ and (max-device-width : 1024px)  {
   .cover-item-11 .col-xs-3 {
     top: 0%;
   }
+  .slick {margin-top: 3% !important;}
+  #show-recipe .slick {margin-top: 0 !important;}
   div#view-photo,div#play-video {
-      .slick-slide img {width: 100%;}
       img.slick-next {right:8px;top:40% !important;}
       img.slick-prev {left:8px;top:40% !important;}
     }

@@ -9,6 +9,7 @@ class CoverScroller extends Messenger {
         this.numElements = $(this.target).find('.cover').length;
         this.curCover = 0;
         this.animating = false;
+        this.quedScroll = false;
         this.coverState = {};
         this.color = 'red';
         timeline ? this.timeline = timeline : undefined;
@@ -98,8 +99,23 @@ class CoverScroller extends Messenger {
     }
 
     scrollTo(id) {
-        if (this.timeline && this.timeline.playing) return;
+        if (this.timeline && this.timeline.playing && !this.timeline.looping) return;
+        if (this.quedScroll) return;
         let _self = this;
+
+        this.direction = id < this.curCover ? 0 : 1;
+
+        if (this.timeline.looping) {
+            this.quedScroll = true;
+            this.timeline.stopLoop(this.direction);
+            this.timeline.on('stoppedLooping', function() {
+                _self.timeline.off('stoppedLooping','scroller');
+                _self.quedScroll = false;
+                _self.scrollTo(id);
+            },'scroller');
+            return;
+        }
+
         if (this.animating || this.curCover == id) return;
         if (id > this.numElements-1) {
             if (this.curCover == this.numElements-1) return;
@@ -109,8 +125,6 @@ class CoverScroller extends Messenger {
             if (this.curCover === 0) return;
             id = 0;
         }
-
-        this.direction = id < this.curCover ? 0 : 1;
 
         if (isMobile) {
             $('.cover-wrapper').animate({scrollTop: $('.cover-item-'+(id+1)).offset().top});
@@ -138,7 +152,7 @@ class CoverScroller extends Messenger {
     }
 
     scroll(direction=1) {
-        if (this.timeline && this.timeline.playing) return;
+        if (this.timeline && this.timeline.playing && !this.timeline.looping) return;
         this.scrollTo(direction ? this.curCover+1 : this.curCover-1);
     }
 }
