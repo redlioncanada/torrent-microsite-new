@@ -737,7 +737,7 @@ body {
   display: none;
   position: absolute;
   right: -7px;
-  width: 183px;
+  width: 212px;
   margin-top: -12px;
   height: 12px;
   font-size: 8pt;
@@ -750,7 +750,7 @@ body {
   z-index: 1;
 }
 #main-container .cover-picker .title:lang(fr) {
-  width: 270px;
+  width: 345px;
 }
 #main-container .cover-item-1 > div {
   position: absolute;
