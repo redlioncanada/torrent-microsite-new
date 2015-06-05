@@ -81,13 +81,13 @@ body {
 }
 @font-face {
   font-family: 'Avenir-Heavy';
-  src: url('font/Avenir-Heavy.eot?#iefix') format('embedded-opentype'), url('font/Avenir-Heavy.woff') format('woff'), url('font/Avenir-Heavy.ttf') format('truetype'), url('font/Avenir-Heavy.svg#Avenir-Heavy') format('svg');
+  src: url('/css/torrent/font/Avenir-Heavy.eot?#iefix') format('embedded-opentype'), url('/css/torrent/font/Avenir-Heavy.woff') format('woff'), url('/css/torrent/font/Avenir-Heavy.ttf') format('truetype'), url('/css/torrent/font/Avenir-Heavy.svg#Avenir-Heavy') format('svg');
   font-weight: normal;
   font-style: normal;
 }
 @font-face {
   font-family: 'Avenir-Medium';
-  src: url('font/Avenir-Medium.eot?#iefix') format('embedded-opentype'), url('font/Avenir-Medium.woff') format('woff'), url('font/Avenir-Medium.ttf') format('truetype'), url('font/Avenir-Medium.svg#Avenir-Medium') format('svg');
+  src: url('/css/torrent/font/Avenir-Medium.eot?#iefix') format('embedded-opentype'), url('/css/torrent/font/Avenir-Medium.woff') format('woff'), url('/css/torrent/font/Avenir-Medium.ttf') format('truetype'), url('/css/torrent/font/Avenir-Medium.svg#Avenir-Medium') format('svg');
   font-weight: normal;
   font-style: normal;
 }
@@ -603,19 +603,19 @@ body {
   width: 30px;
 }
 #main-container .color-picker .red div:first-child {
-  background-image: url(color-overlays.png);
+  background-image: url(/css/torrent/color-overlays.png);
   background-position: -4px -2px;
 }
 #main-container .color-picker .black div:first-child {
-  background-image: url(color-overlays.png);
+  background-image: url(/css/torrent/color-overlays.png);
   background-position: -4px 170px;
 }
 #main-container .color-picker .graphite div:first-child {
-  background-image: url(color-overlays.png);
+  background-image: url(/css/torrent/color-overlays.png);
   background-position: -4px 100px;
 }
 #main-container .color-picker .grey div:first-child {
-  background-image: url(color-overlays.png);
+  background-image: url(/css/torrent/color-overlays.png);
   background-position: -4px 31px;
 }
 #main-container .color-picker .unloaded div:first-child {
@@ -705,12 +705,15 @@ body {
 #main-container .cover-picker .nav-down {
   width: 15px;
   margin-left: -2px;
+  margin-top: -4px;
   cursor: pointer;
 }
 #main-container .cover-picker .nav-up {
   margin-bottom: -13px;
 }
 #main-container .cover-picker .nav-down {
+  margin-top: 269px;
+  margin-left: -13px;
   -ms-transform: rotate(180deg);
   /* IE 9 */
   -webkit-transform: rotate(180deg);
@@ -976,7 +979,7 @@ body {
 #main-container img.slick-next {
   width: 30px;
   height: 30px;
-  background: url(../assets/images/arrow.png) no-repeat center center fixed !important;
+  background: url(/images/torrent/arrow.png) no-repeat center center fixed !important;
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
