@@ -81,10 +81,10 @@ var CoverScroller = (function (_Messenger) {
 
             $('#loader').css({ width: width, height: height, top: menuSize });
 
-            var multiplier = this.curCover === 0 ? 1 : this.curCover;
-            var coverTop = this.elHeight * multiplier + this.elHeight / 2 - parseInt($('.cover-picker').height());
+            var coverTop = this.elHeight * this.curCover + this.elHeight / 2 - parseInt($('.cover-picker').height()) / 2;
             $('.cover-picker').css({ top: coverTop });
 
+            var multiplier = this.curCover === 0 ? 1 : this.curCover;
             var colorTop = this.elHeight * multiplier + this.elHeight / 2 - parseInt($('.color-picker').height()) / 2;
             $('.color-picker').css({ top: colorTop });
 
@@ -161,7 +161,7 @@ var CoverScroller = (function (_Messenger) {
 
                 //animate color and cover pickers, don't animate them to the first cover
                 var multiplier = id === 0 ? 1 : id;
-                var coverTop = this.elHeight * multiplier + this.elHeight / 2 - parseInt($('.cover-picker').height()) / 2;
+                var coverTop = this.elHeight * id + this.elHeight / 2 - parseInt($('.cover-picker').height()) / 2;
                 $('.cover-picker').velocity({ top: coverTop }, { duration: this.duration });
                 $('.cover-picker').find('li').removeClass('selected');
                 $('.cover-picker').find('li').eq(id).addClass('selected');

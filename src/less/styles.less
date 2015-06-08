@@ -211,7 +211,7 @@ a img {
 #view-photo, #play-video, #show-recipe {
   left: 10000px;
   width: 102%;
-  height: 102%;
+  height: 102.5%;
   position: fixed;
   z-index: 6050;
   overflow: hidden;
@@ -219,9 +219,10 @@ a img {
   .recipe-icon {
     z-index: 2;
     position: relative;
+    display: block;
     float: left;
     width: 65px;
-    top: 170px;
+    top: 10px;
     padding-left: 15px;
   }
 
@@ -231,7 +232,7 @@ a img {
     margin-top: 7%;
     
     > div img {
-      max-height: 666px;
+      max-height: 535px;
       z-index: 2;
       margin: 0 auto;
     }
@@ -275,10 +276,10 @@ a img {
   }
 
 .recipe-wrapper {
-  width: 80%;
   margin: 0 auto;
   margin-top: 10vh;
   max-width: 1100px;
+  min-width: 600px;
   min-height: 600px;
   height: 71%;
   position: relative;
@@ -289,9 +290,8 @@ a img {
   }
   
   .close-x {
-	  position: relative;
 	  max-width: 10%;
-    float: right;
+    right: 5px;
 	  
 	  img {
 		  max-width: 100%
@@ -300,7 +300,7 @@ a img {
 
   .recipe-overlay {
     width: 100%;
-    position: absolute;
+    position: relative;
     z-index: 2;
   }
   .recipe-background {
@@ -312,11 +312,12 @@ a img {
     background-color: black;
   }
   .recipe-content {
-    position: absolute;
-    height: 60%;
-    top: 36%;
+    position: relative;
     width: 100%;
+    min-width: 600px;
     z-index: 2;
+    left: -34px;
+    top: 69px;
     
     @media(max-width: 768px) {
 	    top: 15%
@@ -331,14 +332,13 @@ a img {
 	  }
     }
     > h3 {
-      padding-left: 30px;
       color: white;
 	   margin-bottom: 2px;
     }
 
     .left > div {
       width: 100%;
-      height: 20px;
+      height: 25px;
     }
     .left > div > div {
       float: left;
@@ -371,18 +371,18 @@ a img {
     }
   }
   .recipe-content .left {
-    width: 50%;
+    width: 46%;
     float: left;
-    padding-left: 30px;
     @media(max-width: 768px) {
 	    float: none;
 	    width: 100%;
 	}
   }
   .recipe-content .right {
-    width: 50%;
+    width: 44%;
     float: right;
     padding-right: 30px;
+    margin-top: -41px;
     @media(max-width: 768px) {
 	    float: none;
 	    padding-right: 0;
@@ -404,12 +404,12 @@ a img {
   .download-recipes {
     width: 228px;
 	height: 40px;
-	position: absolute;
-  top: 187px;
-	right: 27px;
+  float: right;
+	position: relative;
 	z-index: 3;
 	margin-left: -100px;
 	background-color: red;
+  margin: 30px 30px 0 0;
 	text-align: center;
 	line-height: 40px;
 	
@@ -719,7 +719,7 @@ a img {
 }
 .cover-item-5 {
   .col-xs-4 {top: 4%;}
-  .col-xs-4 p {max-width: 238px;}
+  .col-xs-4 p {max-width: 238px; margin-top: 10px;}
   .col-xs-3 {
     top: 58%;
     p {
@@ -1566,10 +1566,20 @@ and (max-device-width : 1024px)  {
   }
 }
 @media(max-height:768px) {
-  .cover-item-11 .col-xs-3 {
-    top: 0%;
+  .cover-item-1 .desktop h1 {
+    width: 326px;
   }
-  .slick {margin-top: 3% !important;}
+  img#scroll-explore {
+    margin-top: 30px !important;
+  }
+  .cover-item-11 {
+    .col-xs-3 {
+      top: 3%;
+    }
+    li {
+      margin-bottom: 20px;
+    }
+  }
   #show-recipe .slick {margin-top: 0 !important;}
   div#view-photo,div#play-video {
       img.slick-next {right:8px;top:40% !important;}

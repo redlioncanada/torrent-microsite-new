@@ -7,8 +7,8 @@ var timeline = undefined;
 if (!isMobile) {
     timeline = new Timeline({ //handles animation of video/sequence
         fps: 18,
-        keyframes: ['00000','00030','00055','00071','00109','00167','00187','00217','00270','00328','00342','00370','00384','00397','00413'],
-        tweenframes: [82,148,204,256],
+        keyframes: ['00000','00030','00055','00071','00109','00167','00191','00217','00270','00328','00342','00370','00384','00397','00413'],
+        tweenframes: [82,148,202,256],
         looptweens: [false,false,true,true],
         animation: {
             1: [
@@ -107,7 +107,7 @@ if (!isMobile) {
                 {
                     'endDown': function() {
                         let color = timeline.color;
-                        let liquid = $(`<div style="opacity:0;"" class="liquid-animation timeline-animation"><img class="liquid" src="./images/torrent/mini-animations/${color}-juice.png"./></div>`);
+                        let liquid = $(`<div style="opacity:0;"" class="liquid-animation timeline-animation"><img class="liquid" src="/images/torrent/mini-animations/${color}-juice.png"></div>`);
                         $('body').append(liquid);
 
                         timeline.on('changeSource', function() {
@@ -141,7 +141,7 @@ if (!isMobile) {
                 {
                     'endUp': function() {
                         let color = timeline.color;
-                        let liquid = $(`<div style="opacity:0;"" class="liquid-animation timeline-animation"><img class="liquid" src="./images/torrent/mini-animations/${color}-juice.png"./></div>`);
+                        let liquid = $(`<div style="opacity:0;"" class="liquid-animation timeline-animation"><img class="liquid" src="/images/torrent/mini-animations/${color}-juice.png"/></div>`);
                         $('body').append(liquid);
 
                         setPos();
@@ -216,7 +216,7 @@ $(document).ready(function(){
             let cacheNum = timeline.cached.length-1;
             circleLoader.init($('.color-picker .'+colors[0]));
             timeline.cacheColor = colors[0];
-            let url = './images/torrent/sequence/'+colors[0]+'/'+colors[0].toUpperCase()+'_TORRENT_EDIT_00000.jpg';
+            let url = '/images/torrent/sequence/'+colors[0]+'/'+colors[0].toUpperCase()+'_TORRENT_EDIT_00000.jpg';
             timeline._cache(false,url);
             
             //reposition color-picker elements
@@ -324,10 +324,10 @@ $(document).ready(function(){
                 $('.nav-down').fadeIn('fast');
             }
 
-            //push to gtm
+            //push to ga
             let label = $('.cover-picker li').eq(this.curCover).find('.title').text();
             if (label == '') label = 'Homepage';
-            dataLayer.push({'category':'scrollDepth','action':'scrolledTo','label':label});
+            ga('send', 'event', 'scrollDepth', 'scrolledTo', label);
         });
 
         scroller.on('scrollEnd', function() {
@@ -354,15 +354,15 @@ $(document).ready(function(){
 
     //init mobile gallery
     $('#slick-colors .slick').slick({
-        prevArrow: "<img class='slick-prev' src='./images/torrent/arrow.png'></img>",
-        nextArrow: "<img class='slick-next' src='./images/torrent/arrow.png'></img>",
+        prevArrow: "<img class='slick-prev' src='/images/torrent/arrow.png'></img>",
+        nextArrow: "<img class='slick-next' src='/images/torrent/arrow.png'></img>",
         lazyLoad: 'progressive'
     });
 
     //init photo slick gallery
     $('#view-photo .slick').slick({
-        prevArrow: "<img class='slick-prev' src='./images/torrent/arrow.png'></img>",
-        nextArrow: "<img class='slick-next' src='./images/torrent/arrow.png'></img>",
+        prevArrow: "<img class='slick-prev' src='/images/torrent/arrow.png'></img>",
+        nextArrow: "<img class='slick-next' src='/images/torrent/arrow.png'></img>",
         lazyLoad: 'progressive'
     }).on('init', function(s) {
         placeCloseButton(s,'#view-photo');
@@ -376,8 +376,8 @@ $(document).ready(function(){
 
     //init video slick gallery
     $('#play-video .slick').slick({
-        prevArrow: "<img class='slick-prev' src='./images/torrent/arrow.png'></img>",
-        nextArrow: "<img class='slick-next' src='./images/torrent/arrow.png'></img>",
+        prevArrow: "<img class='slick-prev' src='/images/torrent/arrow.png'></img>",
+        nextArrow: "<img class='slick-next' src='/images/torrent/arrow.png'></img>",
         lazyLoad: 'progressive'
     }).on('init', function(s) {
         placeCloseButton(s,'#play-video');
@@ -396,8 +396,8 @@ $(document).ready(function(){
 
     //init recipe slick gallery
     $('#show-recipe .slick').slick({
-        prevArrow: "<img class='slick-prev' src='./images/torrent/arrow.png'></img>",
-        nextArrow: "<img class='slick-next' src='./images/torrent/arrow.png'></img>"
+        prevArrow: "<img class='slick-prev' src='/images/torrent/arrow.png'></img>",
+        nextArrow: "<img class='slick-next' src='/images/torrent/arrow.png'></img>"
     });
 
     function placeCloseButton(slick,element) {
@@ -475,7 +475,7 @@ $(document).ready(function(){
                 break;
         }
 
-        dataLayer.push({'category':'torrentFeatureOverlays','action':'clicked'+catPrefix+id+catSuffix,'label':'next'+catSuffix});
+        ga('send', 'event', 'torrentFeatureOverlays', 'clicked'+catPrefix+id+catSuffix, 'next'+catSuffix);
     }
 
     //on view recipes button click, show recipe
@@ -487,9 +487,9 @@ $(document).ready(function(){
 
     //on color click, change the timeline's sequence
     $('.color-picker li').click(function (e) {
-        //push to gtm
+        //push to ga
         let label = $(this).find('.text').text();
-        dataLayer.push({'category':'pickYourColor','action':'click','label':label});
+        ga('send', 'event', 'pickYourColor', 'click', label);
 
         var source = $(e.currentTarget).attr('data-source');
         let color = $(e.currentTarget).attr('data-color');
@@ -501,9 +501,9 @@ $(document).ready(function(){
 
     //on youtube poster click, embed the video and play it
     $('.youtube-embed').click(function() {
-        //push to gtm
+        //push to ga
         let label = $(this).find('h3').text().trim();
-        dataLayer.push({'category':'torrentFeatureOverlays','action':'clickedPlay'+label,'label':'playVideo'});
+        ga('send', 'event', 'torrentFeatureOverlays', 'clickedPlay'+label, 'playVideo');
 
         if (YT) {
             let id = $(this).attr('data-id');
