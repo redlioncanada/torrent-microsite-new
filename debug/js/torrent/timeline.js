@@ -195,7 +195,8 @@ var Timeline = (function (_Messenger) {
       var self = this;
       if (id < 0 || id >= self.keyframes.length || id == self.currentKeyframe || self.playing || self.playInterval) {
         return false;
-      }var lastFrame = self.currentKeyframe;
+      }self.clearAnimation();
+      var lastFrame = self.currentKeyframe;
       self.currentKeyframe = id;
 
       var speed = 1;
@@ -486,10 +487,10 @@ var Timeline = (function (_Messenger) {
   }, {
     key: 'clearAnimation',
     value: function clearAnimation() {
-      $('.liquid-animation').fadeOut('fast', function () {
+      $('.liquid-animation').stop(true, true).fadeOut('fast', function () {
         $('.liquid-animation').remove();
       });
-      $('.dial-animation').fadeOut('fast', function () {
+      $('.dial-animation').stop(true, true).fadeOut('fast', function () {
         $('.dial-animation').remove();
       });
     }

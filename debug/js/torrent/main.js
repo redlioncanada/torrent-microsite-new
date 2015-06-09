@@ -9,8 +9,8 @@ var timeline = undefined;
 if (!isMobile) {
     timeline = new Timeline({ //handles animation of video/sequence
         fps: 18,
-        keyframes: ['00000', '00030', '00055', '00071', '00109', '00167', '00191', '00217', '00270', '00328', '00342', '00370', '00384', '00397', '00413'],
-        tweenframes: [82, 148, 202, 256],
+        keyframes: ['00000', '00030', '00070', '00083', '00109', '00167', '00191', '00217', '00270', '00328', '00342', '00370', '00384', '00397', '00413'],
+        tweenframes: [144, 202, 256],
         looptweens: [false, false, true, true],
         animation: {
             1: [{
@@ -125,7 +125,7 @@ if (!isMobile) {
                         var yOffset = (pH - $(window).height()) / 2;
                         var oW = pW * 0.1197421875;
                         var oX = pW * 0.4035078125 - xOffset;
-                        var oY = pH * 0.56725 - yOffset + 54;
+                        var oY = pH * 0.56725 - yOffset + 48;
 
                         $(liquid).css({ left: oX, top: oY, width: oW }).animate({ opacity: 1 }, 400);
                     }
@@ -152,7 +152,7 @@ if (!isMobile) {
                         var yOffset = (pH - $(window).height()) / 2;
                         var oW = pW * 0.1197421875;
                         var oX = pW * 0.4035078125 - xOffset;
-                        var oY = pH * 0.56725 - yOffset + 54;
+                        var oY = pH * 0.56725 - yOffset + 48;
 
                         $(liquid).css({ left: oX, top: oY, width: oW }).animate({ opacity: 1 }, 400);
                     }
@@ -306,9 +306,6 @@ $(document).ready(function () {
                     timeline.playTo(this.curCover);
                 }
             }
-
-            //remove animations
-            timeline.clearAnimation();
 
             //hide down arrow if necessary
             if (this.curCover == 11) {

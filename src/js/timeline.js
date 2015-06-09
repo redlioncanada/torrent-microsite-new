@@ -161,6 +161,7 @@ class Timeline extends Messenger {
   playTo(id) {
     let self = this;
     if (id < 0 || id >= self.keyframes.length || id == self.currentKeyframe || self.playing || self.playInterval) return false;
+    self.clearAnimation();
     let lastFrame = self.currentKeyframe;
     self.currentKeyframe = id;
 
@@ -437,10 +438,10 @@ class Timeline extends Messenger {
   }
 
   clearAnimation() {
-    $('.liquid-animation').fadeOut('fast',function() {
+    $('.liquid-animation').stop(true,true).fadeOut('fast',function() {
         $('.liquid-animation').remove();
     });
-    $('.dial-animation').fadeOut('fast',function() {
+    $('.dial-animation').stop(true,true).fadeOut('fast',function() {
         $('.dial-animation').remove();
     });
   }
