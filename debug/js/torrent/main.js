@@ -11,7 +11,7 @@ if (!isMobile) {
         fps: 18,
         keyframes: ['00000', '00030', '00070', '00083', '00109', '00167', '00191', '00217', '00270', '00328', '00342', '00370', '00384', '00397', '00413'],
         tweenframes: [144, 202, 256],
-        looptweens: [false, false, true, true],
+        looptweens: [false, true, true],
         animation: {
             1: [{
                 startDown: function startDown() {
@@ -24,7 +24,7 @@ if (!isMobile) {
                     var yOffset = (pH - $(window).height()) / 2;
                     var oW = pW * 0.1944921875;
                     var oX = pW * 0.334890625 - xOffset;
-                    var oY = pH * 0.21188888888889 - yOffset + 96;
+                    var oY = pH * 0.21188888888889 - yOffset + 58;
 
                     var blender = $('.blender-1').clone().css({ left: dX, top: dY, width: dW, position: 'absolute', zIndex: 6049 }).removeClass('blender-1').addClass('blender-2 timeline-animation').appendTo('body');
                     $('.blender-1').hide();
@@ -46,7 +46,7 @@ if (!isMobile) {
                     var yOffset = (pH - $(window).height()) / 2;
                     var oW = pW * 0.1944921875;
                     var oX = pW * 0.334890625 - xOffset;
-                    var oY = pH * 0.21188888888889 - yOffset + 96;
+                    var oY = pH * 0.21188888888889 - yOffset + 58;
                     var dX = parseInt($('.cover-item-1 .desktop .col-xs-3').eq(0).width()) - dW - parseInt($('.blender-1').css('margin-right'));
                     var dY = parseInt($('.blender-1').offset().top) - parseInt($('.blender-1').css('margin-top')) + parseInt($('.blender-1').css('margin-bottom')) + $('.cover').height();
 
@@ -125,7 +125,7 @@ if (!isMobile) {
                         var yOffset = (pH - $(window).height()) / 2;
                         var oW = pW * 0.1197421875;
                         var oX = pW * 0.4035078125 - xOffset;
-                        var oY = pH * 0.56725 - yOffset + 48;
+                        var oY = pH * 0.56725 - yOffset + 42;
 
                         $(liquid).css({ left: oX, top: oY, width: oW }).animate({ opacity: 1 }, 400);
                     }
@@ -152,7 +152,7 @@ if (!isMobile) {
                         var yOffset = (pH - $(window).height()) / 2;
                         var oW = pW * 0.1197421875;
                         var oX = pW * 0.4035078125 - xOffset;
-                        var oY = pH * 0.56725 - yOffset + 48;
+                        var oY = pH * 0.56725 - yOffset + 42;
 
                         $(liquid).css({ left: oX, top: oY, width: oW }).animate({ opacity: 1 }, 400);
                     }
@@ -163,6 +163,9 @@ if (!isMobile) {
         mode: 'sequence'
     });
     var scroller = new CoverScroller({ duration: 1.5 }, timeline); //handles scrolling of page
+} else {
+    //inject meta tags
+    $('head').append('<meta content=\'width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0\' name=\'viewport\' />').append('<meta content=\'True\' name=\'HandheldFriendly\' />');
 }
 var circleLoader = new circleLoader();
 
@@ -275,7 +278,7 @@ $(document).ready(function () {
         timeline.on('changeSource', function () {
             //change the blender on the first panel when the color changes
             var path = '/' + $('.blender-1').attr('id').replace(/-/g, '/') + '/';
-            $('.blender-1').attr('src', '.' + path + this.color + '.png');
+            $('.blender-1').attr('src', path + this.color + '.png');
 
             //toggle recipe button if the current color doesn't have one
             if ($('#show-recipe .' + timeline.color).length == 0) {
