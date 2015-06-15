@@ -406,17 +406,21 @@ class Timeline extends Messenger {
     if (self.mode == 'video') {
       //TODO implement transitioning video source
     } else if (self.mode == 'sequence') {
+      $('#timeline .timeline-frame-'+self.currentFrame).addClass('remove');
+
       $('#timeline').attr('data-src',url);
       self._setURL();
       url = self._constructURL();
 
-      $('#timeline .timeline-frame-'+self.currentFrame).fadeOut("fast", function() {
-        self._cache();
-      });
-      $('#timeline img').fadeOut("fast", function() {
+      self._cache();
+
+      timeline.on('currentFrameLoaded', function() {
+        timeline.off('currentFrameLoaded', 'changeSource');
         self.animating = false; 
-        self.emit('changeSource'); 
-      });
+        self.emit('changeSource');
+      }, 'changeSource');
+      
+      $('#timeline img').not('.remove,.added').fadeOut("fast");
     }
   }
 
@@ -528,7 +532,12 @@ class Timeline extends Messenger {
     if (hard) {
       let cf = self.currentFrame;
       let suf = self._constructURL();
-      $('#timeline-frame-'+cf).attr('src',suf);
+      if ($('#timeline .remove').length) {
+        let mt = $('#timeline img').css('marginTop');
+        $('#timeline').append(`<img style="display:none; z-index:2; margin-top:${mt}" class="added timeline-frame timeline-frame-${cf}" src="${suf}"/>`);
+      } else {
+        $('#timeline-frame-'+cf).attr('src',suf);
+      }
     }
 
     if ((hard && self.cached.indexOf(self.color) > -1) || (!hard && self.cached.indexOf(self.cacheColor) > -1)) {
@@ -536,7 +545,11 @@ class Timeline extends Messenger {
         let suffix = self._constructURL(i);
         $('#timeline .timeline-frame-'+i).attr('src',suffix);
       }
-      setTimeout(function(){$('#timeline .timeline-frame-'+self.currentFrame).fadeIn('fast');self.emit('currentFrameLoaded');},600);
+      setTimeout(function(){
+        $('#timeline .remove').fadeOut('fast', function() {$(this).remove();});
+        $('#timeline .added').delay(200).fadeIn('fast', function() {$(this).removeClass('added');});
+        self.emit('currentFrameLoaded');
+      },300);
       return;
     }
 

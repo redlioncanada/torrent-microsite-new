@@ -57,6 +57,12 @@ var CoverScroller = (function (_Messenger) {
             }
         });
 
+        $('.cover-picker li').hover(function () {
+            $(this).find('div').eq(0).animate({ opacity: 1 }, 400);
+        }, function () {
+            if (_self.curCover == 0) $(this).find('div').eq(0).animate({ opacity: 0.5 }, 400);
+        });
+
         this.redraw();
     }
 
@@ -86,6 +92,11 @@ var CoverScroller = (function (_Messenger) {
 
             var multiplier = this.curCover === 0 ? 1 : this.curCover;
             var colorTop = this.elHeight * multiplier + this.elHeight / 2 - parseInt($('.color-picker').height()) / 2;
+            if (this.curCover == 0) {
+                $('.cover-picker li').not('.selected').find('div:first-child').css({ opacity: 0.5 });
+            } else {
+                $('.cover-picker li div:first-child').css({ opacity: 1 });
+            }
             $('.color-picker').css({ top: colorTop });
 
             $.each($('.color-picker li'), function (i, v) {
@@ -148,6 +159,8 @@ var CoverScroller = (function (_Messenger) {
             if (isMobile) {
                 $('.cover-wrapper').animate({ scrollTop: $('.cover-item-' + (id + 1)).offset().top });
             } else {
+                if (id == 0) $('.cover-picker li div:first-child').animate({ opacity: 0.5 }, 400);else $('.cover-picker li div:first-child').animate({ opacity: 1 }, 400);
+
                 if (this.timeline.looping) {
                     this.timeline.stopLoop(this.direction);
                 }

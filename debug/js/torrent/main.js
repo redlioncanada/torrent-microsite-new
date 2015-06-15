@@ -18,13 +18,13 @@ if (!isMobile) {
                     var dW = $('.blender-1').width();
                     var dX = parseInt($('.cover-item-1 .desktop .col-xs-3').eq(0).width()) - dW - parseInt($('.blender-1').css('margin-right'));
                     var dY = parseInt($('.blender-1').offset().top) - parseInt($('.blender-1').css('margin-top')) + parseInt($('.blender-1').css('margin-bottom'));
-                    var pW = $('#timeline').width();
-                    var pH = $('#timeline').height();
+                    var pW = $('#timeline img').width();
+                    var pH = $('#timeline img').height();
                     var xOffset = (pW - $(window).width()) / 2;
                     var yOffset = (pH - $(window).height()) / 2;
                     var oW = pW * 0.1944921875;
                     var oX = pW * 0.334890625 - xOffset;
-                    var oY = pH * 0.21188888888889 - yOffset + 58;
+                    var oY = pH * 0.21944444444444 + $('#timeline').offset().top - 4;
 
                     var blender = $('.blender-1').clone().css({ left: dX, top: dY, width: dW, position: 'absolute', zIndex: 6049 }).removeClass('blender-1').addClass('blender-2 timeline-animation').appendTo('body');
                     $('.blender-1').hide();
@@ -292,7 +292,6 @@ $(document).ready(function () {
         });
 
         timeline.redraw();
-        $('#timeline img').animate({ marginTop: '-3%' });
 
         scroller.on('scroll', function () {
             //make sure blender is visible when a background is being displayed
@@ -301,8 +300,12 @@ $(document).ready(function () {
                     timeline.hideBorder();
                 }
 
+                if (this.curCover != 0) {
+                    $('#timeline').show();
+                }
+
                 //force correct positioning, temp
-                if (this.curCover == 0) $('#timeline *').stop(true).animate({ marginTop: '-3%' });else if (this.curCover == 3) $('#timeline *').stop(true).animate({ marginTop: '7%' });else if (this.curCover == 4) $('#timeline *').stop(true).animate({ marginTop: '4%' });else if (this.curCover == 11) $('#timeline *').stop(true).animate({ marginTop: '-7%' });else $('#timeline *').stop(true).animate({ marginTop: '0' });
+                if (this.curCover == 2) $('#timeline *').stop(true).animate({ marginTop: '7%' });else if (this.curCover == 3) $('#timeline *').stop(true).animate({ marginTop: '7%' });else if (this.curCover == 4) $('#timeline *').stop(true).animate({ marginTop: '4%' });else if (this.curCover == 11) $('#timeline *').stop(true).animate({ marginTop: '-7%' });else $('#timeline *').stop(true).animate({ marginTop: '0' });
 
                 //play the video
                 if (self.currentFrame != 0 && !(this.curCover == 11 && timeline.currentKeyframe > 11)) {

@@ -731,7 +731,7 @@ body {
   height: 12px;
   width: 12px;
   border: 1px solid #FFF;
-  background-color: black;
+  background-color: rgba(27, 27, 27, 0.5);
   border-radius: 50%;
   z-index: 2;
   position: relative;

@@ -451,17 +451,21 @@ var Timeline = (function (_Messenger) {
     value: function changeSource(url) {
       var self = this;
       if (self.mode == 'video') {} else if (self.mode == 'sequence') {
+        $('#timeline .timeline-frame-' + self.currentFrame).addClass('remove');
+
         $('#timeline').attr('data-src', url);
         self._setURL();
         url = self._constructURL();
 
-        $('#timeline .timeline-frame-' + self.currentFrame).fadeOut('fast', function () {
-          self._cache();
-        });
-        $('#timeline img').fadeOut('fast', function () {
+        self._cache();
+
+        timeline.on('currentFrameLoaded', function () {
+          timeline.off('currentFrameLoaded', 'changeSource');
           self.animating = false;
           self.emit('changeSource');
-        });
+        }, 'changeSource');
+
+        $('#timeline img').not('.remove,.added').fadeOut('fast');
       }
     }
   }, {
@@ -584,7 +588,12 @@ var Timeline = (function (_Messenger) {
       if (hard) {
         var cf = self.currentFrame;
         var suf = self._constructURL();
-        $('#timeline-frame-' + cf).attr('src', suf);
+        if ($('#timeline .remove').length) {
+          var mt = $('#timeline img').css('marginTop');
+          $('#timeline').append('<img style="display:none; z-index:2; margin-top:' + mt + '" class="added timeline-frame timeline-frame-' + cf + '" src="' + suf + '"/>');
+        } else {
+          $('#timeline-frame-' + cf).attr('src', suf);
+        }
       }
 
       if (hard && self.cached.indexOf(self.color) > -1 || !hard && self.cached.indexOf(self.cacheColor) > -1) {
@@ -593,8 +602,14 @@ var Timeline = (function (_Messenger) {
           $('#timeline .timeline-frame-' + i).attr('src', suffix);
         }
         setTimeout(function () {
-          $('#timeline .timeline-frame-' + self.currentFrame).fadeIn('fast');self.emit('currentFrameLoaded');
-        }, 600);
+          $('#timeline .remove').fadeOut('fast', function () {
+            $(this).remove();
+          });
+          $('#timeline .added').delay(200).fadeIn('fast', function () {
+            $(this).removeClass('added');
+          });
+          self.emit('currentFrameLoaded');
+        }, 300);
         return;
       }
 

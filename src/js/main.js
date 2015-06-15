@@ -17,13 +17,13 @@ if (!isMobile) {
                         let dW = $('.blender-1').width();
                         let dX = parseInt($('.cover-item-1 .desktop .col-xs-3').eq(0).width())-dW-parseInt($('.blender-1').css('margin-right'));
                         let dY = parseInt($('.blender-1').offset().top) - parseInt($('.blender-1').css('margin-top')) + parseInt($('.blender-1').css('margin-bottom'));
-                        let pW = $('#timeline').width();
-                        let pH = $('#timeline').height();
+                        let pW = $('#timeline img').width();
+                        let pH = $('#timeline img').height();
                         let xOffset = (pW - $(window).width()) / 2;
                         let yOffset = (pH - $(window).height()) / 2;
                         let oW = pW * 0.1944921875;
                         let oX = (pW * 0.334890625) - xOffset;
-                        let oY = (pH * 0.21188888888889) - yOffset + 58;
+                        let oY = pH * 0.21944444444444 + $('#timeline').offset().top - 4;
 
                         let blender = $('.blender-1').clone().css({'left':dX,'top':dY,'width':dW,'position':'absolute','zIndex':6049}).removeClass('blender-1').addClass('blender-2 timeline-animation').appendTo('body');
                         $('.blender-1').hide();
@@ -295,7 +295,6 @@ $(document).ready(function(){
         });
 
         timeline.redraw();
-        $('#timeline img').animate({'marginTop':'-3%'});
     
         scroller.on('scroll', function () {
             //make sure blender is visible when a background is being displayed
@@ -304,8 +303,12 @@ $(document).ready(function(){
                     timeline.hideBorder();
                 }
 
+                if (this.curCover != 0) {
+                    $('#timeline').show();
+                }
+
                 //force correct positioning, temp
-                if (this.curCover == 0) $('#timeline *').stop(true).animate({'marginTop':'-3%'});
+                if (this.curCover == 2) $('#timeline *').stop(true).animate({'marginTop':'7%'});
                 else if (this.curCover == 3) $('#timeline *').stop(true).animate({'marginTop':'7%'});
                 else if (this.curCover == 4) $('#timeline *').stop(true).animate({'marginTop':'4%'});
                 else if (this.curCover == 11) $('#timeline *').stop(true).animate({'marginTop':'-7%'});
