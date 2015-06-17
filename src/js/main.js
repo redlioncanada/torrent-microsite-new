@@ -330,7 +330,7 @@ $(document).ready(function(){
             //push to ga
             let label = $('.cover-picker li').eq(this.curCover).find('.title').text();
             if (label == '') label = 'Homepage';
-            ga('send', 'event', 'scrollDepth', 'scrolledTo', label);
+            ga('send', 'event', 'Scroll Depth', 'Scrolled To', label);
         });
 
         scroller.on('scrollEnd', function() {
@@ -468,17 +468,17 @@ $(document).ready(function(){
                 catPrefix = 'Play';
                 catSuffix = 'Video';
                 id = $('#play-video .slick').slick('slickCurrentSlide')+direction;
-                id = $('#play-video .slick-slide').eq(id).find('h3').text().trim();
+                id = $('#play-video .slick-slide').eq(id).find('h3').text();
                 break;
             case 'show-recipe':
                 catPrefix = 'Show';
                 catSuffix = 'Recipe'
                 id = $('#show-recipe .slick').slick('slickCurrentSlide')+direction;
-                id = $('#show-recipe .slick-slide').eq(id).find('.recipe-content > h3').text().trim();
+                id = $('#show-recipe .slick-slide').eq(id).find('.recipe-content > h3').text();
                 break;
         }
 
-        ga('send', 'event', 'torrentFeatureOverlays', 'clicked'+catPrefix+id+catSuffix, 'next'+catSuffix);
+        ga('send', 'event', 'Torrent-Feature Overlays', 'Clicked '+catPrefix+' '+catSuffix, catSuffix+' '+id);
     }
 
     //on view recipes button click, show recipe
@@ -492,7 +492,7 @@ $(document).ready(function(){
     $('.color-picker li').click(function (e) {
         //push to ga
         let label = $(this).find('.text').text();
-        ga('send', 'event', 'pickYourColor', 'click', label);
+        ga('send', 'event', 'Torrent-Pick Your Color', 'Clicked', label);
 
         var source = $(e.currentTarget).attr('data-source');
         let color = $(e.currentTarget).attr('data-color');
@@ -505,8 +505,8 @@ $(document).ready(function(){
     //on youtube poster click, embed the video and play it
     $('.youtube-embed').click(function() {
         //push to ga
-        let label = $(this).find('h3').text().trim();
-        ga('send', 'event', 'torrentFeatureOverlays', 'clickedPlay'+label, 'playVideo');
+        let label = $(this).find('h3').text();
+        ga('send', 'event', 'Torrent-Feature Overlays', 'Clicked Play Video', label);
 
         if (YT) {
             let id = $(this).attr('data-id');
