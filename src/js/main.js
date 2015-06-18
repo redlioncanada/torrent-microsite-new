@@ -330,7 +330,7 @@ $(document).ready(function(){
             //push to ga
             let label = $('.cover-picker li').eq(this.curCover).find('.title').text();
             if (label == '') label = 'Homepage';
-            ga('send', 'event', 'Scroll Depth', 'Scrolled To', label);
+            ga('send', 'event', 'Torrent-Scroll Depth', 'Scrolled To', label);
         });
 
         scroller.on('scrollEnd', function() {
