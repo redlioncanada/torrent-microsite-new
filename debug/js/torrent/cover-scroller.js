@@ -71,7 +71,8 @@ var CoverScroller = (function (_Messenger) {
     _createClass(CoverScroller, [{
         key: 'redraw',
         value: function redraw() {
-            var menuSize = isPhone ? 50 : 116; //magical
+            //let menuSize = isPhone ? 50 : 116;  //magical
+            var menuSize = 116;
             var height = $(window).height() - menuSize;
             var width = $(window).width();
 

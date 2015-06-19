@@ -84,7 +84,8 @@ class Timeline extends Messenger {
 
   redraw() {
     //make sure video's aspect/position is maintained
-    let menuSize = isPhone ? 50 : 116;
+    //let menuSize = isPhone ? 50 : 116;
+    let menuSize = 116;
     let width = $(window).width();
     let height = $(window).height() - menuSize;
     let viewportAspect = width/height;

@@ -162,18 +162,18 @@ if (!isMobile) {
         border: true,
         mode: 'sequence'
     });
-    var scroller = new CoverScroller({ duration: 1.5 }, timeline); //handles scrolling of page
 } else {
     //inject meta tags
     $('head').append('<meta content=\'width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0\' name=\'viewport\' />').append('<meta content=\'True\' name=\'HandheldFriendly\' />');
 }
+var scroller = new CoverScroller({ duration: 1.5 }, timeline); //handles scrolling of page
 var circleLoader = new circleLoader();
 
 $(document).ready(function () {
     //set header position
-    if (isPhone) {
+    /*if (isPhone) {
         $('.cover-wrapper').css('top', '50px');
-    }
+    }*/
     if (isMobile) {
         $('#loader').fadeOut();
     }

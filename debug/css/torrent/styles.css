@@ -1226,9 +1226,6 @@ body {
   }
 }
 @media (max-width: 767px) {
-  #main-container .cover-wrapper {
-    top: 50px;
-  }
   #main-container body {
     font-size: 12pt !important;
   }
@@ -1758,4 +1755,10 @@ body {
   #main-container .cover-item-4 li > div:last-child p {
     font-size: 0.8em;
   }
+}
+.mobile body {
+  background-color: black !important;
+}
+.mobile #main-container {
+  background-color: black !important;
 }

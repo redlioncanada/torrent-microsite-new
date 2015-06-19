@@ -989,7 +989,7 @@ p > span, h1 > span, h2 > span, h3 > span, h4 > span {
 }
 .fade {
   background-color: black;
-  opacity: 0.7;
+  opacity: 0.7; 
   width: 100%;
   min-width: 100%;
   position: absolute;
@@ -1082,9 +1082,6 @@ p > span, h1 > span, h2 > span, h3 > span, h4 > span {
 }
 // < ipad
 @media (max-width:767px)  {
-    .cover-wrapper {
-      top: 50px;
-    }
     body {font-size: 12pt !important;}
 
     .cover .fade {
@@ -1198,11 +1195,11 @@ p > span, h1 > span, h2 > span, h3 > span, h4 > span {
         }
     }
 }
+
 //ipad
 @media(max-width:768px), only screen 
 and (min-device-width : 768px) 
 and (max-device-width : 1024px)  {
-
   .cover {
     height: 800px;
   }
@@ -1624,3 +1621,6 @@ and (max-device-width : 1024px)  {
   }
 }
 }
+//mobile
+.mobile body {background-color: black !important;}
+.mobile #main-container {background-color: black !important;}

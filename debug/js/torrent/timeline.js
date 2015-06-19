@@ -107,7 +107,8 @@ var Timeline = (function (_Messenger) {
     key: 'redraw',
     value: function redraw() {
       //make sure video's aspect/position is maintained
-      var menuSize = isPhone ? 50 : 116;
+      //let menuSize = isPhone ? 50 : 116;
+      var menuSize = 116;
       var width = $(window).width();
       var height = $(window).height() - menuSize;
       var viewportAspect = width / height;

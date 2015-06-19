@@ -52,7 +52,8 @@ class CoverScroller extends Messenger {
     }
 
     redraw() {
-        let menuSize = isPhone ? 50 : 116;  //magical
+        //let menuSize = isPhone ? 50 : 116;  //magical
+        let menuSize = 116;
         let height = $(window).height() - menuSize;
         let width = $(window).width();
 
