@@ -1133,7 +1133,7 @@ body {
     font-size: 17pt !important;
   }
   #main-container div.cover-item-1 h1 {
-    font-size: 13pt;
+    font-size: 14pt;
   }
   #main-container div.cover-item-1 h3 {
     font-size: 13pt;
@@ -1144,20 +1144,28 @@ body {
   #main-container div.cover-item-2 h2 {
     font-size: 19pt !important;
   }
+  #main-container div.cover-item-2 .mobile > img {
+    height: 515px;
+    margin-top: -136px;
+    margin-left: 0;
+  }
   #main-container div.cover-item-3 {
     height: 550px !important;
   }
+  #main-container div.cover-item-3 img.view-photos {
+    margin-left: 0px;
+  }
   #main-container div.cover-item-4 {
-    height: 395px !important;
-  }
-  #main-container div.cover-item-4 .col-xs-8 ul {
-    padding-top: 108px !important;
-  }
-  #main-container div.cover-item-5 {
     height: 530px !important;
   }
+  #main-container div.cover-item-4 .col-xs-8 ul {
+    padding-top: 60px !important;
+  }
+  #main-container div.cover-item-5 {
+    height: 540px !important;
+  }
   #main-container div.cover-item-5 .mobile > img {
-    top: 12% !important;
+    top: 2% !important;
   }
   #main-container div.cover-item-6 {
     height: 280px!important;
@@ -1185,7 +1193,7 @@ body {
   }
   #main-container div.cover-item-8 {
     margin-top: 32px;
-    height: 550px !important;
+    height: 450px !important;
   }
   #main-container div.cover-item-8 > img {
     top: 13vh!important;
@@ -1194,7 +1202,7 @@ body {
     font-size: 11pt !important;
   }
   #main-container div.cover-item-9 {
-    height: 400px!important;
+    height: 440px!important;
   }
   #main-container div.cover-item-9 .mobile > img {
     top: 4%!important;
@@ -1212,7 +1220,7 @@ body {
     font-size: 18pt;
   }
   #main-container div.cover-item-11 .mobile > img {
-    left: 0.7vw!important;
+    left: 7vw!important;
     top: 35%!important;
   }
   #main-container div.cover-item-12 {

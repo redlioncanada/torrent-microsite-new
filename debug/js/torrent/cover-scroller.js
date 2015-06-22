@@ -76,35 +76,39 @@ var CoverScroller = (function (_Messenger) {
             var height = $(window).height() - menuSize;
             var width = $(window).width();
 
-            $('.cover-wrapper,.cover').css({
+            var coverSelector = isMobile ? '.cover-wrapper' : '.cover-wrapper,.cover';
+
+            $(coverSelector).css({
                 width: width,
                 height: height,
                 'min-height': height
             });
 
-            this.elHeight = height;
-            this.emit('redraw');
-            $(this.target).css('top', -this.elHeight * this.curCover);
+            if (!isMobile) {
+                this.elHeight = height;
+                this.emit('redraw');
+                $(this.target).css('top', -this.elHeight * this.curCover);
 
-            $('#loader').css({ width: width, height: height, top: menuSize });
+                $('#loader').css({ width: width, height: height, top: menuSize });
 
-            var coverTop = this.elHeight * this.curCover + this.elHeight / 2 - parseInt($('.cover-picker').height()) / 2;
-            $('.cover-picker').css({ top: coverTop });
+                var coverTop = this.elHeight * this.curCover + this.elHeight / 2 - parseInt($('.cover-picker').height()) / 2;
+                $('.cover-picker').css({ top: coverTop });
 
-            var multiplier = this.curCover === 0 ? 1 : this.curCover;
-            var colorTop = this.elHeight * multiplier + this.elHeight / 2 - parseInt($('.color-picker').height()) / 2;
-            if (this.curCover == 0) {
-                $('.cover-picker li').not('.selected').find('div:first-child').css({ opacity: 0.5 });
-            } else {
-                $('.cover-picker li div:first-child').css({ opacity: 1 });
+                var multiplier = this.curCover === 0 ? 1 : this.curCover;
+                var colorTop = this.elHeight * multiplier + this.elHeight / 2 - parseInt($('.color-picker').height()) / 2;
+                if (this.curCover == 0) {
+                    $('.cover-picker li').not('.selected').find('div:first-child').css({ opacity: 0.5 });
+                } else {
+                    $('.cover-picker li div:first-child').css({ opacity: 1 });
+                }
+                $('.color-picker').css({ top: colorTop });
+
+                $.each($('.color-picker li'), function (i, v) {
+                    if (i == 0) return;
+                    var t = $(this).find('div').eq(0).position().top;
+                    $(this).find('div').eq(1).css('top', t);
+                });
             }
-            $('.color-picker').css({ top: colorTop });
-
-            $.each($('.color-picker li'), function (i, v) {
-                if (i == 0) return;
-                var t = $(this).find('div').eq(0).position().top;
-                $(this).find('div').eq(1).css('top', t);
-            });
         }
     }, {
         key: 'showLoader',
