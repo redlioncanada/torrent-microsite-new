@@ -6,8 +6,8 @@ class Timeline extends Messenger {
     if (opts.mode == 'video') {
       this._forwardVideo = undefined;
       this._backwardVideo = undefined;
-      $('#timeline #forward').css('zIndex','2');
-      $('#timeline #backward').css('zIndex','1');
+      $jq('#timeline #forward').css('zIndex','2');
+      $jq('#timeline #backward').css('zIndex','1');
       if (!opts.fps) {this.log("fps is undefined, assuming 30fps", 2); this.fps = 30;} else {this.fps = opts.fps;}
     }
 
@@ -43,7 +43,7 @@ class Timeline extends Messenger {
     }
 
     if (this.border) {
-      $('#timeline').append('<div style="display: none;" class="black-to-transparent-gradient-top"></div>')
+      $jq('#timeline').append('<div style="display: none;" class="black-to-transparent-gradient-top"></div>')
         .append('<div style="display: none;" class="black-to-transparent-gradient-bottom"></div>')
         .append('<div style="display: none;" class="black-to-transparent-gradient-left"></div>')
         .append('<div style="display: none;" class="black-to-transparent-gradient-right"></div>');
@@ -59,7 +59,7 @@ class Timeline extends Messenger {
     var initInterval = setInterval(function() {
         if (self.redraw()) clearInterval(initInterval);
     },200);
-    $(window).resize(self.redraw);
+    $jq(window).resize(self.redraw);
 
     self.forwardVideo.play();
     self.forwardVideo.pause();
@@ -84,10 +84,9 @@ class Timeline extends Messenger {
 
   redraw() {
     //make sure video's aspect/position is maintained
-    //let menuSize = isPhone ? 50 : 116;
-    let menuSize = 116;
-    let width = $(window).width();
-    let height = $(window).height() - menuSize;
+    let menuSize = isPhone ? 50 : 116;
+    let width = $jq(window).width();
+    let height = $jq(window).height() - menuSize;
     let viewportAspect = width/height;
     let imageAspect = 16/9;
     if (isNaN(imageAspect) || !imageAspect) return false;
@@ -95,26 +94,26 @@ class Timeline extends Messenger {
     //if (height < 800) mod = 1;
     //else mod = 1.2;
 
-    $('.black-to-transparent-gradient-top,.black-to-transparent-gradient-bottom,.black-to-transparent-gradient-left,.black-to-transparent-gradient-right').removeClass('timeline-ignore');
+    $jq('.black-to-transparent-gradient-top,.black-to-transparent-gradient-bottom,.black-to-transparent-gradient-left,.black-to-transparent-gradient-right').removeClass('timeline-ignore');
     if (viewportAspect > imageAspect) {
-      $('.black-to-transparent-gradient-top,.black-to-transparent-gradient-bottom').addClass('timeline-ignore').fadeOut();
+      $jq('.black-to-transparent-gradient-top,.black-to-transparent-gradient-bottom').addClass('timeline-ignore').fadeOut();
       let nheight = height*mod;
       let nwidth = height*imageAspect*mod;
       let hdiff = nheight-height;
       let wdiff = nwidth-width;
-      $('#timeline').css({
+      $jq('#timeline').css({
           'height': nheight,
           'width': nwidth,
           'top': menuSize - hdiff/2,
           'left': -wdiff/2
       });
     } else if (viewportAspect < imageAspect) {
-      $('.black-to-transparent-gradient-left,.black-to-transparent-gradient-right').addClass('timeline-ignore').fadeOut();
+      $jq('.black-to-transparent-gradient-left,.black-to-transparent-gradient-right').addClass('timeline-ignore').fadeOut();
       let nheight = (width/imageAspect)*mod;
       let nwidth = width*mod;
       let hdiff = nheight-height;
       let wdiff = nwidth-width;
-      $('#timeline').css({  
+      $jq('#timeline').css({  
           'height': nheight,
           'width': nwidth,
           'top': menuSize - hdiff/2,
@@ -125,7 +124,7 @@ class Timeline extends Messenger {
       let nwidth = width*mod;
       let hdiff = nheight-height;
       let wdiff = nwidth-width;
-      $('#timeline').css({
+      $jq('#timeline').css({
           'height': nheight,
           'width': nwidth,
           top: menuSize - hdiff/2,
@@ -137,17 +136,17 @@ class Timeline extends Messenger {
 
   showBorder(show=1) {
     if (show) {
-      $('#timeline > div:not(.timeline-ignore,#forward,#backward)').fadeIn();
+      $jq('#timeline > div:not(.timeline-ignore,#forward,#backward)').fadeIn();
     } else {
-      $('#timeline > div:not(.timeline-ignore,#forward,#backward)').fadeOut();
+      $jq('#timeline > div:not(.timeline-ignore,#forward,#backward)').fadeOut();
     }
   }
 
   hideBorder(hide=1) {
     if (hide) {
-      $('#timeline > div:not(.timeline-ignore,#forward,#backward)').fadeOut();
+      $jq('#timeline > div:not(.timeline-ignore,#forward,#backward)').fadeOut();
     } else {
-      $('#timeline > div:not(.timeline-ignore,#forward,#backward)').fadeIn();
+      $jq('#timeline > div:not(.timeline-ignore,#forward,#backward)').fadeIn();
     }
   }
 
@@ -186,20 +185,20 @@ class Timeline extends Messenger {
 
     self.playing = true;
     self.animating = true;
-    $('#timeline .timeline-frame').removeClass('old');
+    $jq('#timeline .timeline-frame').removeClass('old');
     self.emit('play');
 
     let primary = undefined, secondary = undefined;
     if (direction) {
       primary = self.forwardVideo;
       secondary = self.backwardVideo;
-      $('#timeline #forward').css('zIndex','2');
-      $('#timeline #backward').css('zIndex','1');
+      $jq('#timeline #forward').css('zIndex','2');
+      $jq('#timeline #backward').css('zIndex','1');
     } else {
       primary = self.backwardVideo;
       secondary = self.forwardVideo;
-      $('#timeline #forward').css('zIndex','1');
-      $('#timeline #backward').css('zIndex','2');
+      $jq('#timeline #forward').css('zIndex','1');
+      $jq('#timeline #backward').css('zIndex','2');
     }
 
     if (self.mode == 'video') {
@@ -282,9 +281,9 @@ class Timeline extends Messenger {
             
 
             if (Math.abs(self.currentFrame - parseInt(val)) <= 1) self.currentFrame = parseInt(val);
-              $('#timeline .timeline-frame-'+self.currentFrame).css({'zIndex':'2','display':'block'});
-              $('#timeline .timeline-frame').not('#timeline .timeline-frame-'+self.currentFrame).css({'zIndex':'1','display':'none'});
-              $('#timeline .timeline-frame').removeClass('old');
+              $jq('#timeline .timeline-frame-'+self.currentFrame).css({'zIndex':'2','display':'block'});
+              $jq('#timeline .timeline-frame').not('#timeline .timeline-frame-'+self.currentFrame).css({'zIndex':'1','display':'none'});
+              $jq('#timeline .timeline-frame').removeClass('old');
           
             if (loopFrameIndex > -1 && !self.looping && !(direction == 0 && !loopFrame)) {
               self.loop();
@@ -300,19 +299,19 @@ class Timeline extends Messenger {
           }
 
           //display current frame
-          $('#timeline .timeline-frame-'+self.currentFrame).not('.old').css({'zIndex':'2','display':'block'});
+          $jq('#timeline .timeline-frame-'+self.currentFrame).not('.old').css({'zIndex':'2','display':'block'});
 
           if (delta == 0) return;
           if (direction == 1) {
             //buffer surrounding frames
-            $('#timeline .timeline-frame-'+(self.currentFrame+delta)).not('.old').css({'zIndex':'1','display':'block'});
+            $jq('#timeline .timeline-frame-'+(self.currentFrame+delta)).not('.old').css({'zIndex':'1','display':'block'});
             //discard old frame(s)
-            $('#timeline .timeline-frame-'+(self.currentFrame-delta)).css({'zIndex':'1','display':'none'}).addClass('old');
+            $jq('#timeline .timeline-frame-'+(self.currentFrame-delta)).css({'zIndex':'1','display':'none'}).addClass('old');
           } else if (direction == -1) {
             //buffer surrounding frames
-            $('#timeline .timeline-frame-'+(self.currentFrame+delta)).not('.old').css({'zIndex':'1','display':'block'});
+            $jq('#timeline .timeline-frame-'+(self.currentFrame+delta)).not('.old').css({'zIndex':'1','display':'block'});
             //discard old frame(s)
-            $('#timeline .timeline-frame-'+(self.currentFrame-delta)).css({'zIndex':'1','display':'none'}).addClass('old');
+            $jq('#timeline .timeline-frame-'+(self.currentFrame-delta)).css({'zIndex':'1','display':'none'}).addClass('old');
           }
         }, self.deltaTime*1000/speed);
       }
@@ -334,21 +333,21 @@ class Timeline extends Messenger {
       clearInterval(self.playInterval);
       self.playInterval = setInterval(function() {
         //display current frame
-        $('#timeline .timeline-frame-'+self.currentFrame).not('.old').css({'zIndex':'2','display':'block'});
+        $jq('#timeline .timeline-frame-'+self.currentFrame).not('.old').css({'zIndex':'2','display':'block'});
         //buffer surrounding frames
-        $('#timeline .timeline-frame-'+(self.currentFrame+delta)).not('.old').css({'zIndex':'1','display':'block'});
+        $jq('#timeline .timeline-frame-'+(self.currentFrame+delta)).not('.old').css({'zIndex':'1','display':'block'});
         //discard old frame(s)
-        $('#timeline .timeline-frame-'+(self.currentFrame-delta)).css({'zIndex':'1','display':'none'}).addClass('old');
+        $jq('#timeline .timeline-frame-'+(self.currentFrame-delta)).css({'zIndex':'1','display':'none'}).addClass('old');
         
         if (self.currentFrame >= loopFrame) {
           let doesLoop = self.looptweens[loopFrameIndex];
 
           if ((self.looping || (!self.looping && !self.stopLoopDirection)) && doesLoop) {
             let baseFrame = parseInt(self.keyframes[self.currentKeyframe]);
-            $('#timeline .timeline-frame-'+baseFrame).css({'zIndex':'2','display':'block'});
-            $('#timeline .timeline-frame-'+self.currentFrame).css({'zIndex':'1','display':'none'});
-            $('#timeline .timeline-frame').not('#timeline .timeline-frame-'+baseFrame).css({'zIndex':'1','display':'none'});
-            $('#timeline .timeline-frame').removeClass('old');
+            $jq('#timeline .timeline-frame-'+baseFrame).css({'zIndex':'2','display':'block'});
+            $jq('#timeline .timeline-frame-'+self.currentFrame).css({'zIndex':'1','display':'none'});
+            $jq('#timeline .timeline-frame').not('#timeline .timeline-frame-'+baseFrame).css({'zIndex':'1','display':'none'});
+            $jq('#timeline .timeline-frame').removeClass('old');
             self.currentFrame = baseFrame;
           }
 
@@ -392,14 +391,14 @@ class Timeline extends Messenger {
   disable() {
     this.disabled = true;
     this.enabled = false;
-    $('#timeline').hide();
-    $('.timeline-animation').remove();
+    $jq('#timeline').hide();
+    $jq('.timeline-animation').remove();
   }
 
   enable() {
     this.disabled = false;
     this.enabled = true;
-    $('#timeline').show();
+    $jq('#timeline').show();
   }
 
   changeSource(url) {
@@ -407,9 +406,9 @@ class Timeline extends Messenger {
     if (self.mode == 'video') {
       //TODO implement transitioning video source
     } else if (self.mode == 'sequence') {
-      $('#timeline .timeline-frame-'+self.currentFrame).addClass('remove');
+      $jq('#timeline .timeline-frame-'+self.currentFrame).addClass('remove');
 
-      $('#timeline').attr('data-src',url);
+      $jq('#timeline').attr('data-src',url);
       self._setURL();
       url = self._constructURL();
 
@@ -421,7 +420,7 @@ class Timeline extends Messenger {
         self.emit('changeSource');
       }, 'changeSource');
       
-      $('#timeline img').not('.remove,.added').fadeOut("fast");
+      $jq('#timeline img').not('.remove,.added').fadeOut("fast");
     }
   }
 
@@ -439,15 +438,15 @@ class Timeline extends Messenger {
         break;
     }
 
-    console.log(`${prefix} ${type}: ${msg}`);
+    console.log(`$jq{prefix} $jq{type}: $jq{msg}`);
   }
 
   clearAnimation() {
-    $('.liquid-animation').stop(true,true).fadeOut('fast',function() {
-        $('.liquid-animation').remove();
+    $jq('.liquid-animation').stop(true,true).fadeOut('fast',function() {
+        $jq('.liquid-animation').remove();
     });
-    $('.dial-animation').stop(true,true).fadeOut('fast',function() {
-        $('.dial-animation').remove();
+    $jq('.dial-animation').stop(true,true).fadeOut('fast',function() {
+        $jq('.dial-animation').remove();
     });
   }
 
@@ -493,7 +492,7 @@ class Timeline extends Messenger {
 
   _setURL() {
     let self = this;
-    self.src = $('#timeline').attr('data-src');
+    self.src = $jq('#timeline').attr('data-src');
     self.filetype = self.src.split('.').pop();
     self.suffix = self.src.match(/[0-9]{1,}/g);
     self.suffix = self.suffix[self.suffix.length-1];
@@ -533,22 +532,22 @@ class Timeline extends Messenger {
     if (hard) {
       let cf = self.currentFrame;
       let suf = self._constructURL();
-      if ($('#timeline .remove').length) {
-        let mt = $('#timeline img').css('marginTop');
-        $('#timeline').append(`<img style="display:none; z-index:2; margin-top:${mt}" class="added timeline-frame timeline-frame-${cf}" src="${suf}"/>`);
+      if ($jq('#timeline .remove').length) {
+        let mt = $jq('#timeline img').css('marginTop');
+        $jq('#timeline').append(`<img style="display:none; z-index:2; margin-top:$jq{mt}" class="added timeline-frame timeline-frame-$jq{cf}" src="$jq{suf}"/>`);
       } else {
-        $('#timeline-frame-'+cf).attr('src',suf);
+        $jq('#timeline-frame-'+cf).attr('src',suf);
       }
     }
 
     if ((hard && self.cached.indexOf(self.color) > -1) || (!hard && self.cached.indexOf(self.cacheColor) > -1)) {
       for (var i = 0; i<= self.keyframes[self.keyframes.length-1]; i++) {
         let suffix = self._constructURL(i);
-        $('#timeline .timeline-frame-'+i).attr('src',suffix);
+        $jq('#timeline .timeline-frame-'+i).attr('src',suffix);
       }
       setTimeout(function(){
-        $('#timeline .remove').fadeOut('fast', function() {$(this).remove();});
-        $('#timeline .added').delay(200).fadeIn('fast', function() {$(this).removeClass('added');});
+        $jq('#timeline .remove').fadeOut('fast', function() {$jq(this).remove();});
+        $jq('#timeline .added').delay(200).fadeIn('fast', function() {$jq(this).removeClass('added');});
         self.emit('currentFrameLoaded');
       },300);
       return;
@@ -582,15 +581,15 @@ class Timeline extends Messenger {
           suffix = self._constructURL(i);
         }
 
-        $.loadImage(suffix)
+        $jq.loadImage(suffix)
           .done(function(image) {
             self.loadedFrames++;
             if (hard && self.cached.length == 0) {
-              $(image).addClass('timeline-frame timeline-frame-'+i).css({'display':'none','zIndex':'1'});
-              $('#timeline').append(image);
+              $jq(image).addClass('timeline-frame timeline-frame-'+i).css({'display':'none','zIndex':'1'});
+              $jq('#timeline').append(image);
             } else if (hard && self.cached.length > 0) {
-              $('#timeline .timeline-frame-'+i).attr('src',$(image).attr('src'));
-              if (i == self.currentFrame) $('#timeline .timeline-frame-'+i).attr({'opacity':0,'display':'block'}).animate({'opacity':1},400, function() {
+              $jq('#timeline .timeline-frame-'+i).attr('src',$jq(image).attr('src'));
+              if (i == self.currentFrame) $jq('#timeline .timeline-frame-'+i).attr({'opacity':0,'display':'block'}).animate({'opacity':1},400, function() {
                 self.emit('currentFrameLoaded');
               });
             }
@@ -628,7 +627,7 @@ class Timeline extends Messenger {
 
       if (loadedTrack.length >= self.keyframes.length-1) {
         self.cached.push(self.cacheColor);
-        $('.color-picker .'+self.cacheColor).removeClass('unloaded').addClass('loaded');
+        $jq('.color-picker .'+self.cacheColor).removeClass('unloaded').addClass('loaded');
         self.ready = true;
         self.log('load complete ('+loadedTotal+' loaded, '+errorTotal+' errors)',2);
         self.emit('loaded');

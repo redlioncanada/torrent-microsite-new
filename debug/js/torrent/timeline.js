@@ -20,8 +20,8 @@ var Timeline = (function (_Messenger) {
     if (opts.mode == 'video') {
       this._forwardVideo = undefined;
       this._backwardVideo = undefined;
-      $('#timeline #forward').css('zIndex', '2');
-      $('#timeline #backward').css('zIndex', '1');
+      $jq('#timeline #forward').css('zIndex', '2');
+      $jq('#timeline #backward').css('zIndex', '1');
       if (!opts.fps) {
         this.log('fps is undefined, assuming 30fps', 2);this.fps = 30;
       } else {
@@ -61,7 +61,7 @@ var Timeline = (function (_Messenger) {
     }
 
     if (this.border) {
-      $('#timeline').append('<div style="display: none;" class="black-to-transparent-gradient-top"></div>').append('<div style="display: none;" class="black-to-transparent-gradient-bottom"></div>').append('<div style="display: none;" class="black-to-transparent-gradient-left"></div>').append('<div style="display: none;" class="black-to-transparent-gradient-right"></div>');
+      $jq('#timeline').append('<div style="display: none;" class="black-to-transparent-gradient-top"></div>').append('<div style="display: none;" class="black-to-transparent-gradient-bottom"></div>').append('<div style="display: none;" class="black-to-transparent-gradient-left"></div>').append('<div style="display: none;" class="black-to-transparent-gradient-right"></div>');
     }
 
     var initInterval = setInterval(function () {
@@ -78,7 +78,7 @@ var Timeline = (function (_Messenger) {
       var initInterval = setInterval(function () {
         if (self.redraw()) clearInterval(initInterval);
       }, 200);
-      $(window).resize(self.redraw);
+      $jq(window).resize(self.redraw);
 
       self.forwardVideo.play();
       self.forwardVideo.pause();
@@ -107,10 +107,9 @@ var Timeline = (function (_Messenger) {
     key: 'redraw',
     value: function redraw() {
       //make sure video's aspect/position is maintained
-      //let menuSize = isPhone ? 50 : 116;
-      var menuSize = 116;
-      var width = $(window).width();
-      var height = $(window).height() - menuSize;
+      var menuSize = isPhone ? 50 : 116;
+      var width = $jq(window).width();
+      var height = $jq(window).height() - menuSize;
       var viewportAspect = width / height;
       var imageAspect = 16 / 9;
       if (isNaN(imageAspect) || !imageAspect) {
@@ -119,26 +118,26 @@ var Timeline = (function (_Messenger) {
       //if (height < 800) mod = 1;
       //else mod = 1.2;
 
-      $('.black-to-transparent-gradient-top,.black-to-transparent-gradient-bottom,.black-to-transparent-gradient-left,.black-to-transparent-gradient-right').removeClass('timeline-ignore');
+      $jq('.black-to-transparent-gradient-top,.black-to-transparent-gradient-bottom,.black-to-transparent-gradient-left,.black-to-transparent-gradient-right').removeClass('timeline-ignore');
       if (viewportAspect > imageAspect) {
-        $('.black-to-transparent-gradient-top,.black-to-transparent-gradient-bottom').addClass('timeline-ignore').fadeOut();
+        $jq('.black-to-transparent-gradient-top,.black-to-transparent-gradient-bottom').addClass('timeline-ignore').fadeOut();
         var nheight = height * mod;
         var nwidth = height * imageAspect * mod;
         var hdiff = nheight - height;
         var wdiff = nwidth - width;
-        $('#timeline').css({
+        $jq('#timeline').css({
           height: nheight,
           width: nwidth,
           top: menuSize - hdiff / 2,
           left: -wdiff / 2
         });
       } else if (viewportAspect < imageAspect) {
-        $('.black-to-transparent-gradient-left,.black-to-transparent-gradient-right').addClass('timeline-ignore').fadeOut();
+        $jq('.black-to-transparent-gradient-left,.black-to-transparent-gradient-right').addClass('timeline-ignore').fadeOut();
         var nheight = width / imageAspect * mod;
         var nwidth = width * mod;
         var hdiff = nheight - height;
         var wdiff = nwidth - width;
-        $('#timeline').css({
+        $jq('#timeline').css({
           height: nheight,
           width: nwidth,
           top: menuSize - hdiff / 2,
@@ -149,7 +148,7 @@ var Timeline = (function (_Messenger) {
         var nwidth = width * mod;
         var hdiff = nheight - height;
         var wdiff = nwidth - width;
-        $('#timeline').css({
+        $jq('#timeline').css({
           height: nheight,
           width: nwidth,
           top: menuSize - hdiff / 2,
@@ -164,9 +163,9 @@ var Timeline = (function (_Messenger) {
       var show = arguments[0] === undefined ? 1 : arguments[0];
 
       if (show) {
-        $('#timeline > div:not(.timeline-ignore,#forward,#backward)').fadeIn();
+        $jq('#timeline > div:not(.timeline-ignore,#forward,#backward)').fadeIn();
       } else {
-        $('#timeline > div:not(.timeline-ignore,#forward,#backward)').fadeOut();
+        $jq('#timeline > div:not(.timeline-ignore,#forward,#backward)').fadeOut();
       }
     }
   }, {
@@ -175,9 +174,9 @@ var Timeline = (function (_Messenger) {
       var hide = arguments[0] === undefined ? 1 : arguments[0];
 
       if (hide) {
-        $('#timeline > div:not(.timeline-ignore,#forward,#backward)').fadeOut();
+        $jq('#timeline > div:not(.timeline-ignore,#forward,#backward)').fadeOut();
       } else {
-        $('#timeline > div:not(.timeline-ignore,#forward,#backward)').fadeIn();
+        $jq('#timeline > div:not(.timeline-ignore,#forward,#backward)').fadeIn();
       }
     }
   }, {
@@ -221,7 +220,7 @@ var Timeline = (function (_Messenger) {
         return;
       }self.playing = true;
       self.animating = true;
-      $('#timeline .timeline-frame').removeClass('old');
+      $jq('#timeline .timeline-frame').removeClass('old');
       self.emit('play');
 
       var primary = undefined,
@@ -229,13 +228,13 @@ var Timeline = (function (_Messenger) {
       if (direction) {
         primary = self.forwardVideo;
         secondary = self.backwardVideo;
-        $('#timeline #forward').css('zIndex', '2');
-        $('#timeline #backward').css('zIndex', '1');
+        $jq('#timeline #forward').css('zIndex', '2');
+        $jq('#timeline #backward').css('zIndex', '1');
       } else {
         primary = self.backwardVideo;
         secondary = self.forwardVideo;
-        $('#timeline #forward').css('zIndex', '1');
-        $('#timeline #backward').css('zIndex', '2');
+        $jq('#timeline #forward').css('zIndex', '1');
+        $jq('#timeline #backward').css('zIndex', '2');
       }
 
       if (self.mode == 'video') {
@@ -294,9 +293,9 @@ var Timeline = (function (_Messenger) {
                 }
 
                 if (Math.abs(self.currentFrame - parseInt(val)) <= 1) self.currentFrame = parseInt(val);
-                $('#timeline .timeline-frame-' + self.currentFrame).css({ zIndex: '2', display: 'block' });
-                $('#timeline .timeline-frame').not('#timeline .timeline-frame-' + self.currentFrame).css({ zIndex: '1', display: 'none' });
-                $('#timeline .timeline-frame').removeClass('old');
+                $jq('#timeline .timeline-frame-' + self.currentFrame).css({ zIndex: '2', display: 'block' });
+                $jq('#timeline .timeline-frame').not('#timeline .timeline-frame-' + self.currentFrame).css({ zIndex: '1', display: 'none' });
+                $jq('#timeline .timeline-frame').removeClass('old');
 
                 if (loopFrameIndex > -1 && !self.looping && !(direction == 0 && !loopFrame)) {
                   self.loop();
@@ -312,19 +311,19 @@ var Timeline = (function (_Messenger) {
               }
 
               //display current frame
-              $('#timeline .timeline-frame-' + self.currentFrame).not('.old').css({ zIndex: '2', display: 'block' });
+              $jq('#timeline .timeline-frame-' + self.currentFrame).not('.old').css({ zIndex: '2', display: 'block' });
 
               if (delta == 0) return;
               if (direction == 1) {
                 //buffer surrounding frames
-                $('#timeline .timeline-frame-' + (self.currentFrame + delta)).not('.old').css({ zIndex: '1', display: 'block' });
+                $jq('#timeline .timeline-frame-' + (self.currentFrame + delta)).not('.old').css({ zIndex: '1', display: 'block' });
                 //discard old frame(s)
-                $('#timeline .timeline-frame-' + (self.currentFrame - delta)).css({ zIndex: '1', display: 'none' }).addClass('old');
+                $jq('#timeline .timeline-frame-' + (self.currentFrame - delta)).css({ zIndex: '1', display: 'none' }).addClass('old');
               } else if (direction == -1) {
                 //buffer surrounding frames
-                $('#timeline .timeline-frame-' + (self.currentFrame + delta)).not('.old').css({ zIndex: '1', display: 'block' });
+                $jq('#timeline .timeline-frame-' + (self.currentFrame + delta)).not('.old').css({ zIndex: '1', display: 'block' });
                 //discard old frame(s)
-                $('#timeline .timeline-frame-' + (self.currentFrame - delta)).css({ zIndex: '1', display: 'none' }).addClass('old');
+                $jq('#timeline .timeline-frame-' + (self.currentFrame - delta)).css({ zIndex: '1', display: 'none' }).addClass('old');
               }
             }, self.deltaTime * 1000 / speed);
           };
@@ -372,21 +371,21 @@ var Timeline = (function (_Messenger) {
         clearInterval(self.playInterval);
         self.playInterval = setInterval(function () {
           //display current frame
-          $('#timeline .timeline-frame-' + self.currentFrame).not('.old').css({ zIndex: '2', display: 'block' });
+          $jq('#timeline .timeline-frame-' + self.currentFrame).not('.old').css({ zIndex: '2', display: 'block' });
           //buffer surrounding frames
-          $('#timeline .timeline-frame-' + (self.currentFrame + delta)).not('.old').css({ zIndex: '1', display: 'block' });
+          $jq('#timeline .timeline-frame-' + (self.currentFrame + delta)).not('.old').css({ zIndex: '1', display: 'block' });
           //discard old frame(s)
-          $('#timeline .timeline-frame-' + (self.currentFrame - delta)).css({ zIndex: '1', display: 'none' }).addClass('old');
+          $jq('#timeline .timeline-frame-' + (self.currentFrame - delta)).css({ zIndex: '1', display: 'none' }).addClass('old');
 
           if (self.currentFrame >= loopFrame) {
             var doesLoop = self.looptweens[loopFrameIndex];
 
             if ((self.looping || !self.looping && !self.stopLoopDirection) && doesLoop) {
               var baseFrame = parseInt(self.keyframes[self.currentKeyframe]);
-              $('#timeline .timeline-frame-' + baseFrame).css({ zIndex: '2', display: 'block' });
-              $('#timeline .timeline-frame-' + self.currentFrame).css({ zIndex: '1', display: 'none' });
-              $('#timeline .timeline-frame').not('#timeline .timeline-frame-' + baseFrame).css({ zIndex: '1', display: 'none' });
-              $('#timeline .timeline-frame').removeClass('old');
+              $jq('#timeline .timeline-frame-' + baseFrame).css({ zIndex: '2', display: 'block' });
+              $jq('#timeline .timeline-frame-' + self.currentFrame).css({ zIndex: '1', display: 'none' });
+              $jq('#timeline .timeline-frame').not('#timeline .timeline-frame-' + baseFrame).css({ zIndex: '1', display: 'none' });
+              $jq('#timeline .timeline-frame').removeClass('old');
               self.currentFrame = baseFrame;
             }
 
@@ -437,24 +436,24 @@ var Timeline = (function (_Messenger) {
     value: function disable() {
       this.disabled = true;
       this.enabled = false;
-      $('#timeline').hide();
-      $('.timeline-animation').remove();
+      $jq('#timeline').hide();
+      $jq('.timeline-animation').remove();
     }
   }, {
     key: 'enable',
     value: function enable() {
       this.disabled = false;
       this.enabled = true;
-      $('#timeline').show();
+      $jq('#timeline').show();
     }
   }, {
     key: 'changeSource',
     value: function changeSource(url) {
       var self = this;
       if (self.mode == 'video') {} else if (self.mode == 'sequence') {
-        $('#timeline .timeline-frame-' + self.currentFrame).addClass('remove');
+        $jq('#timeline .timeline-frame-' + self.currentFrame).addClass('remove');
 
-        $('#timeline').attr('data-src', url);
+        $jq('#timeline').attr('data-src', url);
         self._setURL();
         url = self._constructURL();
 
@@ -466,7 +465,7 @@ var Timeline = (function (_Messenger) {
           self.emit('changeSource');
         }, 'changeSource');
 
-        $('#timeline img').not('.remove,.added').fadeOut('fast');
+        $jq('#timeline img').not('.remove,.added').fadeOut('fast');
       }
     }
   }, {
@@ -487,16 +486,16 @@ var Timeline = (function (_Messenger) {
           break;
       }
 
-      console.log('' + prefix + ' ' + type + ': ' + msg);
+      console.log('$jq{prefix} $jq{type}: $jq{msg}');
     }
   }, {
     key: 'clearAnimation',
     value: function clearAnimation() {
-      $('.liquid-animation').stop(true, true).fadeOut('fast', function () {
-        $('.liquid-animation').remove();
+      $jq('.liquid-animation').stop(true, true).fadeOut('fast', function () {
+        $jq('.liquid-animation').remove();
       });
-      $('.dial-animation').stop(true, true).fadeOut('fast', function () {
-        $('.dial-animation').remove();
+      $jq('.dial-animation').stop(true, true).fadeOut('fast', function () {
+        $jq('.dial-animation').remove();
       });
     }
   }, {
@@ -543,7 +542,7 @@ var Timeline = (function (_Messenger) {
     key: '_setURL',
     value: function _setURL() {
       var self = this;
-      self.src = $('#timeline').attr('data-src');
+      self.src = $jq('#timeline').attr('data-src');
       self.filetype = self.src.split('.').pop();
       self.suffix = self.src.match(/[0-9]{1,}/g);
       self.suffix = self.suffix[self.suffix.length - 1];
@@ -589,25 +588,25 @@ var Timeline = (function (_Messenger) {
       if (hard) {
         var cf = self.currentFrame;
         var suf = self._constructURL();
-        if ($('#timeline .remove').length) {
-          var mt = $('#timeline img').css('marginTop');
-          $('#timeline').append('<img style="display:none; z-index:2; margin-top:' + mt + '" class="added timeline-frame timeline-frame-' + cf + '" src="' + suf + '"/>');
+        if ($jq('#timeline .remove').length) {
+          var mt = $jq('#timeline img').css('marginTop');
+          $jq('#timeline').append('<img style="display:none; z-index:2; margin-top:$jq{mt}" class="added timeline-frame timeline-frame-$jq{cf}" src="$jq{suf}"/>');
         } else {
-          $('#timeline-frame-' + cf).attr('src', suf);
+          $jq('#timeline-frame-' + cf).attr('src', suf);
         }
       }
 
       if (hard && self.cached.indexOf(self.color) > -1 || !hard && self.cached.indexOf(self.cacheColor) > -1) {
         for (var i = 0; i <= self.keyframes[self.keyframes.length - 1]; i++) {
           var suffix = self._constructURL(i);
-          $('#timeline .timeline-frame-' + i).attr('src', suffix);
+          $jq('#timeline .timeline-frame-' + i).attr('src', suffix);
         }
         setTimeout(function () {
-          $('#timeline .remove').fadeOut('fast', function () {
-            $(this).remove();
+          $jq('#timeline .remove').fadeOut('fast', function () {
+            $jq(this).remove();
           });
-          $('#timeline .added').delay(200).fadeIn('fast', function () {
-            $(this).removeClass('added');
+          $jq('#timeline .added').delay(200).fadeIn('fast', function () {
+            $jq(this).removeClass('added');
           });
           self.emit('currentFrameLoaded');
         }, 300);
@@ -646,14 +645,14 @@ var Timeline = (function (_Messenger) {
             suffix = self._constructURL(_i2);
           }
 
-          $.loadImage(suffix).done(function (image) {
+          $jq.loadImage(suffix).done(function (image) {
             self.loadedFrames++;
             if (hard && self.cached.length == 0) {
-              $(image).addClass('timeline-frame timeline-frame-' + _i2).css({ display: 'none', zIndex: '1' });
-              $('#timeline').append(image);
+              $jq(image).addClass('timeline-frame timeline-frame-' + _i2).css({ display: 'none', zIndex: '1' });
+              $jq('#timeline').append(image);
             } else if (hard && self.cached.length > 0) {
-              $('#timeline .timeline-frame-' + _i2).attr('src', $(image).attr('src'));
-              if (_i2 == self.currentFrame) $('#timeline .timeline-frame-' + _i2).attr({ opacity: 0, display: 'block' }).animate({ opacity: 1 }, 400, function () {
+              $jq('#timeline .timeline-frame-' + _i2).attr('src', $jq(image).attr('src'));
+              if (_i2 == self.currentFrame) $jq('#timeline .timeline-frame-' + _i2).attr({ opacity: 0, display: 'block' }).animate({ opacity: 1 }, 400, function () {
                 self.emit('currentFrameLoaded');
               });
             }
@@ -697,7 +696,7 @@ var Timeline = (function (_Messenger) {
 
         if (loadedTrack.length >= self.keyframes.length - 1) {
           self.cached.push(self.cacheColor);
-          $('.color-picker .' + self.cacheColor).removeClass('unloaded').addClass('loaded');
+          $jq('.color-picker .' + self.cacheColor).removeClass('unloaded').addClass('loaded');
           self.ready = true;
           self.log('load complete (' + loadedTotal + ' loaded, ' + errorTotal + ' errors)', 2);
           self.emit('loaded');

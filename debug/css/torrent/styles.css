@@ -1156,7 +1156,10 @@ body {
     margin-left: 0px;
   }
   #main-container div.cover-item-4 {
-    height: 530px !important;
+    height: 567px !important;
+  }
+  #main-container div.cover-item-4 .col-xs-8 {
+    top: 56%;
   }
   #main-container div.cover-item-4 .col-xs-8 ul {
     padding-top: 60px !important;

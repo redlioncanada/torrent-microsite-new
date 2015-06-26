@@ -17,8 +17,8 @@ var CoverScroller = (function (_Messenger) {
         if (opts) {
             this.duration = opts.duration * 1000 || 1000;
         }
-        this.target = $('.coverscroller > div');
-        this.numElements = $(this.target).find('.cover').length;
+        this.target = $jq('.coverscroller > div');
+        this.numElements = $jq(this.target).find('.cover').length;
         this.curCover = 0;
         this.animating = false;
         this.quedScroll = false;
@@ -42,8 +42,8 @@ var CoverScroller = (function (_Messenger) {
             _loop();
         }
 
-        $('.cover-picker li').click(function () {
-            var index = $(this).index();
+        $jq('.cover-picker li').click(function () {
+            var index = $jq(this).index();
             if (_self.coverState[index]) _self.scrollTo(index);else {
                 //if a frameset is still loading, activate the loading overlay and wait until it's done
                 _self.showLoader();
@@ -57,10 +57,10 @@ var CoverScroller = (function (_Messenger) {
             }
         });
 
-        $('.cover-picker li').hover(function () {
-            $(this).find('div').eq(0).animate({ opacity: 1 }, 400);
+        $jq('.cover-picker li').hover(function () {
+            $jq(this).find('div').eq(0).animate({ opacity: 1 }, 400);
         }, function () {
-            if (_self.curCover == 0) $(this).find('div').eq(0).animate({ opacity: 0.5 }, 400);
+            if (_self.curCover == 0) $jq(this).find('div').eq(0).animate({ opacity: 0.5 }, 400);
         });
 
         this.redraw();
@@ -71,14 +71,13 @@ var CoverScroller = (function (_Messenger) {
     _createClass(CoverScroller, [{
         key: 'redraw',
         value: function redraw() {
-            //let menuSize = isPhone ? 50 : 116;  //magical
-            var menuSize = 116;
-            var height = $(window).height() - menuSize;
-            var width = $(window).width();
+            var menuSize = isPhone ? 50 : 116; //magical
+            var height = $jq(window).height() - menuSize;
+            var width = $jq(window).width();
 
             var coverSelector = isMobile ? '.cover-wrapper' : '.cover-wrapper,.cover';
 
-            $(coverSelector).css({
+            $jq(coverSelector).css({
                 width: width,
                 height: height,
                 'min-height': height
@@ -87,26 +86,26 @@ var CoverScroller = (function (_Messenger) {
             if (!isMobile) {
                 this.elHeight = height;
                 this.emit('redraw');
-                $(this.target).css('top', -this.elHeight * this.curCover);
+                $jq(this.target).css('top', -this.elHeight * this.curCover);
 
-                $('#loader').css({ width: width, height: height, top: menuSize });
+                $jq('#loader').css({ width: width, height: height, top: menuSize });
 
-                var coverTop = this.elHeight * this.curCover + this.elHeight / 2 - parseInt($('.cover-picker').height()) / 2;
-                $('.cover-picker').css({ top: coverTop });
+                var coverTop = this.elHeight * this.curCover + this.elHeight / 2 - parseInt($jq('.cover-picker').height()) / 2;
+                $jq('.cover-picker').css({ top: coverTop });
 
                 var multiplier = this.curCover === 0 ? 1 : this.curCover;
-                var colorTop = this.elHeight * multiplier + this.elHeight / 2 - parseInt($('.color-picker').height()) / 2;
+                var colorTop = this.elHeight * multiplier + this.elHeight / 2 - parseInt($jq('.color-picker').height()) / 2;
                 if (this.curCover == 0) {
-                    $('.cover-picker li').not('.selected').find('div:first-child').css({ opacity: 0.5 });
+                    $jq('.cover-picker li').not('.selected').find('div:first-child').css({ opacity: 0.5 });
                 } else {
-                    $('.cover-picker li div:first-child').css({ opacity: 1 });
+                    $jq('.cover-picker li div:first-child').css({ opacity: 1 });
                 }
-                $('.color-picker').css({ top: colorTop });
+                $jq('.color-picker').css({ top: colorTop });
 
-                $.each($('.color-picker li'), function (i, v) {
+                $jq.each($jq('.color-picker li'), function (i, v) {
                     if (i == 0) return;
-                    var t = $(this).find('div').eq(0).position().top;
-                    $(this).find('div').eq(1).css('top', t);
+                    var t = $jq(this).find('div').eq(0).position().top;
+                    $jq(this).find('div').eq(1).css('top', t);
                 });
             }
         }
@@ -114,13 +113,13 @@ var CoverScroller = (function (_Messenger) {
         key: 'showLoader',
         value: function showLoader() {
             this.coverState = {};
-            $('#loader').fadeIn();
+            $jq('#loader').fadeIn();
             this.emit('loading');
         }
     }, {
         key: 'hideLoader',
         value: function hideLoader() {
-            $('#loader').fadeOut();
+            $jq('#loader').fadeOut();
             this.emit('loaded');
         }
     }, {
@@ -162,9 +161,9 @@ var CoverScroller = (function (_Messenger) {
             }
 
             if (isMobile) {
-                $('.cover-wrapper').animate({ scrollTop: $('.cover-item-' + (id + 1)).offset().top });
+                $jq('.cover-wrapper').animate({ scrollTop: $jq('.cover-item-' + (id + 1)).offset().top });
             } else {
-                if (id == 0) $('.cover-picker li div:first-child').animate({ opacity: 0.5 }, 400);else $('.cover-picker li div:first-child').animate({ opacity: 1 }, 400);
+                if (id == 0) $jq('.cover-picker li div:first-child').animate({ opacity: 0.5 }, 400);else $jq('.cover-picker li div:first-child').animate({ opacity: 1 }, 400);
 
                 if (this.timeline.looping) {
                     this.timeline.stopLoop(this.direction);
@@ -172,20 +171,20 @@ var CoverScroller = (function (_Messenger) {
 
                 //animate cover
                 this.animating = true;
-                $(this.target).velocity({ top: -this.elHeight * id }, { duration: this.duration, complete: function complete() {
+                $jq(this.target).velocity({ top: -this.elHeight * id }, { duration: this.duration, complete: function complete() {
                         _self.emit('scrollEnd');
                         _self.animating = false;
                     } });
 
                 //animate color and cover pickers, don't animate them to the first cover
                 var multiplier = id === 0 ? 1 : id;
-                var coverTop = this.elHeight * id + this.elHeight / 2 - parseInt($('.cover-picker').height()) / 2;
-                $('.cover-picker').velocity({ top: coverTop }, { duration: this.duration });
-                $('.cover-picker').find('li').removeClass('selected');
-                $('.cover-picker').find('li').eq(id).addClass('selected');
+                var coverTop = this.elHeight * id + this.elHeight / 2 - parseInt($jq('.cover-picker').height()) / 2;
+                $jq('.cover-picker').velocity({ top: coverTop }, { duration: this.duration });
+                $jq('.cover-picker').find('li').removeClass('selected');
+                $jq('.cover-picker').find('li').eq(id).addClass('selected');
 
-                var colorTop = this.elHeight * multiplier + this.elHeight / 2 - parseInt($('.color-picker').height()) / 2;
-                $('.color-picker').velocity({ top: colorTop }, { duration: this.duration });
+                var colorTop = this.elHeight * multiplier + this.elHeight / 2 - parseInt($jq('.color-picker').height()) / 2;
+                $jq('.color-picker').velocity({ top: colorTop }, { duration: this.duration });
             }
 
             this.curCover = id;

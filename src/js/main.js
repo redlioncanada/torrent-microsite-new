@@ -3,6 +3,7 @@ var isPhone = Modernizr.phone;
 var isTablet = Modernizr.tablet;
 var youtubePlayers = {};
 var timeline = undefined;
+var $jq = jQuery.noConflict();
 
 if (!isMobile) {
     timeline = new Timeline({ //handles animation of video/sequence
@@ -14,51 +15,51 @@ if (!isMobile) {
             1: [
                 {
                     'startDown': function() {
-                        let dW = $('.blender-1').width();
-                        let dX = parseInt($('.cover-item-1 .desktop .col-xs-3').eq(0).width())-dW-parseInt($('.blender-1').css('margin-right'));
-                        let dY = parseInt($('.blender-1').offset().top) - parseInt($('.blender-1').css('margin-top')) + parseInt($('.blender-1').css('margin-bottom'));
-                        let pW = $('#timeline img').width();
-                        let pH = $('#timeline img').height();
-                        let xOffset = (pW - $(window).width()) / 2;
-                        let yOffset = (pH - $(window).height()) / 2;
+                        let dW = $jq('.blender-1').width();
+                        let dX = parseInt($jq('.cover-item-1 .desktop .col-xs-3').eq(0).width())-dW-parseInt($jq('.blender-1').css('margin-right'));
+                        let dY = parseInt($jq('.blender-1').offset().top) - parseInt($jq('.blender-1').css('margin-top')) + parseInt($jq('.blender-1').css('margin-bottom'));
+                        let pW = $jq('#timeline img').width();
+                        let pH = $jq('#timeline img').height();
+                        let xOffset = (pW - $jq(window).width()) / 2;
+                        let yOffset = (pH - $jq(window).height()) / 2;
                         let oW = pW * 0.1944921875;
                         let oX = (pW * 0.334890625) - xOffset;
-                        let oY = pH * 0.21944444444444 + $('#timeline').offset().top - 4;
+                        let oY = pH * 0.21944444444444 + $jq('#timeline').offset().top - 4;
 
-                        let blender = $('.blender-1').clone().css({'left':dX,'top':dY,'width':dW,'position':'absolute','zIndex':6049}).removeClass('blender-1').addClass('blender-2 timeline-animation').appendTo('body');
-                        $('.blender-1').hide();
-                        $('#timeline').hide();
-                        $('.blender-2').animate({'left':oX,'top':oY,'width':oW},600);
+                        let blender = $jq('.blender-1').clone().css({'left':dX,'top':dY,'width':dW,'position':'absolute','zIndex':6049}).removeClass('blender-1').addClass('blender-2 timeline-animation').appendTo('body');
+                        $jq('.blender-1').hide();
+                        $jq('#timeline').hide();
+                        $jq('.blender-2').animate({'left':oX,'top':oY,'width':oW},600);
                     },
                     'endDown': function() {
                         setTimeout(function() {
-                            $('#timeline').show();
-                            $('.blender-2').remove();
-                            $('.blender-1').show();
+                            $jq('#timeline').show();
+                            $jq('.blender-2').remove();
+                            $jq('.blender-1').show();
                         },500);
                     },
                     'startUp': function() {
-                        let dW = $('.blender-1').width();
-                        let pW = $('#timeline').width();
-                        let pH = $('#timeline').height();
-                        let xOffset = (pW - $(window).width()) / 2;
-                        let yOffset = (pH - $(window).height()) / 2;
+                        let dW = $jq('.blender-1').width();
+                        let pW = $jq('#timeline').width();
+                        let pH = $jq('#timeline').height();
+                        let xOffset = (pW - $jq(window).width()) / 2;
+                        let yOffset = (pH - $jq(window).height()) / 2;
                         let oW = pW * 0.1944921875;
                         let oX = (pW * 0.334890625) - xOffset;
                         let oY = (pH * 0.21188888888889) - yOffset + 58;
-                        let dX = parseInt($('.cover-item-1 .desktop .col-xs-3').eq(0).width())-dW-parseInt($('.blender-1').css('margin-right'));
-                        let dY = parseInt($('.blender-1').offset().top) - parseInt($('.blender-1').css('margin-top')) + parseInt($('.blender-1').css('margin-bottom')) + $('.cover').height();
+                        let dX = parseInt($jq('.cover-item-1 .desktop .col-xs-3').eq(0).width())-dW-parseInt($jq('.blender-1').css('margin-right'));
+                        let dY = parseInt($jq('.blender-1').offset().top) - parseInt($jq('.blender-1').css('margin-top')) + parseInt($jq('.blender-1').css('margin-bottom')) + $jq('.cover').height();
                         
-                        let blender = $('.blender-1').clone().css({'left':oX,'top':oY,'width':oW,'position':'absolute','zIndex':6049}).removeClass('blender-1').addClass('blender-2 timeline-animation').appendTo('body');
-                        $('.blender-1').hide();
-                        $('#timeline').hide();
-                        $('.blender-2').animate({'left':dX,'top':dY,'width':dW},600);
+                        let blender = $jq('.blender-1').clone().css({'left':oX,'top':oY,'width':oW,'position':'absolute','zIndex':6049}).removeClass('blender-1').addClass('blender-2 timeline-animation').appendTo('body');
+                        $jq('.blender-1').hide();
+                        $jq('#timeline').hide();
+                        $jq('.blender-2').animate({'left':dX,'top':dY,'width':dW},600);
                     },
                     'endUp': function() {
                         setTimeout(function() {
-                            $('#timeline').hide();
-                            $('.blender-2').remove();
-                            $('.blender-1').show();
+                            $jq('#timeline').hide();
+                            $jq('.blender-2').remove();
+                            $jq('.blender-1').show();
                         },500);
                     }
                 }
@@ -66,36 +67,36 @@ if (!isMobile) {
             3: [
                 {
                     'startDown': function() {
-                        $('.cover-item-4 .desktop ul li img').each(function(id) {
-                            $(this).css('opacity',0);
+                        $jq('.cover-item-4 .desktop ul li img').each(function(id) {
+                            $jq(this).css('opacity',0);
                         });
                     },
                     'endDown': function() {
 
 
                         setTimeout(function() {
-                            $('.cover-item-4 .desktop ul li img').each(function(id) {
+                            $jq('.cover-item-4 .desktop ul li img').each(function(id) {
                                 let self = this;
-                                $(this).css('opacity',1);
-                                var dX = $(this).offset().left;
-                                var dY =  $(this).offset().top;
-                                $(this).css('opacity',0);
+                                $jq(this).css('opacity',1);
+                                var dX = $jq(this).offset().left;
+                                var dY =  $jq(this).offset().top;
+                                $jq(this).css('opacity',0);
 
-                                var width = $(this).width();
-                                var oX = $(window).width() / 2 - width / 2;
-                                var marginTop = $('#timeline').height() * (parseInt($('.timeline-frame').css('margin-top'))/100);
-                                var oY = $('.timeline-frame').offset().top + $('.timeline-frame').height() * 0.5 - $(this).height() / 2;
-                                var newElement = $(this).clone().css({'opacity':0,'position':'absolute','zIndex':6049}).addClass('timeline-animation');
+                                var width = $jq(this).width();
+                                var oX = $jq(window).width() / 2 - width / 2;
+                                var marginTop = $jq('#timeline').height() * (parseInt($jq('.timeline-frame').css('margin-top'))/100);
+                                var oY = $jq('.timeline-frame').offset().top + $jq('.timeline-frame').height() * 0.5 - $jq(this).height() / 2;
+                                var newElement = $jq(this).clone().css({'opacity':0,'position':'absolute','zIndex':6049}).addClass('timeline-animation');
                                 var delay = 100;
 
-                                $('body').append(newElement);
-                                $(newElement).css({left:oX, top:oY, width:width}).delay(id*delay).animate({
+                                $jq('body').append(newElement);
+                                $jq(newElement).css({left:oX, top:oY, width:width}).delay(id*delay).animate({
                                     left: dX,
                                     top: dY,
                                     opacity: 1
                                 }, 300, function() {
-                                    $(newElement).remove();
-                                    $(self).css('opacity',1);
+                                    $jq(newElement).remove();
+                                    $jq(self).css('opacity',1);
                                 });
 
                             });
@@ -107,32 +108,32 @@ if (!isMobile) {
                 {
                     'endDown': function() {
                         let color = timeline.color;
-                        let liquid = $(`<div style="opacity:0;"" class="liquid-animation timeline-animation"><img class="liquid" src="/images/torrent/mini-animations/${color}-juice.png"></div>`);
-                        $('body').append(liquid);
+                        let liquid = $jq(`<div style="opacity:0;"" class="liquid-animation timeline-animation"><img class="liquid" src="/images/torrent/mini-animations/$jq{color}-juice.png"></div>`);
+                        $jq('body').append(liquid);
 
                         timeline.on('changeSource', function() {
-                            $('.liquid-animation').fadeOut('fast');
+                            $jq('.liquid-animation').fadeOut('fast');
                         }, 'liquid');
 
                         setPos();
-                        $(window).on('resize',setPos);
+                        $jq(window).on('resize',setPos);
                         function setPos() {
-                            let liquid = $('.liquid-animation');
+                            let liquid = $jq('.liquid-animation');
                             if (!liquid.length) {
-                                $(window).off('resize',setPos);
+                                $jq(window).off('resize',setPos);
                                 timeline.off('changeSource','liquid')
                                 return;
                             }
                             
-                            let pW = $('#timeline').width();
-                            let pH = $('#timeline').height();
-                            let xOffset = (pW - $(window).width()) / 2;
-                            let yOffset = (pH - $(window).height()) / 2;
+                            let pW = $jq('#timeline').width();
+                            let pH = $jq('#timeline').height();
+                            let xOffset = (pW - $jq(window).width()) / 2;
+                            let yOffset = (pH - $jq(window).height()) / 2;
                             let oW = pW * 0.1197421875;
                             let oX = (pW * 0.4035078125) - xOffset;
                             let oY = (pH * 0.56725) - yOffset + 42;
 
-                            $(liquid).css({'left':oX,'top':oY,'width':oW}).animate({'opacity':1},400);
+                            $jq(liquid).css({'left':oX,'top':oY,'width':oW}).animate({'opacity':1},400);
                         }
                     }
                 }
@@ -141,27 +142,27 @@ if (!isMobile) {
                 {
                     'endUp': function() {
                         let color = timeline.color;
-                        let liquid = $(`<div style="opacity:0;"" class="liquid-animation timeline-animation"><img class="liquid" src="/images/torrent/mini-animations/${color}-juice.png"/></div>`);
-                        $('body').append(liquid);
+                        let liquid = $jq(`<div style="opacity:0;"" class="liquid-animation timeline-animation"><img class="liquid" src="/images/torrent/mini-animations/$jq{color}-juice.png"/></div>`);
+                        $jq('body').append(liquid);
 
                         setPos();
-                        $(window).on('resize',setPos);
+                        $jq(window).on('resize',setPos);
                         function setPos() {
-                            let liquid = $('.liquid-animation');
+                            let liquid = $jq('.liquid-animation');
                             if (!liquid.length) {
-                                $(window).off('resize',setPos);
+                                $jq(window).off('resize',setPos);
                                 return;
                             }
                             
-                            let pW = $('#timeline').width();
-                            let pH = $('#timeline').height();
-                            let xOffset = (pW - $(window).width()) / 2;
-                            let yOffset = (pH - $(window).height()) / 2;
+                            let pW = $jq('#timeline').width();
+                            let pH = $jq('#timeline').height();
+                            let xOffset = (pW - $jq(window).width()) / 2;
+                            let yOffset = (pH - $jq(window).height()) / 2;
                             let oW = pW * 0.1197421875;
                             let oX = (pW * 0.4035078125) - xOffset;
                             let oY = (pH * 0.56725) - yOffset + 42;
 
-                            $(liquid).css({'left':oX,'top':oY,'width':oW}).animate({'opacity':1},400);
+                            $jq(liquid).css({'left':oX,'top':oY,'width':oW}).animate({'opacity':1},400);
                         }
                     }
                 }
@@ -172,28 +173,28 @@ if (!isMobile) {
     });
 } else {
     //inject meta tags
-    $('head').append("<meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0' name='viewport' />").append("<meta content='True' name='HandheldFriendly' />");
+    $jq('head').append("<meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0' name='viewport' />").append("<meta content='True' name='HandheldFriendly' />");
 }
 var scroller = new CoverScroller({ duration: 1.5 }, timeline); //handles scrolling of page
 var circleLoader = new circleLoader();
 
-$(document).ready(function(){
+$jq(document).ready(function(){
     //set header position
-    /*if (isPhone) {
-        $('.cover-wrapper').css('top', '50px');
-    }*/
+    if (isPhone) {
+        $jq('.cover-wrapper').css('top', '50px');
+    }
     if (isMobile) {
-        $('#loader').fadeOut();
+        $jq('#loader').fadeOut();
     }
     //set loader position
-    $('#loader').css({'width':$(window).width(),'height':$(window).height()-116,'top':116});
+    $jq('#loader').css({'width':$jq(window).width(),'height':$jq(window).height()-116,'top':116});
 
     if (!isMobile) {
         //hide recipe button if necessary
-        if ($('#show-recipe .'+scroller.color).length == 0) {
-            $('.open-recipe').fadeOut();
+        if ($jq('#show-recipe .'+scroller.color).length == 0) {
+            $jq('.open-recipe').fadeOut();
         } else {
-            $('.open-recipe').fadeIn();
+            $jq('.open-recipe').fadeIn();
         }
 
         //load all the things
@@ -217,22 +218,22 @@ $(document).ready(function(){
             }
             if (colors.length == 0) return;
             let cacheNum = timeline.cached.length-1;
-            circleLoader.init($('.color-picker .'+colors[0]));
+            circleLoader.init($jq('.color-picker .'+colors[0]));
             timeline.cacheColor = colors[0];
             let url = '/images/torrent/sequence/'+colors[0]+'/'+colors[0].toUpperCase()+'_TORRENT_EDIT_00000.jpg';
             timeline._cache(false,url);
             
             //reposition color-picker elements
-            $.each($('.color-picker li'), function(i,v) {
+            $jq.each($jq('.color-picker li'), function(i,v) {
                 if (i == 0) return;
-                let t = $(this).find('div').eq(0).position().top;
-                $(this).find('div').eq(1).css('top',t);
-                //$('.color-picker li div').eq(1).css('top',t);
+                let t = $jq(this).find('div').eq(0).position().top;
+                $jq(this).find('div').eq(1).css('top',t);
+                //$jq('.color-picker li div').eq(1).css('top',t);
             });
         });
 
         //on arrow up or arrow down, navigate
-        $(window).keydown(function(e) {
+        $jq(window).keydown(function(e) {
             if (e.which == 38) {    //up arrow
                 scroller.scroll(0);
             } else if (e.which == 40) { //down arrow
@@ -241,25 +242,25 @@ $(document).ready(function(){
         });
 
         //don't show scrollbar on desktop
-        $('.cover-wrapper').css('overflow', 'hidden');
+        $jq('.cover-wrapper').css('overflow', 'hidden');
 
         //on nav arrow click, navigate to the next/prev cover
-        $('.nav-up').click(function() {
+        $jq('.nav-up').click(function() {
             scroller.scroll(0);
         });
-        $('.nav-down').click(function() {
+        $jq('.nav-down').click(function() {
             scroller.scroll(1);
         });
 
         //on cover-picker hover, show title overlay
-        $('.cover-picker li').hover(function() {
-            $(this).find('.title').stop(true).fadeIn('fast');
+        $jq('.cover-picker li').hover(function() {
+            $jq(this).find('.title').stop(true).fadeIn('fast');
         }, function() {
-            $(this).find('.title').stop(true).delay(200).fadeOut('fast');
+            $jq(this).find('.title').stop(true).delay(200).fadeOut('fast');
         });
 
         //scroll the page on mousewheel scroll
-        $('.cover-wrapper').mousewheel(function(event) {
+        $jq('.cover-wrapper').mousewheel(function(event) {
             if (event.deltaY > 0) {
                 scroller.scroll(1);
                 if (scroller.curCover == 11) {
@@ -280,14 +281,14 @@ $(document).ready(function(){
 
         timeline.on('changeSource', function() {
             //change the blender on the first panel when the color changes
-            let path = '/'+$('.blender-1').attr('id').replace(/-/g, '/')+'/';
-            $('.blender-1').attr('src',path+this.color+'.png');
+            let path = '/'+$jq('.blender-1').attr('id').replace(/-/g, '/')+'/';
+            $jq('.blender-1').attr('src',path+this.color+'.png');
 
             //toggle recipe button if the current color doesn't have one
-            if ($('#show-recipe .'+timeline.color).length == 0) {
-                $('.open-recipe').fadeOut();
+            if ($jq('#show-recipe .'+timeline.color).length == 0) {
+                $jq('.open-recipe').fadeOut();
             } else {
-                $('.open-recipe').fadeIn();
+                $jq('.open-recipe').fadeIn();
             }
 
             //remove animations
@@ -304,15 +305,15 @@ $(document).ready(function(){
                 }
 
                 if (this.curCover != 0) {
-                    $('#timeline').show();
+                    $jq('#timeline').show();
                 }
 
                 //force correct positioning, temp
-                if (this.curCover == 2) $('#timeline *').stop(true).animate({'marginTop':'7%'});
-                else if (this.curCover == 3) $('#timeline *').stop(true).animate({'marginTop':'7%'});
-                else if (this.curCover == 4) $('#timeline *').stop(true).animate({'marginTop':'4%'});
-                else if (this.curCover == 11) $('#timeline *').stop(true).animate({'marginTop':'-7%'});
-                else $('#timeline *').stop(true).animate({'marginTop':'0'});
+                if (this.curCover == 2) $jq('#timeline *').stop(true).animate({'marginTop':'7%'});
+                else if (this.curCover == 3) $jq('#timeline *').stop(true).animate({'marginTop':'7%'});
+                else if (this.curCover == 4) $jq('#timeline *').stop(true).animate({'marginTop':'4%'});
+                else if (this.curCover == 11) $jq('#timeline *').stop(true).animate({'marginTop':'-7%'});
+                else $jq('#timeline *').stop(true).animate({'marginTop':'0'});
 
                 //play the video
                 if (self.currentFrame != 0 && !(this.curCover == 11 && timeline.currentKeyframe > 11)) {
@@ -322,13 +323,13 @@ $(document).ready(function(){
 
             //hide down arrow if necessary
             if (this.curCover == 11) {
-                $('.nav-down').fadeOut('fast');
+                $jq('.nav-down').fadeOut('fast');
             } else {
-                $('.nav-down').fadeIn('fast');
+                $jq('.nav-down').fadeIn('fast');
             }
 
             //push to ga
-            let label = $('.cover-picker li').eq(this.curCover).find('.title').text();
+            let label = $jq('.cover-picker li').eq(this.curCover).find('.title').text();
             if (label == '') label = 'Homepage';
             ga('send', 'event', 'Torrent-Scroll Depth', 'Scrolled To', label);
         });
@@ -340,13 +341,13 @@ $(document).ready(function(){
         });
 
         //play timeline on scroller at the bottom
-        $('#spin-right').click(function () {
+        $jq('#spin-right').click(function () {
             timeline.next();
             if (timeline.currentKeyframe == timeline.keyframes.length-1) timeline.playTo(11);
         });
 
         //play timeline on scroller at the bottom
-        $('#spin-left').click(function () {
+        $jq('#spin-left').click(function () {
             if (timeline.currentKeyframe > 12) {
                 timeline.prev();
             } else {
@@ -356,14 +357,14 @@ $(document).ready(function(){
     }
 
     //init mobile gallery
-    $('#slick-colors .slick').slick({
+    $jq('#slick-colors .slick').slick({
         prevArrow: "<img class='slick-prev' src='/images/torrent/arrow.png'></img>",
         nextArrow: "<img class='slick-next' src='/images/torrent/arrow.png'></img>",
         lazyLoad: 'progressive'
     });
 
     //init photo slick gallery
-    $('#view-photo .slick').slick({
+    $jq('#view-photo .slick').slick({
         prevArrow: "<img class='slick-prev' src='/images/torrent/arrow.png'></img>",
         nextArrow: "<img class='slick-next' src='/images/torrent/arrow.png'></img>",
         lazyLoad: 'progressive'
@@ -372,33 +373,33 @@ $(document).ready(function(){
     }).on('setPosition', function(s) {
         placeCloseButton(s,'#view-photo');
     }).on('beforeChange', function(s,c,n) {
-        $('#view-photo .close-x').fadeOut('fast');
+        $jq('#view-photo .close-x').fadeOut('fast');
     }).on('afterChange', function(s,c) {
         placeCloseButton(s,'#view-photo');
     });
 
     //init video slick gallery
-    $('#play-video .slick').slick({
+    $jq('#play-video .slick').slick({
         prevArrow: "<img class='slick-prev' src='/images/torrent/arrow.png'></img>",
         nextArrow: "<img class='slick-next' src='/images/torrent/arrow.png'></img>",
         lazyLoad: 'progressive'
     }).on('init', function(s) {
         placeCloseButton(s,'#play-video');
-        $('#play-video .slick-cloned').remove();
+        $jq('#play-video .slick-cloned').remove();
     }).on('setPosition', function(s) {
         placeCloseButton(s,'#play-video');
     }).on('beforeChange', function(s,c,n) {
-        $('#view-photo .close-x').fadeOut('fast');
+        $jq('#view-photo .close-x').fadeOut('fast');
 
         //create the illusion of multiple galleries so we don't have to init 5 separate ones
-        if (n == 3) {$('#play-video .slick-prev').show(); $('#play-video .slick-next').hide();}
-        else if (n == 2) {$('#play-video .slick-next').show(); $('#play-video .slick-prev').hide();}
+        if (n == 3) {$jq('#play-video .slick-prev').show(); $jq('#play-video .slick-next').hide();}
+        else if (n == 2) {$jq('#play-video .slick-next').show(); $jq('#play-video .slick-prev').hide();}
     }).on('afterChange', function(s,c) {
         placeCloseButton(s,'#play-video');
     });
 
     //init recipe slick gallery
-    $('#show-recipe .slick').slick({
+    $jq('#show-recipe .slick').slick({
         prevArrow: "<img class='slick-prev' src='/images/torrent/arrow.png'></img>",
         nextArrow: "<img class='slick-next' src='/images/torrent/arrow.png'></img>"
     });
@@ -407,74 +408,74 @@ $(document).ready(function(){
         if (isPhone) return;
         let slick1 = slick.target.slick;
         let id = slick1.currentSlide;
-        let width = $(element+' .slick-track div').eq(id+1).find('img').width();
-        let pwidth = $(element+' .slick').width();
+        let width = $jq(element+' .slick-track div').eq(id+1).find('img').width();
+        let pwidth = $jq(element+' .slick').width();
         let offsetLeft = slick.currentTarget.offsetLeft;
         let newLeft = offsetLeft + ((pwidth - width)/2) + width;
-        $(element+' .close-x').css({'left': newLeft, 'top': parseInt(slick.currentTarget.offsetTop)-28}).fadeIn('fast');
+        $jq(element+' .close-x').css({'left': newLeft, 'top': parseInt(slick.currentTarget.offsetTop)-28}).fadeIn('fast');
     }
 
     //on gallery background/close click, close the gallery
-    $('.close-overlay,.close-x').click(function() {
-        $('#view-photo,#play-video,#show-recipe').fadeOut();
+    $jq('.close-overlay,.close-x').click(function() {
+        $jq('#view-photo,#play-video,#show-recipe').fadeOut();
 
         //pause youtube videos
         for (var i in youtubePlayers) {
             youtubePlayers[i].stopVideo();
         }
-        $('.youtube-embed img').fadeIn();
+        $jq('.youtube-embed img').fadeIn();
     });
 
     //on view photos button click, show photo gallery
-    $('.view-photos').click(function() {
-        $('#view-photo').css('display', 'none').css('left', '0').fadeIn();
+    $jq('.view-photos').click(function() {
+        $jq('#view-photo').css('display', 'none').css('left', '0').fadeIn();
     });
 
     //on view videos button click, show video gallery
-    $('.play-video').click(function() {
-        let id = parseInt($(this).attr('id'));
+    $jq('.play-video').click(function() {
+        let id = parseInt($jq(this).attr('id'));
 
         //create the illusion of multiple galleries so we don't have to init 5 separate ones
-        if (id != 2 && id != 3) {$('#play-video .slick-next,#play-video .slick-prev').hide();}
-        else if (id == 2) {$('#play-video .slick-next').show(); $('#play-video .slick-prev').hide();}
-        else if (id == 2) {$('#play-video .slick-prev').show(); $('#play-video .slick-next').hide();}
+        if (id != 2 && id != 3) {$jq('#play-video .slick-next,#play-video .slick-prev').hide();}
+        else if (id == 2) {$jq('#play-video .slick-next').show(); $jq('#play-video .slick-prev').hide();}
+        else if (id == 2) {$jq('#play-video .slick-prev').show(); $jq('#play-video .slick-next').hide();}
 
-        $('#play-video .slick').slick('slickGoTo', parseInt(id), false);
-        $('#play-video').css('display', 'none').css('left', '0').fadeIn();
+        $jq('#play-video .slick').slick('slickGoTo', parseInt(id), false);
+        $jq('#play-video').css('display', 'none').css('left', '0').fadeIn();
     });
 
     //on next/prev video click, pause the current video
-    $('#play-video .slick-prev, #play-video .slick-next').click(function() {
+    $jq('#play-video .slick-prev, #play-video .slick-next').click(function() {
         for (var i in youtubePlayers) {
             youtubePlayers[i].stopVideo();
         }
     });
 
     //on next/prev overlay click, push to gtm
-    $('.slick-prev').click(function() {pushCarouselNavToGTM(this,-1)});
-    $('.slick-next').click(function() {pushCarouselNavToGTM(this,1)});
+    $jq('.slick-prev').click(function() {pushCarouselNavToGTM(this,-1)});
+    $jq('.slick-next').click(function() {pushCarouselNavToGTM(this,1)});
 
     function pushCarouselNavToGTM(self,direction) {
-        let catPrefix = $(self).parent().parent().attr('id'), catSuffix = undefined, id = undefined;
+        let catPrefix = $jq(self).parent().parent().attr('id'), catSuffix = undefined, id = undefined;
 
         switch(catPrefix) {
             case 'view-photo':
                 catPrefix = 'View';
                 catSuffix = 'Image';
-                id = $('#view-photo .slick').slick('slickCurrentSlide')+direction;
-                id = $('#view-photo .slick-slide').eq(id).find('img').attr('id');
+                id = $jq('#view-photo .slick').slick('slickCurrentSlide')+direction;
+                id = $jq('#view-photo .slick-slide').eq(id).find('img').attr('id');
                 break;
             case 'play-video':
                 catPrefix = 'Play';
                 catSuffix = 'Video';
-                id = $('#play-video .slick').slick('slickCurrentSlide')+direction;
-                id = $('#play-video .slick-slide').eq(id).find('h3').text();
+                id = $jq('#play-video .slick').slick('slickCurrentSlide')+direction;
+                id = $jq('#play-video .slick-slide').eq(id).find('h3').text();
                 break;
             case 'show-recipe':
                 catPrefix = 'Show';
                 catSuffix = 'Recipe'
-                id = $('#show-recipe .slick').slick('slickCurrentSlide')+direction;
-                id = $('#show-recipe .slick-slide').eq(id).find('.recipe-content > h3').text();
+                id = $jq('#show-recipe .slick').slick('slickCurrentSlide')+direction;
+                id = $jq('#show-recipe .slick-slide').eq(id).find('.recipe-content > h3').text();
                 break;
         }
 
@@ -482,49 +483,49 @@ $(document).ready(function(){
     }
 
     //on view recipes button click, show recipe
-    $('.open-recipe').click(function() {
+    $jq('.open-recipe').click(function() {
         var currentColor = isMobile ? "red" : scroller.color;
-        $('.recipe-wrapper.'+currentColor).removeAttr('style');
-        $('#show-recipe').css('display', 'none').css('left', '0').fadeIn(); 
+        $jq('.recipe-wrapper.'+currentColor).removeAttr('style');
+        $jq('#show-recipe').css('display', 'none').css('left', '0').fadeIn(); 
     });
 
     //on color click, change the timeline's sequence
-    $('.color-picker li').click(function (e) {
+    $jq('.color-picker li').click(function (e) {
         //push to ga
-        let label = $(this).find('.text').text();
+        let label = $jq(this).find('.text').text();
         ga('send', 'event', 'Torrent-Pick Your Color', 'Clicked', label);
 
-        var source = $(e.currentTarget).attr('data-source');
-        let color = $(e.currentTarget).attr('data-color');
-        if ((timeline.animating && !timeline.looping) || $(e.currentTarget).hasClass('unloaded')) return;
+        var source = $jq(e.currentTarget).attr('data-source');
+        let color = $jq(e.currentTarget).attr('data-color');
+        if ((timeline.animating && !timeline.looping) || $jq(e.currentTarget).hasClass('unloaded')) return;
         scroller.color = color;
         timeline.color = color;
         timeline.changeSource(source);
     });
 
     //on youtube poster click, embed the video and play it
-    $('.youtube-embed').click(function() {
+    $jq('.youtube-embed').click(function() {
         //push to ga
-        let label = $(this).find('h3').text();
+        let label = $jq(this).find('h3').text();
         ga('send', 'event', 'Torrent-Feature Overlays', 'Clicked Play Video', label);
 
         if (YT) {
-            let id = $(this).attr('data-id');
+            let id = $jq(this).attr('data-id');
             let v = this;
 
-            if ($(v).find('iframe').length) return;
+            if ($jq(v).find('iframe').length) return;
 
             if (youtubePlayers[id]) {
-                $(v).find('img').fadeOut("fast", function() {
+                $jq(v).find('img').fadeOut("fast", function() {
                     youtubePlayers[id].playVideo();
                 });
             } else {
-                let width = $(this).find('div').width();
-                let height = $(this).find('div').height();
-                $(this).find('div').append(`<iframe id="${id}" style="position: absolute;" src="https://www.youtube.com/embed/${id}?autoplay=1&enablejsapi=1" height="${height}" width="${width} type="text/html" frameborder="0"/>`);
+                let width = $jq(this).find('div').width();
+                let height = $jq(this).find('div').height();
+                $jq(this).find('div').append(`<iframe id="$jq{id}" style="position: absolute;" src="https://www.youtube.com/embed/$jq{id}?autoplay=1&enablejsapi=1" height="$jq{height}" width="$jq{width} type="text/html" frameborder="0"/>`);
 
                 setTimeout(function() {
-                    $(v).find('img').fadeOut();
+                    $jq(v).find('img').fadeOut();
                     youtubePlayers[id] = new YT.Player(id);
                 },1000);
             }
@@ -535,17 +536,17 @@ $(document).ready(function(){
 
     redraw();
     //on window resize, resize components
-    $(window).resize(redraw);
+    $jq(window).resize(redraw);
     function redraw() {
         if (!isMobile) {
-            if ($(window).width() <= 768) {
+            if ($jq(window).width() <= 768) {
                 timeline.disable();
             } else {
                 timeline.enable();
             }
 
             //don't show scrollbar on desktop
-            $('.cover-wrapper').css('overflow', 'hidden');
+            $jq('.cover-wrapper').css('overflow', 'hidden');
             
             timeline.redraw();
             scroller.redraw();
