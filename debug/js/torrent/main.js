@@ -171,12 +171,16 @@ var scroller = new CoverScroller({ duration: 1.5 }, timeline); //handles scrolli
 var circleLoader = new circleLoader();
 
 $jq(document).ready(function () {
+    var preNav = getSiteSection();
     //set header position
     if (isPhone) {
         $jq('.cover-wrapper').css('top', '50px');
     }
     if (isMobile) {
         $jq('#loader').fadeOut();
+
+        //nav to site section in url
+        if (preNav) $('.cover-wrapper').animate({ scrollTop: $('.cover').eq(preNav).offset().top - 50 });
     }
     //set loader position
     $jq('#loader').css({ width: $jq(window).width(), height: $jq(window).height() - 116, top: 116 });
@@ -203,6 +207,11 @@ $jq(document).ready(function () {
             _loop();
         }
         timeline.on('loaded', function () {
+            //navigate to a section if given in url
+            if (timeline.cached.length == 1 && preNav) {
+                scroller.scrollTo(preNav);
+            }
+
             scroller.hideLoader();
             if (timeline.cached.indexOf(colors[0]) > -1) colors.shift();
             if (colors.length == 0) {
@@ -534,7 +543,7 @@ $jq(document).ready(function () {
                 } else {
                     var width = $jq(_this).find('div').width();
                     var height = $jq(_this).find('div').height();
-                    $jq(_this).find('div').append('<iframe id="$jq{id}" style="position: absolute;" src="https://www.youtube.com/embed/$jq{id}?autoplay=1&enablejsapi=1" height="$jq{height}" width="$jq{width} type="text/html" frameborder="0"/>');
+                    $jq(_this).find('div').append('<iframe id="$jq{id}" style="position: absolute;" src="https://www.youtube.com/embed/$jq{id}?autoplay=1&enablejsapi=1" height="$jq{height}" width="$jq{width}" type="text/html" frameborder="0"/>');
 
                     setTimeout(function () {
                         $jq(v).find('img').fadeOut();
@@ -566,6 +575,69 @@ $jq(document).ready(function () {
             timeline.redraw();
             scroller.redraw();
             circleLoader.redraw();
+        }
+    }
+
+    function getSiteSection() {
+        var vars = parseURLVars(window.location.href);
+        if ('siteSection' in vars) {
+            return siteSectionLookup(vars.siteSection);
+        }
+        return false;
+    }
+
+    function parseURLVars(url) {
+        url = url.substring(url.lastIndexOf('?') + 1, url.length);
+        var urls = url.split('&');
+
+        var ret = {};
+        for (var i in urls) {
+            ret[urls[i].split('=')[0]] = urls[i].split('=')[1];
+        }
+        return ret;
+    }
+
+    function siteSectionLookup(section) {
+        switch (section) {
+            case 'meetthetorrent':
+                return 1;
+                break;
+            case 'presetrecipes':
+                return 2;
+                break;
+            case 'programdial':
+                return 2;
+                break;
+            case 'programs':
+                return 3;
+                break;
+            case 'magneticdrive':
+                return 4;
+                break;
+            case 'dishwashersafecomponents':
+                return 5;
+                break;
+            case 'diamondblendersystem':
+                return 6;
+                break;
+            case 'intellispeedtechnology':
+                return 7;
+                break;
+            case 'ingredientfeed':
+                return 8;
+                break;
+            case 'addingredientswhileblending':
+                return 9;
+                break;
+            case 'lowprofile':
+                return 10;
+                break;
+            case 'takeitforaspin':
+                return 11;
+                break;
+            default:
+                return 0;
+                break;
         }
     }
 });

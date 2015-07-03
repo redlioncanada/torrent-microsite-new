@@ -251,7 +251,8 @@ class Timeline extends Messenger {
         clearInterval(self.playInterval);
         self.playInterval = setInterval(function() {
           let lastFrame = self.currentFrame;
-          self.currentFrame += delta; 
+          if ((self.currentFrame + delta > self.keyframes[self.currentKeyframe] && delta > 0) || (self.currentFrame + delta < self.keyframes[self.currentKeyframe] && delta < 0)) self.currentFrame = self.keyframes[self.currentKeyframe];
+          else self.currentFrame += delta; 
 
 
             if ((direction == 1 && self.currentFrame > self.keyframes[self.currentKeyframe-1] || direction == -1 && self.currentFrame <= self.keyframes[self.currentKeyframe+1]) && allowReset) resetInterval(1,false);
