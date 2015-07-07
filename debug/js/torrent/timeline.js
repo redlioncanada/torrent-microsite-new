@@ -486,7 +486,7 @@ var Timeline = (function (_Messenger) {
           break;
       }
 
-      console.log('$jq{prefix} $jq{type}: $jq{msg}');
+      console.log('' + prefix + ' ' + type + ': ' + msg);
     }
   }, {
     key: 'clearAnimation',
@@ -590,7 +590,7 @@ var Timeline = (function (_Messenger) {
         var suf = self._constructURL();
         if ($jq('#timeline .remove').length) {
           var mt = $jq('#timeline img').css('marginTop');
-          $jq('#timeline').append('<img style="display:none; z-index:2; margin-top:$jq{mt}" class="added timeline-frame timeline-frame-$jq{cf}" src="$jq{suf}"/>');
+          $jq('#timeline').append('<img style="display:none; z-index:2; margin-top:' + mt + '" class="added timeline-frame timeline-frame-' + cf + '" src="' + suf + '"/>');
         } else {
           $jq('#timeline-frame-' + cf).attr('src', suf);
         }

@@ -103,7 +103,7 @@ if (!isMobile) {
             9: [{
                 endDown: function endDown() {
                     var color = timeline.color;
-                    var liquid = $jq('<div style="opacity:0;"" class="liquid-animation timeline-animation"><img class="liquid" src="/images/torrent/mini-animations/$jq{color}-juice.png"></div>');
+                    var liquid = $jq('<div style="opacity:0;" class="liquid-animation timeline-animation"><img class="liquid" src="/images/torrent/mini-animations/' + color + '-juice.png"></div>');
                     $jq('body').append(liquid);
 
                     timeline.on('changeSource', function () {
@@ -135,7 +135,7 @@ if (!isMobile) {
             10: [{
                 endUp: function endUp() {
                     var color = timeline.color;
-                    var liquid = $jq('<div style="opacity:0;"" class="liquid-animation timeline-animation"><img class="liquid" src="/images/torrent/mini-animations/$jq{color}-juice.png"/></div>');
+                    var liquid = $jq('<div style="opacity:0;" class="liquid-animation timeline-animation"><img class="liquid" src="/images/torrent/mini-animations/' + color + '-juice.png"/></div>');
                     $jq('body').append(liquid);
 
                     setPos();
@@ -362,14 +362,16 @@ $jq(document).ready(function () {
     $jq('#slick-colors .slick').slick({
         prevArrow: '<img class=\'slick-prev\' src=\'/images/torrent/arrow.png\'></img>',
         nextArrow: '<img class=\'slick-next\' src=\'/images/torrent/arrow.png\'></img>',
-        lazyLoad: 'progressive'
+        lazyLoad: 'progressive',
+        mobileFirst: true
     });
 
     //init photo slick gallery
     $jq('#view-photo .slick').slick({
         prevArrow: '<img class=\'slick-prev\' src=\'/images/torrent/arrow.png\'></img>',
         nextArrow: '<img class=\'slick-next\' src=\'/images/torrent/arrow.png\'></img>',
-        lazyLoad: 'progressive'
+        lazyLoad: 'progressive',
+        mobileFirst: true
     }).on('init', function (s) {
         placeCloseButton(s, '#view-photo');
     }).on('setPosition', function (s) {
@@ -541,9 +543,7 @@ $jq(document).ready(function () {
                         youtubePlayers[id].playVideo();
                     });
                 } else {
-                    var width = $jq(_this).find('div').width();
-                    var height = $jq(_this).find('div').height();
-                    $jq(_this).find('div').append('<iframe id="$jq{id}" style="position: absolute;" src="https://www.youtube.com/embed/$jq{id}?autoplay=1&enablejsapi=1" height="$jq{height}" width="$jq{width}" type="text/html" frameborder="0"/>');
+                    $jq(_this).find('div').append('<iframe id="' + id + '" style="position: absolute" src="https://www.youtube.com/embed/' + id + '?autoplay=1&enablejsapi=1" type="text/html" frameborder="0"/>');
 
                     setTimeout(function () {
                         $jq(v).find('img').fadeOut();

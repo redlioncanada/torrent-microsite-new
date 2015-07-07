@@ -235,6 +235,7 @@ a img {
       max-height: 535px;
       z-index: 2;
       margin: 0 auto;
+      max-width: 100%;
     }
     .ytplayer {
       width: inherit;
@@ -245,10 +246,18 @@ a img {
   img.slick-next {
     right: -47px;
     top: 49%;
+
+    @media(max-width:550px) {
+      right: -31px;
+    }
   }
   img.slick-prev {
     left: -47px;
     top: 49%;
+
+    @media(max-width: 550px) {
+      left: -38px;
+    }
   }
 }
 
@@ -287,6 +296,8 @@ a img {
   @media(max-width: 768px) {
 	  height: 88%;
 	  font-size: 75%;
+    min-width: initial;
+    margin-top: 0;
   }
   
   .close-x {
@@ -320,7 +331,9 @@ a img {
     top: 69px;
     
     @media(max-width: 768px) {
-	    top: 15%
+	    top: 15%;
+      left: 0px;
+      min-width: initial;
     }
 
     > div > h3 {
@@ -361,8 +374,8 @@ a img {
       width: 100%;
       min-height: 47px;
       @media(max-width: 768px) {
-		  margin-bottom: 15px;
-	  }
+  		  margin-bottom: 15px;
+  	  }
     }
     .right div > p {
       float: right;
@@ -376,7 +389,7 @@ a img {
     @media(max-width: 768px) {
 	    float: none;
 	    width: 100%;
-	}
+  	}
   }
   .recipe-content .right {
     width: 44%;
@@ -386,8 +399,7 @@ a img {
     @media(max-width: 768px) {
 	    float: none;
 	    padding-right: 0;
-	    padding-left: 30px;
-	    padding-top: 30px;
+	    padding-top: 46px;
 	    width: 100%;
 	}
 	
@@ -876,6 +888,7 @@ a img {
     }
   }
 }
+
 img.slick-next {
   right: 32px;
   -ms-transform: rotate(180deg); /* IE 9 */
