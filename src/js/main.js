@@ -168,8 +168,7 @@ if (!isMobile) {
                 }
             ]
         },
-        border: true,
-        mode: 'sequence'
+        border: true
     });
 } else {
     //inject meta tags

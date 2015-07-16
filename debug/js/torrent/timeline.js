@@ -14,19 +14,7 @@ var Timeline = (function (_Messenger) {
 
     _get(Object.getPrototypeOf(Timeline.prototype), 'constructor', this).call(this);
     if (!opts) {
-      this.log('opts is undefined, need an id', 1);return;
-    }
-    this.mode = opts.mode;
-    if (opts.mode == 'video') {
-      this._forwardVideo = undefined;
-      this._backwardVideo = undefined;
-      $jq('#timeline #forward').css('zIndex', '2');
-      $jq('#timeline #backward').css('zIndex', '1');
-      if (!opts.fps) {
-        this.log('fps is undefined, assuming 30fps', 2);this.fps = 30;
-      } else {
-        this.fps = opts.fps;
-      }
+      this.log('opts is undefined, need a parent id', 1);return;
     }
 
     this.border = opts.border;
@@ -39,12 +27,10 @@ var Timeline = (function (_Messenger) {
     this.keyframes = opts.keyframes;
     this.tweenframes = opts.tweenframes;
     this.looptweens = opts.looptweens;
-    this.currentKeyframe = this.mode == 'video' ? -1 : 0;
+    this.currentKeyframe = 0;
     this.currentFrame = parseInt(this.keyframes[0]);
     this.currentYoffset = window.pageYOffset;
     this.ready = false;
-    this.forwardReady = false;
-    this.backwardReady = false;
     this.disabled = false;
     this.quedPlay = false;
     this.looping = false;
@@ -53,12 +39,10 @@ var Timeline = (function (_Messenger) {
     this.scrollDirection = 1;
 
     var self = this;
-    if (opts.mode == 'sequence') {
-      self.fps = opts.fps;
-      self._setURL();
-      self._cache();
-      self.keyframes[self.keyframes.length - 1] -= 1; //you're a wizard harry
-    }
+    self.fps = opts.fps;
+    self._setURL();
+    self._cache();
+    self.keyframes[self.keyframes.length - 1] -= 1;
 
     if (this.border) {
       $jq('#timeline').append('<div style="display: none;" class="black-to-transparent-gradient-top"></div>').append('<div style="display: none;" class="black-to-transparent-gradient-bottom"></div>').append('<div style="display: none;" class="black-to-transparent-gradient-left"></div>').append('<div style="display: none;" class="black-to-transparent-gradient-right"></div>');
@@ -79,34 +63,10 @@ var Timeline = (function (_Messenger) {
         if (self.redraw()) clearInterval(initInterval);
       }, 200);
       $jq(window).resize(self.redraw);
-
-      self.forwardVideo.play();
-      self.forwardVideo.pause();
-      self.forwardVideo.currentTime(self.currentKeyframe);
-      self.backwardVideo.play();
-      self.backwardVideo.pause();
-      self.backwardVideo.currentTime(self.backwardVideo.duration());
-
-      self.forwardVideo.on('loadeddata', function () {
-        loadedCallback(1);
-      });
-      self.backwardVideo.on('loadeddata', function () {
-        loadedCallback(0);
-      });
-
-      function loadedCallback(dir) {
-        if (dir) self.forwardReady = true;else self.backwardReady = true;
-        if (!dir && self.forwardReady || dir && self.backwardReady) {
-          self.duration = self.forwardVideo.duration();
-          self.emit('loaded');
-          self.ready = true;
-        }
-      }
     }
   }, {
     key: 'redraw',
     value: function redraw() {
-      //make sure video's aspect/position is maintained
       var menuSize = isPhone ? 50 : 116;
       var width = $jq(window).width();
       var height = $jq(window).height() - menuSize;
@@ -115,8 +75,6 @@ var Timeline = (function (_Messenger) {
       if (isNaN(imageAspect) || !imageAspect) {
         return false;
       }var mod = 1;
-      //if (height < 800) mod = 1;
-      //else mod = 1.2;
 
       $jq('.black-to-transparent-gradient-top,.black-to-transparent-gradient-bottom,.black-to-transparent-gradient-left,.black-to-transparent-gradient-right').removeClass('timeline-ignore');
       if (viewportAspect > imageAspect) {
@@ -200,15 +158,8 @@ var Timeline = (function (_Messenger) {
       self.currentKeyframe = id;
 
       var speed = 1;
-      if (self.mode === 'video') {
-        var idDiff = Math.abs(lastFrame - id);
-        var timeDiff = Math.abs(self.keyframes[lastFrame] - self.keyframes[id]);
-        speed = idDiff > 1 ? 1 / timeDiff : undefined;
-        self.log('playing to keyframe #' + id + ', time ' + self.keyframes[id] + 's');
-      } else {
-        speed = Math.abs(self.keyframes[lastFrame] - self.keyframes[id]) / self.fps;
-        self.log('playing to keyframe #' + id + ', frame #' + self.keyframes[id]);
-      }
+      speed = Math.abs(self.keyframes[lastFrame] - self.keyframes[id]) / self.fps;
+      self.log('playing to keyframe #' + id + ', frame #' + self.keyframes[id]);
       self.keyframes[id] < self.keyframes[lastFrame] ? self.play(self.keyframes[id], 0, speed) : self.play(self.keyframes[id], 1, speed);
       return true;
     }
@@ -223,134 +174,100 @@ var Timeline = (function (_Messenger) {
       $jq('#timeline .timeline-frame').removeClass('old');
       self.emit('play');
 
-      var primary = undefined,
-          secondary = undefined;
-      if (direction) {
-        primary = self.forwardVideo;
-        secondary = self.backwardVideo;
-        $jq('#timeline #forward').css('zIndex', '2');
-        $jq('#timeline #backward').css('zIndex', '1');
-      } else {
-        primary = self.backwardVideo;
-        secondary = self.forwardVideo;
-        $jq('#timeline #forward').css('zIndex', '1');
-        $jq('#timeline #backward').css('zIndex', '2');
+      direction = direction ? 1 : -1;
+      var delta = Math.round(speed) > 3 ? 3 * direction : direction; //skip some frames if playing super fast
+      resetInterval();
+
+      //call any function registered to trigger on the current index
+      if (direction == 1 && self.animation) {
+        if (self.animation[self.currentKeyframe] && typeof self.animation[self.currentKeyframe] === 'object') {
+          for (var j in self.animation[self.currentKeyframe]) {
+            if (typeof self.animation[self.currentKeyframe][j].startDown === 'function') {
+              self.animation[self.currentKeyframe][j].startDown.call();
+            }
+          }
+        }
+      }
+      //call any function registered to trigger on the current index
+      if ((direction == 0 || direction == -1) && self.animation) {
+        if (self.animation[self.currentKeyframe + 1] && typeof self.animation[self.currentKeyframe + 1] === 'object') {
+          for (var j in self.animation[self.currentKeyframe + 1]) {
+            if (typeof self.animation[self.currentKeyframe + 1][j].startUp === 'function') {
+              self.animation[self.currentKeyframe + 1][j].startUp.call();
+            }
+          }
+        }
       }
 
-      if (self.mode == 'video') {
-        if (!speed) primary.play();
+      function resetInterval() {
+        var allowReset = arguments[0] === undefined ? true : arguments[0];
 
-        val = direction ? val : Math.abs(self.duration - val);
+        clearInterval(self.playInterval);
         self.playInterval = setInterval(function () {
-          var ct = primary.currentTime();
-          if (speed) {
-            ct += speed;
-            primary.currentTime(ct);
-          }
-          if (ct >= val) {
-            clearInterval(self.playInterval);
-            self.playInterval = false;
-            self.playing = false;
-            self.animating = false;
-            primary.pause();
-            secondary.currentTime(Math.abs(ct - self.duration));
-            self.emit('pause');
-          }
-        }, speed ? speed * 1000 : 0.05);
-      } else {
-        (function () {
-          var resetInterval = function () {
-            var allowReset = arguments[0] === undefined ? true : arguments[0];
+          var lastFrame = self.currentFrame;
+          if (self.currentFrame + delta > self.keyframes[self.currentKeyframe] && delta > 0 || self.currentFrame + delta < self.keyframes[self.currentKeyframe] && delta < 0) self.currentFrame = self.keyframes[self.currentKeyframe];else self.currentFrame += delta;
 
-            clearInterval(self.playInterval);
-            self.playInterval = setInterval(function () {
-              var lastFrame = self.currentFrame;
-              if (self.currentFrame + delta > self.keyframes[self.currentKeyframe] && delta > 0 || self.currentFrame + delta < self.keyframes[self.currentKeyframe] && delta < 0) self.currentFrame = self.keyframes[self.currentKeyframe];else self.currentFrame += delta;
+          if ((direction == 1 && self.currentFrame > self.keyframes[self.currentKeyframe - 1] || direction == -1 && self.currentFrame <= self.keyframes[self.currentKeyframe + 1]) && allowReset) resetInterval(1, false);
+          var loopFrameIndex = self._hasTweenFrame();
+          var loopFrame = loopFrameIndex == -1 ? false : self.tweenframes[loopFrameIndex];
 
-              if ((direction == 1 && self.currentFrame > self.keyframes[self.currentKeyframe - 1] || direction == -1 && self.currentFrame <= self.keyframes[self.currentKeyframe + 1]) && allowReset) resetInterval(1, false);
-
-              var loopFrameIndex = self._hasTweenFrame();
-              var loopFrame = loopFrameIndex == -1 ? false : self.tweenframes[loopFrameIndex];
-
-              if (direction == 1 && self.currentFrame > parseInt(val) - 1 || direction == -1 && self.currentFrame < parseInt(val) + 1 || direction == -1 && loopFrame && loopFrameIndex > -1 && self.currentFrame <= loopFrame) {
-                if (direction == 1 && self.animation) {
-                  if (self.animation[self.currentKeyframe] && typeof self.animation[self.currentKeyframe] === 'object') {
-                    for (var i in self.animation[self.currentKeyframe]) {
-                      if (typeof self.animation[self.currentKeyframe][i].endDown === 'function') {
-                        self.animation[self.currentKeyframe][i].endDown.call();
-                      }
-                    }
+          //call any function registered to trigger on the current index
+          if (direction == 1 && self.currentFrame > parseInt(val) - 1 || direction == -1 && self.currentFrame < parseInt(val) + 1 || direction == -1 && loopFrame && loopFrameIndex > -1 && self.currentFrame <= loopFrame) {
+            if (direction == 1 && self.animation) {
+              if (self.animation[self.currentKeyframe] && typeof self.animation[self.currentKeyframe] === 'object') {
+                for (var i in self.animation[self.currentKeyframe]) {
+                  if (typeof self.animation[self.currentKeyframe][i].endDown === 'function') {
+                    self.animation[self.currentKeyframe][i].endDown.call();
                   }
-                }
-                if ((direction == -1 || direction == 0) && self.animation) {
-                  if (self.animation[self.currentKeyframe + 1] && typeof self.animation[self.currentKeyframe + 1] === 'object') {
-                    for (var i in self.animation[self.currentKeyframe + 1]) {
-                      if (typeof self.animation[self.currentKeyframe + 1][i].endUp === 'function') {
-                        self.animation[self.currentKeyframe + 1][i].endUp.call();
-                      }
-                    }
-                  }
-                }
-
-                if (Math.abs(self.currentFrame - parseInt(val)) <= 1) self.currentFrame = parseInt(val);
-                $jq('#timeline .timeline-frame-' + self.currentFrame).css({ zIndex: '2', display: 'block' });
-                $jq('#timeline .timeline-frame').not('#timeline .timeline-frame-' + self.currentFrame).css({ zIndex: '1', display: 'none' });
-                $jq('#timeline .timeline-frame').removeClass('old');
-
-                if (loopFrameIndex > -1 && !self.looping && !(direction == 0 && !loopFrame)) {
-                  self.loop();
-                } else {
-                  clearInterval(self.playInterval);
-                  self.playInterval = false;
-                  self.playing = false;
-                  self.animating = false;
-                  self.emit('pause');
-                }
-
-                return;
-              }
-
-              //display current frame
-              $jq('#timeline .timeline-frame-' + self.currentFrame).not('.old').css({ zIndex: '2', display: 'block' });
-
-              if (delta == 0) return;
-              if (direction == 1) {
-                //buffer surrounding frames
-                $jq('#timeline .timeline-frame-' + (self.currentFrame + delta)).not('.old').css({ zIndex: '1', display: 'block' });
-                //discard old frame(s)
-                $jq('#timeline .timeline-frame-' + (self.currentFrame - delta)).css({ zIndex: '1', display: 'none' }).addClass('old');
-              } else if (direction == -1) {
-                //buffer surrounding frames
-                $jq('#timeline .timeline-frame-' + (self.currentFrame + delta)).not('.old').css({ zIndex: '1', display: 'block' });
-                //discard old frame(s)
-                $jq('#timeline .timeline-frame-' + (self.currentFrame - delta)).css({ zIndex: '1', display: 'none' }).addClass('old');
-              }
-            }, self.deltaTime * 1000 / speed);
-          };
-
-          direction = direction ? 1 : -1;
-          var delta = Math.round(speed) > 3 ? 3 * direction : direction; //skip some frames if playing super fast
-          resetInterval();
-
-          if (direction == 1 && self.animation) {
-            if (self.animation[self.currentKeyframe] && typeof self.animation[self.currentKeyframe] === 'object') {
-              for (var j in self.animation[self.currentKeyframe]) {
-                if (typeof self.animation[self.currentKeyframe][j].startDown === 'function') {
-                  self.animation[self.currentKeyframe][j].startDown.call();
                 }
               }
             }
-          }
-          if ((direction == 0 || direction == -1) && self.animation) {
-            if (self.animation[self.currentKeyframe + 1] && typeof self.animation[self.currentKeyframe + 1] === 'object') {
-              for (var j in self.animation[self.currentKeyframe + 1]) {
-                if (typeof self.animation[self.currentKeyframe + 1][j].startUp === 'function') {
-                  self.animation[self.currentKeyframe + 1][j].startUp.call();
+            //call any function registered to trigger on the current index
+            if ((direction == -1 || direction == 0) && self.animation) {
+              if (self.animation[self.currentKeyframe + 1] && typeof self.animation[self.currentKeyframe + 1] === 'object') {
+                for (var i in self.animation[self.currentKeyframe + 1]) {
+                  if (typeof self.animation[self.currentKeyframe + 1][i].endUp === 'function') {
+                    self.animation[self.currentKeyframe + 1][i].endUp.call();
+                  }
                 }
               }
             }
+
+            if (Math.abs(self.currentFrame - parseInt(val)) <= 1) self.currentFrame = parseInt(val);
+            //do the animation
+            $jq('#timeline .timeline-frame-' + self.currentFrame).css({ zIndex: '2', display: 'block' });
+            $jq('#timeline .timeline-frame').not('#timeline .timeline-frame-' + self.currentFrame).css({ zIndex: '1', display: 'none' });
+            $jq('#timeline .timeline-frame').removeClass('old');
+
+            if (loopFrameIndex > -1 && !self.looping && !(direction == 0 && !loopFrame)) {
+              self.loop();
+            } else {
+              clearInterval(self.playInterval);
+              self.playInterval = false;
+              self.playing = false;
+              self.animating = false;
+              self.emit('pause');
+            }
+
+            return;
           }
-        })();
+
+          //display current frame
+          $jq('#timeline .timeline-frame-' + self.currentFrame).not('.old').css({ zIndex: '2', display: 'block' });
+
+          if (delta == 0) return;
+          if (direction == 1) {
+            //buffer surrounding frames
+            $jq('#timeline .timeline-frame-' + (self.currentFrame + delta)).not('.old').css({ zIndex: '1', display: 'block' });
+            //discard old frame(s)
+            $jq('#timeline .timeline-frame-' + (self.currentFrame - delta)).css({ zIndex: '1', display: 'none' }).addClass('old');
+          } else if (direction == -1) {
+            //buffer surrounding frames
+            $jq('#timeline .timeline-frame-' + (self.currentFrame + delta)).not('.old').css({ zIndex: '1', display: 'block' });
+            //discard old frame(s)
+            $jq('#timeline .timeline-frame-' + (self.currentFrame - delta)).css({ zIndex: '1', display: 'none' }).addClass('old');
+          }
+        }, self.deltaTime * 1000 / speed);
       }
     }
   }, {
@@ -450,23 +367,21 @@ var Timeline = (function (_Messenger) {
     key: 'changeSource',
     value: function changeSource(url) {
       var self = this;
-      if (self.mode == 'video') {} else if (self.mode == 'sequence') {
-        $jq('#timeline .timeline-frame-' + self.currentFrame).addClass('remove');
+      $jq('#timeline .timeline-frame-' + self.currentFrame).addClass('remove');
 
-        $jq('#timeline').attr('data-src', url);
-        self._setURL();
-        url = self._constructURL();
+      $jq('#timeline').attr('data-src', url);
+      self._setURL();
+      url = self._constructURL();
 
-        self._cache();
+      self._cache();
 
-        timeline.on('currentFrameLoaded', function () {
-          timeline.off('currentFrameLoaded', 'changeSource');
-          self.animating = false;
-          self.emit('changeSource');
-        }, 'changeSource');
+      timeline.on('currentFrameLoaded', function () {
+        timeline.off('currentFrameLoaded', 'changeSource');
+        self.animating = false;
+        self.emit('changeSource');
+      }, 'changeSource');
 
-        $jq('#timeline img').not('.remove,.added').fadeOut('fast');
-      }
+      $jq('#timeline img').not('.remove,.added').fadeOut('fast');
     }
   }, {
     key: 'log',
@@ -499,31 +414,9 @@ var Timeline = (function (_Messenger) {
       });
     }
   }, {
-    key: 'forwardVideo',
-    set: function (v) {
-      this._forwardVideo = v;
-      if (this._backwardVideo) this.init();
-    },
-    get: function (v) {
-      return this._forwardVideo;
-    }
-  }, {
-    key: 'backwardVideo',
-    set: function (v) {
-      this._backwardVideo = v;
-      if (this._forwardVideo) this.init();
-    },
-    get: function (v) {
-      return this._backwardVideo;
-    }
-  }, {
     key: 'fps',
     set: function (fps) {
       this.deltaTime = 1 / fps;
-      if (this.mode == 'video' && this.forwardVideo) {
-        this.duration = this.forwardVideo.duration();
-        this.totalFrames = fps * this.duration;
-      }
       this._fps = fps;
     },
     get: function () {
@@ -675,9 +568,9 @@ var Timeline = (function (_Messenger) {
         };
 
         for (var _i2 = start; _i2 < end; _i2++) {
-          var _ret2 = _loop(_i2);
+          var _ret = _loop(_i2);
 
-          if (_ret2 === 'continue') continue;
+          if (_ret === 'continue') continue;
         }
       }
 
@@ -713,5 +606,3 @@ var Timeline = (function (_Messenger) {
 
   return Timeline;
 })(Messenger);
-
-//TODO implement transitioning video source

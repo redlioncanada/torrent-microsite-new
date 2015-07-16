@@ -820,7 +820,7 @@ body {
 }
 #main-container .cover-item-3 .col-xs-8 > div {
   max-width: 25vw;
-  margin-top: 5vh;
+  margin-top: 20vh;
   float: right;
 }
 #main-container .cover-item-3 ul {
@@ -884,8 +884,8 @@ body {
 #main-container .cover-item-5 img {
   margin-top: 15px;
 }
-#main-container .cover-item-6 .col-xs-3 {
-  top: 58%;
+#main-container .cover-item-6 .col-xs-4 {
+  top: 28% !important;
 }
 #main-container .cover-item-6 p {
   max-width: 330px;
@@ -901,7 +901,7 @@ body {
   list-style: initial;
 }
 #main-container .cover-item-8 .col-xs-3 {
-  top: 4%;
+  top: 25%;
 }
 #main-container .cover-item-8 .col-xs-3 p {
   max-width: 227px;
@@ -910,13 +910,13 @@ body {
   top: 7%;
 }
 #main-container .cover-item-9 .col-xs-3 {
-  top: 9%;
+  top: 26%;
 }
 #main-container .cover-item-9 img {
   margin-top: 15px;
 }
 #main-container .cover-item-10 .col-xs-3 {
-  top: 2%;
+  top: 9%;
 }
 #main-container .cover-item-10 img {
   width: 60px;
