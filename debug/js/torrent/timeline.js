@@ -150,6 +150,7 @@ var Timeline = (function (_Messenger) {
   }, {
     key: 'playTo',
     value: function playTo(id) {
+      //calls play, plays to a specific id
       var self = this;
       if (id < 0 || id >= self.keyframes.length || id == self.currentKeyframe || self.playing || self.playInterval) {
         return false;
@@ -166,6 +167,7 @@ var Timeline = (function (_Messenger) {
   }, {
     key: 'play',
     value: function play(val, direction, speed) {
+      //does the animation work
       var self = this;
       if ((self.playing || self.playInterval || self.disabled) && !self.looping) {
         return;
@@ -178,7 +180,7 @@ var Timeline = (function (_Messenger) {
       var delta = Math.round(speed) > 3 ? 3 * direction : direction; //skip some frames if playing super fast
       resetInterval();
 
-      //call any function registered to trigger on the current index
+      //call any function registered to trigger on the current id
       if (direction == 1 && self.animation) {
         if (self.animation[self.currentKeyframe] && typeof self.animation[self.currentKeyframe] === 'object') {
           for (var j in self.animation[self.currentKeyframe]) {
@@ -188,7 +190,7 @@ var Timeline = (function (_Messenger) {
           }
         }
       }
-      //call any function registered to trigger on the current index
+      //call any function registered to trigger on the current id
       if ((direction == 0 || direction == -1) && self.animation) {
         if (self.animation[self.currentKeyframe + 1] && typeof self.animation[self.currentKeyframe + 1] === 'object') {
           for (var j in self.animation[self.currentKeyframe + 1]) {
@@ -199,6 +201,7 @@ var Timeline = (function (_Messenger) {
         }
       }
 
+      //called every 1/fps seconds
       function resetInterval() {
         var allowReset = arguments[0] === undefined ? true : arguments[0];
 
@@ -273,6 +276,7 @@ var Timeline = (function (_Messenger) {
   }, {
     key: 'loop',
     value: function loop() {
+      //handles looping based on tweenframes and looptweens options
       var self = this;
       var loopFrameIndex = self._hasTweenFrame();
       var loopFrame = self.tweenframes[loopFrameIndex];
@@ -366,6 +370,7 @@ var Timeline = (function (_Messenger) {
   }, {
     key: 'changeSource',
     value: function changeSource(url) {
+      //handles the changing of the mixer color
       var self = this;
       $jq('#timeline .timeline-frame-' + self.currentFrame).addClass('remove');
 

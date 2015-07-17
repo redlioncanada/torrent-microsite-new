@@ -178,17 +178,22 @@ var scroller = new CoverScroller({ duration: 1.5 }, timeline); //handles scrolli
 var circleLoader = new circleLoader();
 
 $jq(document).ready(function(){
-    let preNav = getSiteSection();
+    //if a siteSection query exists in the page URL, cache it
+    let preNav = getSiteSectionFromURL();
+
     //set header position
     if (isPhone) {
         $jq('.cover-wrapper').css('top', '50px');
     }
+
     if (isMobile) {
         $jq('#loader').fadeOut();
 
         //nav to site section in url
         if (preNav) $('.cover-wrapper').animate({scrollTop: $('.cover').eq(preNav).offset().top-50});
     }
+
+
     //set loader position
     $jq('#loader').css({'width':$jq(window).width(),'height':$jq(window).height()-116,'top':116});
 
@@ -200,15 +205,17 @@ $jq(document).ready(function(){
             $jq('.open-recipe').fadeIn();
         }
 
-        //load all the things
+        //used to track caching of mixer sequences
         var colors = ['black','graphite','grey'];
 
+        //animate the circle loader animation
         for (var i = 0; i <= 100; i++) {
             let j = i;
             timeline.on('loadedPercent'+i, function() {
                 circleLoader.draw(j);
             })
         }
+
         timeline.on('loaded', function() {
             //navigate to a section if given in url
             if (timeline.cached.length == 1 && preNav) {
@@ -216,7 +223,9 @@ $jq(document).ready(function(){
             }
 
             scroller.hideLoader();
+
             if (timeline.cached.indexOf(colors[0]) > -1) colors.shift();
+            //if we're done caching all the sequences, clean up the callback and remove the load animation
             if (colors.length == 0) {
                 circleLoader.remove();
                 for (var i = 0; i <= 100; i++) {
@@ -225,6 +234,7 @@ $jq(document).ready(function(){
                 timeline.off('loaded');
             }
             if (colors.length == 0) return;
+
             let cacheNum = timeline.cached.length-1;
             circleLoader.init($jq('.color-picker .'+colors[0]));
             timeline.cacheColor = colors[0];
@@ -236,7 +246,6 @@ $jq(document).ready(function(){
                 if (i == 0) return;
                 let t = $jq(this).find('div').eq(0).position().top;
                 $jq(this).find('div').eq(1).css('top',t);
-                //$jq('.color-picker li div').eq(1).css('top',t);
             });
         });
 
@@ -287,6 +296,7 @@ $jq(document).ready(function(){
             }
         });
 
+        //when mixer color is changed
         timeline.on('changeSource', function() {
             //change the blender on the first panel when the color changes
             let path = '/'+$jq('.blender-1').attr('id').replace(/-/g, '/')+'/';
@@ -305,6 +315,7 @@ $jq(document).ready(function(){
 
         timeline.redraw();
     
+        //when the page is scrolled
         scroller.on('scroll', function () {
             //make sure blender is visible when a background is being displayed
             if (!isMobile) {
@@ -323,7 +334,7 @@ $jq(document).ready(function(){
                 else if (this.curCover == 11) $jq('#timeline *').stop(true).animate({'marginTop':'-7%'});
                 else $jq('#timeline *').stop(true).animate({'marginTop':'0'});
 
-                //play the video
+                //play the sequence
                 if (self.currentFrame != 0 && !(this.curCover == 11 && timeline.currentKeyframe > 11)) {
                     timeline.playTo(this.curCover);
                 }
@@ -348,13 +359,13 @@ $jq(document).ready(function(){
             }
         });
 
-        //play timeline on scroller at the bottom
+        //play timeline in carousel on the last panel
         $jq('#spin-right').click(function () {
             timeline.next();
             if (timeline.currentKeyframe == timeline.keyframes.length-1) timeline.playTo(11);
         });
 
-        //play timeline on scroller at the bottom
+        //play timeline in carousel on the last panel
         $jq('#spin-left').click(function () {
             if (timeline.currentKeyframe > 12) {
                 timeline.prev();
@@ -562,7 +573,7 @@ $jq(document).ready(function(){
         }
     }
 
-    function getSiteSection() {
+    function getSiteSectionFromURL() {
         var vars = parseURLVars(window.location.href);
         if ("siteSection" in vars) {
             return siteSectionLookup(vars.siteSection);

@@ -124,6 +124,7 @@ class Timeline extends Messenger {
   }
 
   playTo(id) {
+    //calls play, plays to a specific id
     let self = this;
     if (id < 0 || id >= self.keyframes.length || id == self.currentKeyframe || self.playing || self.playInterval) return false;
     self.clearAnimation();
@@ -138,6 +139,7 @@ class Timeline extends Messenger {
   }
 
   play(val,direction,speed) {
+    //does the animation work
     var self = this;
     if ((self.playing || self.playInterval || self.disabled) && !self.looping) return;
 
@@ -150,7 +152,7 @@ class Timeline extends Messenger {
       let delta = Math.round(speed) > 3 ? 3*direction : direction; //skip some frames if playing super fast 
       resetInterval();
 
-      //call any function registered to trigger on the current index
+      //call any function registered to trigger on the current id
       if (direction == 1 && self.animation) {
         if (self.animation[self.currentKeyframe] && typeof self.animation[self.currentKeyframe] === 'object') {
           for (let j in self.animation[self.currentKeyframe]) {
@@ -160,7 +162,7 @@ class Timeline extends Messenger {
           }
         }
       }
-      //call any function registered to trigger on the current index
+      //call any function registered to trigger on the current id
       if ((direction == 0 || direction == -1) && self.animation) {
         if (self.animation[self.currentKeyframe+1] && typeof self.animation[self.currentKeyframe+1] === 'object') {
           for (let j in self.animation[self.currentKeyframe+1]) {
@@ -171,6 +173,7 @@ class Timeline extends Messenger {
         }
       }
 
+      //called every 1/fps seconds
       function resetInterval(allowReset=true) {
         clearInterval(self.playInterval);
         self.playInterval = setInterval(function() {
@@ -243,6 +246,7 @@ class Timeline extends Messenger {
   }
 
   loop() {
+    //handles looping based on tweenframes and looptweens options
     let self = this;
     let loopFrameIndex = self._hasTweenFrame();
     let loopFrame = self.tweenframes[loopFrameIndex];
@@ -326,6 +330,7 @@ class Timeline extends Messenger {
   }
 
   changeSource(url) {
+    //handles the changing of the mixer color
     let self = this;
     $jq('#timeline .timeline-frame-'+self.currentFrame).addClass('remove');
 
