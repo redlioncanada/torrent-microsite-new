@@ -4,6 +4,8 @@ var _classCallCheck = function (instance, Constructor) { if (!(instance instance
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
+var jqs = $; // because inheritance sucks?
+
 var Messenger = (function () {
   function Messenger() {
     _classCallCheck(this, Messenger);
@@ -79,7 +81,7 @@ $.loadImage = function (url) {
     }
   };
 
-  return $.Deferred(loadImage).promise();
+  return jqs.Deferred(loadImage).promise();
 };
 
 var circleLoader = (function () {
@@ -90,10 +92,10 @@ var circleLoader = (function () {
   _createClass(circleLoader, [{
     key: 'init',
     value: function init(el) {
-      if (this.canvas) $('canvas').remove();
+      if (this.canvas) jqs('canvas').remove();
       this.options = {
         percent: 0,
-        size: $(el).width(),
+        size: jqs(el).width(),
         lineWidth: 1,
         rotate: 0
       };
@@ -109,8 +111,8 @@ var circleLoader = (function () {
 
       var ctx = this.canvas.getContext('2d');
       this.canvas.width = this.canvas.height = this.options.size;
-      $(el).append(this.canvas);
-      $(this.canvas).css('margin', '1px 0px 0px 3px');
+      jqs(el).append(this.canvas);
+      jqs(this.canvas).css('margin', '1px 0px 0px 3px');
       this.circle = ctx;
       this.didInit = true;
       this.redraw();
@@ -120,8 +122,8 @@ var circleLoader = (function () {
     value: function redraw() {
       if (!this.canvas || !this.target || !this.circle || !this.didInit || !this.target || !this.target.position() || !this.target.position().top) {
         return;
-      }$(this.canvas).css('top', parseInt($(this.target).position().top) + parseInt($(this.target).css('margin-top')));
-      var width = $(this.target).find('div').eq(0).width();
+      }jqs(this.canvas).css('top', parseInt(jqs(this.target).position().top) + parseInt(jqs(this.target).css('margin-top')));
+      var width = jqs(this.target).find('div').eq(0).width();
       this.canvas.width = this.canvas.height = this.options.size = width;
       this.circle.translate(this.options.size / 2, this.options.size / 2); // change center
       this.circle.rotate((-1 / 2 + this.options.rotate / 180) * Math.PI); // rotate -90 deg
@@ -146,7 +148,7 @@ var circleLoader = (function () {
   }, {
     key: 'remove',
     value: function remove() {
-      $('canvas').remove();
+      jqs('canvas').remove();
       this.didInit = false;
     }
   }]);

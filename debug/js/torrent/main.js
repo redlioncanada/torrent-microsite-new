@@ -9,10 +9,11 @@ var $jq = jQuery.noConflict();
 
 if (!isMobile) {
     timeline = new Timeline({ //handles animation of video/sequence
+        duration: 1500,
         fps: 18,
-        keyframes: ['00000', '00030', '00070', '00083', '00109', '00167', '00191', '00217', '00270', '00328', '00342', '00370', '00384', '00397', '00413'],
-        tweenframes: [144, 202, 256],
-        looptweens: [false, true, true],
+        keyframes: ['00000', '00030', '00078', '00111', '00177', '00210', '00250', '00275', '00340', '00386', '00429', '00479', '00504', '00529', '00554'],
+        tweenframes: [177, 260, 322, 409],
+        looptweens: [false, true, true, true],
         animation: {
             1: [{
                 startDown: function startDown() {
@@ -97,7 +98,7 @@ if (!isMobile) {
                                 $jq(self).css('opacity', 1);
                             });
                         });
-                    }, 500);
+                    }, 250);
                 }
             }],
             9: [{
@@ -120,15 +121,15 @@ if (!isMobile) {
                             return;
                         }
 
-                        var pW = $jq('#timeline').width();
-                        var pH = $jq('#timeline').height();
-                        var xOffset = (pW - $jq(window).width()) / 2;
-                        var yOffset = (pH - $jq(window).height()) / 2;
-                        var oW = pW * 0.1197421875;
-                        var oX = pW * 0.4035078125 - xOffset;
-                        var oY = pH * 0.56725 - yOffset + 42;
+                        //let pW = $jq('#timeline').width();
+                        //let pH = $jq('#timeline').height();
+                        //let xOffset = (pW - $jq(window).width()) / 2;
+                        //let yOffset = (pH - $jq(window).height()) / 2;
+                        var oW = '15%'; //pW * 0.1197422;
+                        var oX = '39%'; //(pW * 0.4035078125) - xOffset;
+                        var oY = '57.1%'; //(pH * 0.56725) - yOffset + 42;
 
-                        $jq(liquid).css({ left: oX, top: oY, width: oW }).animate({ opacity: 1 }, 400);
+                        $jq(liquid).css({ left: oX, top: oY, width: oW }).animate({ opacity: 0 }, 400);
                     }
                 }
             }],
@@ -155,7 +156,7 @@ if (!isMobile) {
                         var oX = pW * 0.4035078125 - xOffset;
                         var oY = pH * 0.56725 - yOffset + 42;
 
-                        $jq(liquid).css({ left: oX, top: oY, width: oW }).animate({ opacity: 1 }, 400);
+                        $jq(liquid).css({ left: oX, top: oY, width: oW }).animate({ opacity: 0 }, 400);
                     }
                 }
             }]
@@ -354,7 +355,7 @@ $jq(document).ready(function () {
         //play timeline in carousel on the last panel
         $jq('#spin-right').click(function () {
             timeline.next();
-            if (timeline.currentKeyframe == timeline.keyframes.length - 1) timeline.playTo(11);
+            if (timeline.currentKeyframe == timeline.keyframes.length - 1) timeline.playTo(11); // Goes to 11
         });
 
         //play timeline in carousel on the last panel

@@ -38,7 +38,7 @@ gulp.task("js", function () {
     .pipe(b)
     .pipe(gulp.dest("debug/js/torrent"))
     .pipe(plugins.livereload())
-    .pipe(gulp.dest("/Users/stepoole/Desktop/_upload/js/torrent"));
+    //.pipe(gulp.dest("/Users/stepoole/Desktop/_upload/js/torrent"));
 });
 
 gulp.task("css", function() {
@@ -46,7 +46,7 @@ gulp.task("css", function() {
 		.pipe(less())
 		.pipe(gulp.dest("debug/css/torrent"))
         .pipe(plugins.livereload())
-        .pipe(gulp.dest("/Users/stepoole/Desktop/_upload/css/torrent"));
+        //.pipe(gulp.dest("/Users/stepoole/Desktop/_upload/css/torrent"));
 });
 
 gulp.task("htmlmin", function() {

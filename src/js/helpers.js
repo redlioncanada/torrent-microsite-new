@@ -1,3 +1,4 @@
+var jqs = $; // because inheritance sucks?
 class Messenger {
   constructor() {
     this.subscribers = [];
@@ -61,15 +62,15 @@ $.loadImage = function(url) {
     }
   };
   
-  return $.Deferred(loadImage).promise();
+  return jqs.Deferred(loadImage).promise();
 };
 
 class circleLoader {
   init(el) {
-    if (this.canvas) $('canvas').remove();
+    if (this.canvas) jqs('canvas').remove();
     this.options = {
         percent:  0,
-        size: $(el).width(),
+        size: jqs(el).width(),
         lineWidth: 1,
         rotate: 0
     }
@@ -85,8 +86,8 @@ class circleLoader {
 
     var ctx = this.canvas.getContext('2d');
     this.canvas.width = this.canvas.height = this.options.size;
-    $(el).append(this.canvas);
-    $(this.canvas).css('margin','1px 0px 0px 3px');
+    jqs(el).append(this.canvas);
+    jqs(this.canvas).css('margin','1px 0px 0px 3px');
     this.circle = ctx;
     this.didInit = true;
     this.redraw();
@@ -94,8 +95,8 @@ class circleLoader {
 
   redraw() {
     if (!this.canvas || !this.target || !this.circle || !this.didInit || !this.target || !this.target.position() || !this.target.position().top) return;
-    $(this.canvas).css('top', parseInt($(this.target).position().top) + parseInt($(this.target).css('margin-top')));
-    let width = $(this.target).find('div').eq(0).width();
+    jqs(this.canvas).css('top', parseInt(jqs(this.target).position().top) + parseInt(jqs(this.target).css('margin-top')));
+    let width = jqs(this.target).find('div').eq(0).width();
     this.canvas.width = this.canvas.height = this.options.size = width;
     this.circle.translate(this.options.size / 2, this.options.size / 2); // change center
     this.circle.rotate((-1 / 2 + this.options.rotate / 180) * Math.PI); // rotate -90 deg
@@ -117,7 +118,7 @@ class circleLoader {
   }
 
   remove() {
-    $('canvas').remove();
+    jqs('canvas').remove();
     this.didInit = false;
   }
 }

@@ -177,7 +177,7 @@ var Timeline = (function (_Messenger) {
       self.emit('play');
 
       direction = direction ? 1 : -1;
-      var delta = Math.round(speed) > 3 ? 3 * direction : direction; //skip some frames if playing super fast
+      var delta = direction; //Math.round(speed) > 3 ? 3*direction : direction; //skip some frames if playing super fast
       resetInterval();
 
       //call any function registered to trigger on the current id
@@ -238,7 +238,7 @@ var Timeline = (function (_Messenger) {
 
             if (Math.abs(self.currentFrame - parseInt(val)) <= 1) self.currentFrame = parseInt(val);
             //do the animation
-            $jq('#timeline .timeline-frame-' + self.currentFrame).css({ zIndex: '2', display: 'block' });
+            $jq('#timeline .timeline-frame-' + self.currentFrame).css({ zIndex: '2', display: 'block', 'margin-top': '-5%' });
             $jq('#timeline .timeline-frame').not('#timeline .timeline-frame-' + self.currentFrame).css({ zIndex: '1', display: 'none' });
             $jq('#timeline .timeline-frame').removeClass('old');
 
@@ -256,7 +256,7 @@ var Timeline = (function (_Messenger) {
           }
 
           //display current frame
-          $jq('#timeline .timeline-frame-' + self.currentFrame).not('.old').css({ zIndex: '2', display: 'block' });
+          $jq('#timeline .timeline-frame-' + self.currentFrame).not('.old').css({ zIndex: '2', display: 'block', 'margin-top': '-5%' });
 
           if (delta == 0) return;
           if (direction == 1) {
@@ -292,7 +292,7 @@ var Timeline = (function (_Messenger) {
         clearInterval(self.playInterval);
         self.playInterval = setInterval(function () {
           //display current frame
-          $jq('#timeline .timeline-frame-' + self.currentFrame).not('.old').css({ zIndex: '2', display: 'block' });
+          $jq('#timeline .timeline-frame-' + self.currentFrame).not('.old').css({ zIndex: '2', display: 'block', 'margin-top': '-5%' });
           //buffer surrounding frames
           $jq('#timeline .timeline-frame-' + (self.currentFrame + delta)).not('.old').css({ zIndex: '1', display: 'block' });
           //discard old frame(s)
@@ -303,7 +303,7 @@ var Timeline = (function (_Messenger) {
 
             if ((self.looping || !self.looping && !self.stopLoopDirection) && doesLoop) {
               var baseFrame = parseInt(self.keyframes[self.currentKeyframe]);
-              $jq('#timeline .timeline-frame-' + baseFrame).css({ zIndex: '2', display: 'block' });
+              $jq('#timeline .timeline-frame-' + baseFrame).css({ zIndex: '2', display: 'block', 'margin-top': '-5%' });
               $jq('#timeline .timeline-frame-' + self.currentFrame).css({ zIndex: '1', display: 'none' });
               $jq('#timeline .timeline-frame').not('#timeline .timeline-frame-' + baseFrame).css({ zIndex: '1', display: 'none' });
               $jq('#timeline .timeline-frame').removeClass('old');
@@ -386,7 +386,7 @@ var Timeline = (function (_Messenger) {
         self.emit('changeSource');
       }, 'changeSource');
 
-      $jq('#timeline img').not('.remove,.added').fadeOut('fast');
+      $jq('#timeline img').not('.remove,.added').fadeOut('fast').css('margin-top', 0);
     }
   }, {
     key: 'log',
@@ -489,6 +489,7 @@ var Timeline = (function (_Messenger) {
         if ($jq('#timeline .remove').length) {
           var mt = $jq('#timeline img').css('marginTop');
           $jq('#timeline').append('<img style="display:none; z-index:2; margin-top:' + mt + '" class="added timeline-frame timeline-frame-' + cf + '" src="' + suf + '"/>');
+          console.log(mt);
         } else {
           $jq('#timeline-frame-' + cf).attr('src', suf);
         }
