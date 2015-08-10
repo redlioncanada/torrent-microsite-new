@@ -8,9 +8,9 @@ var $jq = jQuery.noConflict();
 if (!isMobile) {
     timeline = new Timeline({ //handles animation of video/sequence
         duration: 1500,
-        fps: 18,
-        keyframes: ['00000','00030','00078','00111','00177','00210','00250','00275','00340','00386','00429','00479','00504','00529','00554'],
-        tweenframes: [177,260,322,409],
+        fps: 15,
+        keyframes: ['00000','00018','00046','00082','00120','00136','00157','00182','00245','00290','00307','00340','00355','00375','00393'],
+        tweenframes: [120,167,229],
         looptweens: [false,true,true,true],
         animation: {
             1: [
@@ -239,7 +239,7 @@ $jq(document).ready(function(){
             let cacheNum = timeline.cached.length-1;
             circleLoader.init($jq('.color-picker .'+colors[0]));
             timeline.cacheColor = colors[0];
-            let url = 'http://trnt.wpc-stage.com/images/torrent/sequence/'+colors[0]+'/'+colors[0].toUpperCase()+'_TORRENT_EDIT_00000.jpg';
+            let url = '/images/torrent/sequence/'+colors[0]+'/'+colors[0].toUpperCase()+'_TORRENT_EDIT_00000.jpg';
             timeline._cache(false,url);
             
             //reposition color-picker elements
