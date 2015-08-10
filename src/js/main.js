@@ -101,7 +101,7 @@ if (!isMobile) {
                                 });
 
                             });
-                        },250);
+                        },500);
                     }
                 }
             ],
@@ -239,7 +239,7 @@ $jq(document).ready(function(){
             let cacheNum = timeline.cached.length-1;
             circleLoader.init($jq('.color-picker .'+colors[0]));
             timeline.cacheColor = colors[0];
-            let url = '/images/torrent/sequence/'+colors[0]+'/'+colors[0].toUpperCase()+'_TORRENT_EDIT_00000.jpg';
+            let url = 'http://trnt.wpc-stage.com/images/torrent/sequence/'+colors[0]+'/'+colors[0].toUpperCase()+'_TORRENT_EDIT_00000.jpg';
             timeline._cache(false,url);
             
             //reposition color-picker elements
@@ -329,11 +329,17 @@ $jq(document).ready(function(){
                 }
 
                 //force correct positioning, temp
-                if (this.curCover == 2) $jq('#timeline *').stop(true).animate({'marginTop':'7%'});
-                else if (this.curCover == 3) $jq('#timeline *').stop(true).animate({'marginTop':'7%'});
-                else if (this.curCover == 4) $jq('#timeline *').stop(true).animate({'marginTop':'4%'});
-                else if (this.curCover == 11) $jq('#timeline *').stop(true).animate({'marginTop':'-7%'});
-                else $jq('#timeline *').stop(true).animate({'marginTop':'0'});
+                if (this.curCover == 2) {
+	                $jq('#timeline *').velocity("stop").velocity({'marginTop':'7%'},{duration:800,easing:"easeInOutSine",delay:200});
+                } else if (this.curCover == 3) {
+	                $jq('#timeline *').velocity("stop").velocity({'marginTop':'7%'},{duration:800,easing:"easeInOutSine",delay:200});
+                } else if (this.curCover == 4) {
+	                $jq('#timeline *').velocity("stop").velocity({'marginTop':'4%'},{duration:800,easing:"easeInOutSine",delay:200});
+                } else if (this.curCover == 11) {
+	                $jq('#timeline *').velocity("stop").velocity({'marginTop':'-7%'},{duration:800,easing:"easeInOutSine",delay:200});
+                } else {
+	                $jq('#timeline *').velocity("stop").velocity({'marginTop':'0%'},{duration:800,easing:"easeInOutSine",delay:200});
+	            }
 
                 //play the sequence
                 if (self.currentFrame != 0 && !(this.curCover == 11 && timeline.currentKeyframe > 11)) {

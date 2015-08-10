@@ -209,7 +209,7 @@ class Timeline extends Messenger {
             
             if (Math.abs(self.currentFrame - parseInt(val)) <= 1) self.currentFrame = parseInt(val);
             //do the animation
-            $jq('#timeline .timeline-frame-'+self.currentFrame).css({'zIndex':'2','display':'block', 'margin-top':"-5%"});
+            $jq('#timeline .timeline-frame-'+self.currentFrame).css({'zIndex':'2','display':'block'});
             $jq('#timeline .timeline-frame').not('#timeline .timeline-frame-'+self.currentFrame).css({'zIndex':'1','display':'none'});
             $jq('#timeline .timeline-frame').removeClass('old');
           
@@ -227,7 +227,7 @@ class Timeline extends Messenger {
           }
 
           //display current frame
-          $jq('#timeline .timeline-frame-'+self.currentFrame).not('.old').css({'zIndex':'2','display':'block', 'margin-top':"-5%"});
+          $jq('#timeline .timeline-frame-'+self.currentFrame).not('.old').css({'zIndex':'2','display':'block'});
 
           if (delta == 0) return;
           if (direction == 1) {
@@ -261,7 +261,7 @@ class Timeline extends Messenger {
       clearInterval(self.playInterval);
       self.playInterval = setInterval(function() {
         //display current frame
-        $jq('#timeline .timeline-frame-'+self.currentFrame).not('.old').css({'zIndex':'2','display':'block','margin-top':"-5%"});
+        $jq('#timeline .timeline-frame-'+self.currentFrame).not('.old').css({'zIndex':'2','display':'block'});
         //buffer surrounding frames
         $jq('#timeline .timeline-frame-'+(self.currentFrame+delta)).not('.old').css({'zIndex':'1','display':'block'});
         //discard old frame(s)
@@ -272,7 +272,7 @@ class Timeline extends Messenger {
 
           if ((self.looping || (!self.looping && !self.stopLoopDirection)) && doesLoop) {
             let baseFrame = parseInt(self.keyframes[self.currentKeyframe]);
-            $jq('#timeline .timeline-frame-'+baseFrame).css({'zIndex':'2','display':'block','margin-top':"-5%"});
+            $jq('#timeline .timeline-frame-'+baseFrame).css({'zIndex':'2','display':'block'});
             $jq('#timeline .timeline-frame-'+self.currentFrame).css({'zIndex':'1','display':'none'});
             $jq('#timeline .timeline-frame').not('#timeline .timeline-frame-'+baseFrame).css({'zIndex':'1','display':'none'});
             $jq('#timeline .timeline-frame').removeClass('old');

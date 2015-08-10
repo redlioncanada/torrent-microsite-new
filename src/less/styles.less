@@ -1,5 +1,5 @@
 @outerPadding: 70px;
-body {overflow: hidden; background-color: #1b1b1b !important; font-size: 13pt; min-width: 320px; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+body {overflow: hidden; background-color: #2a2a2a !important; font-size: 13pt; min-width: 320px; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
 .arrow-animation {
   height: 90px;
   position: absolute;
@@ -111,6 +111,11 @@ div, span, object, iframe, img, table, caption, thead, tbody, tfoot, tr, tr, td,
   -webkit-hyphens: none;
   hyphens: none;
   word-wrap: normal;
+}
+iframe {
+	width: 11.43%;
+    height: 94.4%;
+    top: 5.6%;
 }
 h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, address, cit, code, del, dfn, em, ins, q, samp, small, strong, sub, sup, b, i, hr, dl, dt, dd, ol, ul, li, fieldset, legend, label {
   border: 0;
@@ -597,8 +602,8 @@ a img {
     margin-bottom: -13px;
   }
   .nav-down {
-    margin-top: 5px;
-    margin-left: -2px;
+    margin-top: 269px;
+    margin-left: -13px;
     -ms-transform: rotate(180deg); /* IE 9 */
     -webkit-transform: rotate(180deg); /* Chrome, Safari, Opera */
     transform: rotate(180deg);
@@ -623,8 +628,9 @@ a img {
   .title {
     display: none;
     position: absolute;
-    right: -7px;
-    width: 212px;
+    right: -12px;
+    border-radius: 0 8px 8px 0;
+    width: 220px;
     margin-top: -12px;
     height: 12px;
     font-size: 8pt;
@@ -633,11 +639,11 @@ a img {
     color: black !important;
     background-color: white;
     transition: opacity 0.3s linear;
-    padding-right: 10px;
+    padding-right: 18px;
     z-index: 1;
   }
   .title:lang(fr) {
-    width: 345px;
+    width: 355px;
   }
 }
 .cover-item-1 {
@@ -930,7 +936,7 @@ img.slick-prev, img.slick-next {
   min-width: 100%;
   height: 100%;
   min-height: 100%;
-  background-color: #1b1b1b;
+  background-color: #2a2a2a;
 
   img {
     position: relative;
@@ -1649,5 +1655,3 @@ and (max-device-width : 1024px)  {
 //mobile
 .mobile body {background-color: black !important;}
 .mobile #main-container {background-color: black !important;}
-
-.cover-picker-inner li:hover div:not(.title) {opacity: 1; background-color: white !important};
