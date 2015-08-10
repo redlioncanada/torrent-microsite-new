@@ -9,8 +9,8 @@ if (!isMobile) {
     timeline = new Timeline({ //handles animation of video/sequence
         duration: 1500,
         fps: 15,
-        keyframes: ['00000','00018','00046','00082','00120','00136','00157','00182','00245','00290','00307','00340','00355','00375','00393'],
-        tweenframes: [120,167,229],
+        keyframes: ['00000','00018','00046','00082','00120','00136','00157','00182','00245','00290','00331','00364','00379','00399','00417'],
+        tweenframes: [120,167,229,314],
         looptweens: [false,true,true,true],
         animation: {
             1: [
@@ -312,6 +312,10 @@ $jq(document).ready(function(){
 
             //remove animations
             timeline.clearAnimation();
+            
+            if ( timeline.currentKeyframe >= 11 ) {
+            	$jq("#timeline img").css('margin-top',"-7%");
+            }
         });
 
         timeline.redraw();

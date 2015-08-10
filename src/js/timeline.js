@@ -347,6 +347,7 @@ class Timeline extends Messenger {
     }, 'changeSource');
     
     $jq('#timeline img').not('.remove,.added').fadeOut("fast").css("margin-top", 0);
+
   }
 
   log(msg, type=0) {
