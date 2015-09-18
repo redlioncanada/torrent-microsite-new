@@ -1,3 +1,11 @@
+/*nav fix for staging server*/
+.cover-picker .nav-down {
+  margin-top: 6px !important;
+  margin-left: -1px !important;
+}
+
+
+
 @outerPadding: 70px;
 body {overflow: hidden; background-color: #2a2a2a !important; font-size: 13pt; min-width: 320px; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
 .arrow-animation {
@@ -838,19 +846,18 @@ a img {
 }
 .cover-item-12 {
   .col-xs-10 {
-    top: 60%;
+    top: 50%;
     text-align: center;
 
     > p a {
       text-decoration: underline !important;
     }
     p.copy:lang(fr) {
-      max-width: 471px;
+      max-width: 630px;
     }
     p.copy {
-      max-width: 330px;
+      max-width: 510px;
       margin: 0 auto;
-      margin-bottom: 25px !important;
     }
 
     p.disclaimer:lang(fr) {
@@ -858,26 +865,47 @@ a img {
     }
     p.disclaimer {
       margin: 0 auto;
-      margin-top: 12px;
+      margin-top: 4px;
       font-size: 8pt;
     }
 
     div.findstore:lang(fr) {
-      max-width: 292px;
+      max-width: 194px;
     }
     div.findstore {
+      background-color: white;
       margin: 0 auto;
-      border: 1px solid white;
-      max-width: 200px; 
-      height: 47px;
-      font-size: 17pt;
-      line-height: 47px;
+      max-width: 135px; 
+      color: black;
+      height: 34px;
+      font-size: 11pt;
+      line-height: 37px;
+      margin-top: 10px;
       cursor: pointer;
     }
 
     div.findstore:hover {
-      border: 1px solid #999;
-      color: #999;
+      color: #333;
+    }
+
+    div.wheretobuy {
+      margin-top: 30px;
+
+      img {
+        max-width: 110px;
+      }
+
+      .airmiles, .canadian-tire {
+        max-width: 60px;
+      }
+
+      .london-drugs {
+        max-width: 80px;
+      }
+
+      .appliance-canada {
+        max-width: 150px;
+      }
     }
   }
   > div {

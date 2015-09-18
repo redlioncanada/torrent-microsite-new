@@ -336,7 +336,7 @@ $jq(document).ready(function () {
                 } else if (this.curCover == 4) {
                     $jq('#timeline *').velocity('stop').velocity({ marginTop: '4%' }, { duration: 800, easing: 'easeInOutSine', delay: 200 });
                 } else if (this.curCover == 11) {
-                    $jq('#timeline *').velocity('stop').velocity({ marginTop: '-7%' }, { duration: 800, easing: 'easeInOutSine', delay: 200 });
+                    $jq('#timeline *').velocity('stop').velocity({ marginTop: '-11%' }, { duration: 800, easing: 'easeInOutSine', delay: 200 });
                 } else {
                     $jq('#timeline *').velocity('stop').velocity({ marginTop: '0%' }, { duration: 800, easing: 'easeInOutSine', delay: 200 });
                 }
