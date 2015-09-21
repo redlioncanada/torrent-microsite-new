@@ -998,8 +998,12 @@ body {
 #main-container .cover-item-12 .col-xs-10 div.findstore:hover {
   color: #333;
 }
-#main-container .cover-item-12 .col-xs-10 div.wheretobuy:lang(fr) .hudsons-bay {
-  max-width: 150px;
+#main-container .cover-item-12 .col-xs-10 div.wheretobuy:lang(fr) img {
+  max-width: 170px;
+}
+#main-container .cover-item-12 .col-xs-10 div.wheretobuy:lang(fr) .airmiles,
+#main-container .cover-item-12 .col-xs-10 div.wheretobuy:lang(fr) .canadian-tire {
+  max-width: 70px !important;
 }
 #main-container .cover-item-12 .col-xs-10 div.wheretobuy {
   margin-top: 30px;
