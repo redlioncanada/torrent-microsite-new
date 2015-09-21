@@ -998,6 +998,9 @@ body {
 #main-container .cover-item-12 .col-xs-10 div.findstore:hover {
   color: #333;
 }
+#main-container .cover-item-12 .col-xs-10 div.wheretobuy:lang(fr) .hudsons-bay {
+  max-width: 150px;
+}
 #main-container .cover-item-12 .col-xs-10 div.wheretobuy {
   margin-top: 30px;
 }
