@@ -998,6 +998,12 @@ body {
 #main-container .cover-item-12 .col-xs-10 div.findstore:hover {
   color: #333;
 }
+#main-container .cover-item-12 .col-xs-10 div.wheretobuy:lang(fr) {
+  margin-top: 20px;
+}
+#main-container .cover-item-12 .col-xs-10 div.wheretobuy:lang(fr) a {
+  margin: 0 20px;
+}
 #main-container .cover-item-12 .col-xs-10 div.wheretobuy:lang(fr) img {
   max-width: 170px;
 }
