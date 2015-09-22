@@ -999,7 +999,7 @@ body {
   color: #333;
 }
 #main-container .cover-item-12 .col-xs-10 div.wheretobuy:lang(fr) {
-  margin-top: 20px;
+  margin-top: 0px;
 }
 #main-container .cover-item-12 .col-xs-10 div.wheretobuy:lang(fr) a {
   margin: 0 20px;
@@ -1012,7 +1012,7 @@ body {
   max-width: 70px !important;
 }
 #main-container .cover-item-12 .col-xs-10 div.wheretobuy {
-  margin-top: 30px;
+  margin-top: 20px;
 }
 #main-container .cover-item-12 .col-xs-10 div.wheretobuy img {
   max-width: 110px;
