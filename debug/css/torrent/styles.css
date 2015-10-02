@@ -1024,7 +1024,9 @@ body {
 #main-container .cover-item-12 .col-xs-10 div.wheretobuy .london-drugs {
   max-width: 80px;
 }
-#main-container .cover-item-12 .col-xs-10 div.wheretobuy .appliance-canada {
+#main-container .cover-item-12 .col-xs-10 div.wheretobuy .appliance-canada,
+#main-container .cover-item-12 .col-xs-10 div.wheretobuy .home-outfitters,
+#main-container .cover-item-12 .col-xs-10 div.wheretobuy .hudsons-bay {
   max-width: 150px;
 }
 #main-container .cover-item-12 > div {
